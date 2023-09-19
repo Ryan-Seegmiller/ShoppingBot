@@ -10,7 +10,7 @@ public class NumberDisplays : MonoBehaviour
     //Replaceable with call to player or game manager's values
     public int money;
 
-    void UpdateDisplay()
+    public void UpdateDisplay()
     {
         moneyAmt.text = money.ToString();
     }
