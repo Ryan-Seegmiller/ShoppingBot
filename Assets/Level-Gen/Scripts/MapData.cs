@@ -8,11 +8,14 @@ namespace Level
     internal class MapData : ScriptableObject
     {
         public const int tileSize = 10;
-        [Range(5, 20)] public int mapSize = 5;
-        [Range(1, 5)] public int floorNum = 1;
+        public const int maxSize = 20;
+        public const int maxFloors = 5;
+        [Range(5, maxSize)] public int mapSize = 5;
+        [Range(1, maxFloors)] public int floorNum = 1;
 
         public GameObject elevatorTile;
         public GameObject wall;
+        public GameObject ramp;
         public GameObject[] mallTiles;
     }
 }
