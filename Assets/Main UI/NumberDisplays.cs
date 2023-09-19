@@ -7,18 +7,9 @@ public class NumberDisplays : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI moneyAmt;
 
+    //Replaceable with call to player or game manager's values
     public int money;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void UpdateDisplay()
     {
         moneyAmt.text = money.ToString();
