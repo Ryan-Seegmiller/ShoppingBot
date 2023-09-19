@@ -1886,6 +1886,8 @@ MonoBehaviour:
   items: []
   displayItems: []
   striked: 
+  pMenu: {fileID: 1260637629}
+  mScreen: {fileID: 1243112602}
 --- !u!1 &1768642316
 GameObject:
   m_ObjectHideFlags: 0

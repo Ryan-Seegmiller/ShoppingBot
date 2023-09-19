@@ -14,6 +14,9 @@ public class ShoppingList : MonoBehaviour
     public string[] displayItems;
     [SerializeField] bool[] striked;
 
+    [SerializeField] GameObject pMenu;
+    [SerializeField] GameObject mScreen;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,15 @@ public class ShoppingList : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        KeyCheck();
+    }
+
+    //List Display toggle
+    //Text Gen from array
+    //strikethough
+
+    void KeyCheck()
+    {
         if (showingList)
         {
             UpdateDisplay();
@@ -34,13 +46,16 @@ public class ShoppingList : MonoBehaviour
                 ToggleList();
             }
         }
-
+        else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleList();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pMenu.SetActive(true);
+            mScreen.SetActive(false);
+        }
     }
-
-    //List Display toggle
-    //Text Gen from array
-    //strikethough
-
     public void ToggleList()
     {
         fullList.SetActive(!showingList);
