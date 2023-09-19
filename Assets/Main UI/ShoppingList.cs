@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class ShoppingList : MonoBehaviour
 {
+    [SerializeField] GameObject closedList;
+    [SerializeField] GameObject fullList;
     [SerializeField] TextMeshProUGUI listText;
+    bool showingList = false;
 
     public string[] items;
     public string[] displayItems;
@@ -23,12 +26,28 @@ public class ShoppingList : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateDisplay();
+        if (showingList)
+        {
+            UpdateDisplay();
+            if (Input.anyKeyDown)
+            {
+                ToggleList();
+            }
+        }
+
     }
 
-    ///List Display toggle
-    ///Text Gen from array
-    ///strikethough
+    //List Display toggle
+    //Text Gen from array
+    //strikethough
+
+    public void ToggleList()
+    {
+        fullList.SetActive(!showingList);
+        closedList.SetActive(showingList);
+        showingList = !showingList;
+    }
+    #region TasksOpen
     void UpdateDisplay()
     {
         for(int i = 0; i < items.Length; i++)
@@ -39,7 +58,7 @@ public class ShoppingList : MonoBehaviour
             }
             else
             {
-                displayItems[i] = items[i];
+                displayItems[i] = "<b>" + items[i] + "</b>";
             }
         }
         BuildList();
@@ -65,4 +84,5 @@ public class ShoppingList : MonoBehaviour
             listText.text += displayItems[i] + "\n";
         }
     }
+    #endregion
 }
