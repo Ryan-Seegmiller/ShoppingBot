@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/MergeBackupThing/MainMenu.unity
     guid: cde860212370672499981d02ce279f3a
   - enabled: 1
-    path: Assets/Scenes/MainGameUI.unity
+    path: Assets/MergeBackupThing/MainGameUI.unity
     guid: 8650fe38b1edbbc47833fb1314f224da
   m_configObjects: {}
