@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> enemySpawns = new List<GameObject>();
     public List<GameObject> enemyPrefabs = new List<GameObject>();
     public List<Enemy> currentEnemies=new List<Enemy>();
+    public float aerialEnemyHeight =3;
+    public float groundEnemyHeight=0.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,8 @@ public class EnemyManager : MonoBehaviour
         {
             Destroy(this);
         }
+
+        SpawnEnemies(25);
     }
 
     // Update is called once per frame
