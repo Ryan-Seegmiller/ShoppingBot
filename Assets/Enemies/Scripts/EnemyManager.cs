@@ -22,7 +22,8 @@ public class EnemyManager : MonoBehaviour
             Destroy(this);
         }
 
-        SpawnEnemies(25);
+        SpawnEnemies(50,0);
+        SpawnEnemies(50,1);
     }
 
     // Update is called once per frame
@@ -31,11 +32,11 @@ public class EnemyManager : MonoBehaviour
         
     }
 
-    public void SpawnEnemies(int count)
+    public void SpawnEnemies(int count, int index)
     {
-        for(int i=0; i<count; i++)
+        for(int i=0; i< count; i++)
         {
-            Enemy e=Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Count)], enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position, Quaternion.identity).GetComponent<Enemy>();
+            Enemy e=Instantiate(enemyPrefabs[index], enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position, Quaternion.identity).GetComponent<Enemy>();
             currentEnemies.Add(e);
         }
     }
