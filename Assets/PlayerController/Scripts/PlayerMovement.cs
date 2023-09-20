@@ -148,7 +148,7 @@ namespace PlayerContoller
             {
                 //Moves the chartacter
                 rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
-                //transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
+                transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
                 camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
 
                 //Player animations

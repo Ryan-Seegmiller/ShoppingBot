@@ -34,9 +34,10 @@ public class Shooting : MonoBehaviour
     {
         Image.transform.position = Input.mousePosition;
         Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(rayLook, out raycastHit, 10, layersToHit))
+        Debug.DrawRay(mainCamera.transform.up, rayLook.direction * 300, Color.red);
+        if (Physics.Raycast(rayLook, out raycastHit, 300, layersToHit))
         {
-            Debug.DrawRay(mainCamera.transform.up, rayLook.direction * 300, Color.red);
+            Debug.DrawRay(mainCamera.transform.up, rayLook.direction * -300, Color.red);
             
         }
         ObjectDrag();
@@ -51,7 +52,7 @@ public class Shooting : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 
-            ObjectDragActive = (!ObjectDragActive && raycastHit.collider != null || raycastHit.collider != currentObject.collider) ? true : false;
+            ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
             if(raycastHit.collider != null)
             {
                 currentObject = raycastHit;
