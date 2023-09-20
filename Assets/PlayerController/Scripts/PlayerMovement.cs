@@ -70,7 +70,7 @@ namespace PlayerContoller
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
 
-            //stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
+            stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
         }
         private void Update()
         {
@@ -181,11 +181,13 @@ namespace PlayerContoller
             }
             if (playerInput.x * -1f == -1 && playerInput.x != 0)
             {
+                print(playerInput.x * -1);
                 playerAnimator.SetBool("RightTread", true);
                 playerAnimator.SetFloat("RightTreadBoost", -20);
             }
             else if (playerInput.x * -1f == 1 && playerInput.x != 0)
             {
+                print(playerInput.x * -1 + "twist");
                 playerAnimator.SetBool("LeftTread", true);
                 playerAnimator.SetFloat("LeftTreadBoost", -20);
             }
@@ -264,20 +266,14 @@ namespace PlayerContoller
         void StepClimb()
         {
             RaycastHit hitLower;
-            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .01f))
+            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .1f))
             {
                 RaycastHit hitUpper;
-                if (!Physics.Raycast(stepRayUpper.transform.position, transform.forward, out hitUpper, .2f) && !OnSlope())
+                if (!Physics.Raycast(stepRayUpper.transform.position, transform.forward, out hitUpper, .2f))
                 {
-                    //rb.position -= new Vector3(0f, -stepSmooth, 0f);
-                    rb.AddForce(0, -stepSmooth, 0, ForceMode.Force);
-                    print("something");
+                    rb.position -= new Vector3(0f, -stepSmooth, 0f);
                 }
             }
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-            print(collision);
         }
     }
 }
