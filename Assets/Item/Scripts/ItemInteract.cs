@@ -17,7 +17,8 @@ public class ItemInteract : MonoBehaviour
         //DEBEUG
         if (Input.GetKeyDown(KeyCode.O))
         {
-            ItemCollect();
+            //ItemCollect();
+            GameManager.Instance.RandomiseList();
         }
     }
 
