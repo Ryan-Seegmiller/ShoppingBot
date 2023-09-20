@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < shoppingList.Length; i++)
         {
-            //shoppingList[i] = (int)Random.Range((float), (float));
+            shoppingList[i] = (int)Random.Range(0f, (float)System.Enum.GetValues(typeof(itemID)).Length);
         }
 
 
