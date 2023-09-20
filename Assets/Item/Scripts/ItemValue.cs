@@ -107,8 +107,7 @@ public class ItemValue : MonoBehaviour
         //Assign cost
         Cost = itemCost[id];
         //Assign name
-        string nameLower = ((itemID)id).ToString();
-        Name = char.ToUpper(nameLower[0]) + nameLower.Substring(1);
+        Name = GameManager.Instance.ItemName(id);
         print(Name);
         
     }
