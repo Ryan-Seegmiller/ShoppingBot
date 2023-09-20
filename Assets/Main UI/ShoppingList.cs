@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class ShoppingList : MonoBehaviour
 {
+    public static ShoppingList instance;
+
     [SerializeField] GameObject closedList;
     [SerializeField] GameObject fullList;
     [SerializeField] TextMeshProUGUI listText;
     bool showingList = false;
 
-    public string[] items;
+    //[SerializeField] GameObject gm;
+
+    [SerializeField] int[] shopListVals;
+    [SerializeField] string[] shopListNames;
+    [SerializeField] int[] collected;
     public string[] displayItems;
     [SerializeField] bool[] striked;
 
@@ -20,10 +26,20 @@ public class ShoppingList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Singleton Pattern
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         //test
-        items = new string[] {"Food", "Not Food", "Extra Not Food"};
-        displayItems = new string[items.Length];
-        striked = new bool[items.Length];
+        //would be set to game manager's preset
+        shopListNames = new string[] {"Food", "Not Food", "Extra Not Food"};
+        displayItems = new string[shopListNames.Length];
+        striked = new bool[shopListNames.Length];
     }
 
     // Update is called once per frame
@@ -36,6 +52,27 @@ public class ShoppingList : MonoBehaviour
     //Text Gen from array
     //strikethough
 
+    /*
+    #region PassableVals
+    public void SetShopList(int[] ia, string[] sa)
+    {
+        shopListVals = ia;
+        shopListNames = sa;
+        striked = new bool[ia.Length];
+        collected = new int[ia.Length];
+    }
+    public void SetInv(int[] ia)
+    {
+        if(ia.Length == collected.Length)
+        {
+            for(int i = 0; i < ia.Length; i++)
+            {
+                collected[i] = ia[i];
+            }
+        }
+    }
+    #endregion
+    */
     void KeyCheck()
     {
         if (showingList)
@@ -65,22 +102,23 @@ public class ShoppingList : MonoBehaviour
     #region TasksOpen
     void UpdateDisplay()
     {
-        for(int i = 0; i < items.Length; i++)
+        for(int i = 0; i < shopListNames.Length; i++)
         {
             if (striked[i])
             {
-                displayItems[i] = "<i>" + items[i] + "</i>";
+                displayItems[i] = "<i>" + shopListNames[i] + "</i>";
             }
             else
             {
-                displayItems[i] = "<b>" + items[i] + "</b>";
+                //replace 4 with get from game manager "i" in inventory
+                displayItems[i] = "<b>" + 4 +" "+ shopListNames[i] + "</b>";
             }
         }
         BuildList();
     }
     //For later implementation
     //talks to inventory to see if it has what it needs.
-    void Mark(int i)
+    public void MarkItem(int i)
     {
         if (striked[i])
         {
