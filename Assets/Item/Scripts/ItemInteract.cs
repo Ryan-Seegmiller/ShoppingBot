@@ -22,7 +22,6 @@ public class ItemInteract : MonoBehaviour
         }
     }
 
-
     //Collect this item
     public void ItemCollect()
     {
