@@ -7,6 +7,9 @@ namespace Level
     public class LevelManager : MonoBehaviour
     {
         [SerializeField] internal MapData mapData;
+        private Transform itemParent;
+        [SerializeField] protected GameObject itemPrefab;
+
         [SerializeField] internal bool doGenerate = true;
 
         private int[] specialTiles = new int[1] {0};
@@ -109,12 +112,27 @@ namespace Level
         }
         #endregion
 
+        #region Resource Fill
+        public void SpawnItems()
+        {
+            itemParent = new GameObject("ItemParent").transform;
+            GameObject go =Instantiate(itemPrefab, itemParent);
+            go.GetComponent<ItemValue>().RandomiseItem();
+        }
+        public void DestroyItems()
+        {
+            if (itemParent == null) { return; }
+            DestroyImmediate(itemParent.gameObject);
+        }
+        #endregion
+
         private void Start()
         {
             if (doGenerate)
             {
                 InstanceElevatorShaft();
                 InstanceMall();
+                SpawnItems();
             }
         }
     }

@@ -73,7 +73,7 @@ public class ItemValue : MonoBehaviour
 
     
     //Assigns item value to a random item from a specified category
-    void RandomiseFromCategory(itemCategory categoryID) //Use the 'itemCategory' enum to choose the category to pick from. Example: itemCategory.food
+    public void RandomiseFromCategory(itemCategory categoryID) //Use the 'itemCategory' enum to choose the category to pick from. Example: itemCategory.food
     {
         int indexCount = 0; //Get the number of items in the itemID enum before the chosen category starts
         for (int i = 0; i < categorySize.Length - (categorySize.Length - (int)categoryID); i++) { //Repeat for each category before the chosen category
@@ -86,7 +86,7 @@ public class ItemValue : MonoBehaviour
         AssignItem(newChoice);
     }
     //Assigns item value to a random item
-    void RandomiseItem()
+    public void RandomiseItem()
     {
         int itemIdMin = 0; //The item ID of the first available item in the chosen category
         int itemIdMax = itemCost.Length - 1; //The item ID of the last available item in the chosen category
