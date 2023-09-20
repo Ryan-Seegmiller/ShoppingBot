@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSize: 5
   floorNum: 2
-  elevatorTile: {fileID: 9208566225419152403, guid: 03926bf0d5f87f74985ebd5670f24435, type: 3}
+  elevator: {fileID: 9208566225419152403, guid: 03926bf0d5f87f74985ebd5670f24435, type: 3}
+  elevatorShaft: {fileID: 1249108262895244423, guid: 2204aeecbb2988543954b48bdc07a849, type: 3}
   wall: {fileID: 6885873540023638393, guid: e9a4bf569b913304fae79d992ad1392e, type: 3}
   ramp: {fileID: 5123003927311887265, guid: de73ce22ddd40da49bf620d8ef955aa8, type: 3}
   mallTiles:
