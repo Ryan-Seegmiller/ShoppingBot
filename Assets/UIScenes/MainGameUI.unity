@@ -134,12 +134,12 @@ GameObject:
   - component: {fileID: 43684889}
   - component: {fileID: 43684890}
   m_Layer: 5
-  m_Name: Heeheehaha
+  m_Name: Broken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &43684889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2342,6 +2342,9 @@ MonoBehaviour:
   closedList: {fileID: 651691219}
   fullList: {fileID: 1188724580}
   listText: {fileID: 1409366385}
+  shopListVals: 
+  shopListNames: []
+  collected: 
   displayItems: []
   striked: 
   pMenu: {fileID: 1260637629}
