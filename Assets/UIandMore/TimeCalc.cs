@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeAndScore : MonoBehaviour
+public class TimeCalc : MonoBehaviour
 {
-    public static TimeAndScore instance;
+    public static TimeCalc instance;
 
     public int timer;
     public bool ticking;

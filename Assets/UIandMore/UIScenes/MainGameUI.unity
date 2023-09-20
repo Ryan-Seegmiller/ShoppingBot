@@ -369,8 +369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moneyAmt: {fileID: 1326742594}
   timer: {fileID: 230383820}
-  money: 0
-  time: 0
 --- !u!1 &172652640
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,6 +966,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1500843172}
+        m_TargetAssemblyTypeName: TimeCalc, Assembly-CSharp
+        m_MethodName: StartTimer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1260637629}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -1510,6 +1520,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1500843172}
+        m_TargetAssemblyTypeName: TimeCalc, Assembly-CSharp
+        m_MethodName: PauseTimer
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2954,6 +2976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1500843173}
   - component: {fileID: 1500843172}
+  - component: {fileID: 1500843174}
   m_Layer: 0
   m_Name: TimeScoreCalc
   m_TagString: Untagged
@@ -2974,8 +2997,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  threshold: 0
-  threshold2: 0
   ticking: 0
 --- !u!4 &1500843173
 Transform:
@@ -2992,6 +3013,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1500843174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500843171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 005a568635683e84daa9eebecc0f97bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreVal: 0
 --- !u!1 &1559161186
 GameObject:
   m_ObjectHideFlags: 0
