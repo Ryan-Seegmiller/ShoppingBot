@@ -7,6 +7,7 @@ namespace Level
     public class LevelManager : MonoBehaviour
     {
         [SerializeField] internal MapData mapData;
+
         [SerializeField] internal bool doGenerate = true;
 
         private int[] specialTiles = new int[1] {0};
