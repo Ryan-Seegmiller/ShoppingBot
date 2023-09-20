@@ -16,7 +16,7 @@ public class ShoppingList : MonoBehaviour
 
     [SerializeField] int[] shopListVals;
     [SerializeField] string[] shopListNames;
-    int collected;
+    bool collected;
     public string[] displayItems;
     [SerializeField] bool[] striked;
 
@@ -84,14 +84,18 @@ public class ShoppingList : MonoBehaviour
     #region TasksOpen
     void UpdateDisplay()
     {
-        for(int i = 0; i < shopListNames.Length; i++)
+        for(int i = 0; i < displayItems.Length; i++)
         {
-            collected = GameManager.Instance.shoppingList[i] - GameManager.Instance.inventory[i];
+            collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
             //itemID current = (itemID)GameManager.Instance.shoppingList[i];
             string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
-            if(collected <= 0)
+            if(collected)
             {
                 striked[i] = true;
+            }
+            else
+            {
+                striked[i] = false;
             }
             if (striked[i])
             {

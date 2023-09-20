@@ -21,11 +21,21 @@ public class HacksFr : MonoBehaviour
         }
         for(int i = 0; i < GameManager.Instance.inventory.Length; i++)
         {
-            GameManager.Instance.inventory[i] = 0;
+            GameManager.Instance.inventory[i] = -1;
         }
     }
     public void Increment()
     {
-        GameManager.Instance.inventory[Index]++;
+        GameManager.Instance.inventory[Index] = GameManager.Instance.shoppingList[Index];
+    }
+
+    public void diLength()
+    {
+        //print("di length: " + ShoppingList.instance.displayItems.Length);
+        print(GameManager.Instance.shoppingList[Index]);
+    }
+    public void diCheck()
+    {
+        print(GameManager.Instance.inventory[Index]);
     }
 }
