@@ -12,11 +12,11 @@ public class ShoppingList : MonoBehaviour
     [SerializeField] TextMeshProUGUI listText;
     bool showingList = false;
 
-    //[SerializeField] GameObject gm;
+    [SerializeField] GameManager gm;
 
     [SerializeField] int[] shopListVals;
     [SerializeField] string[] shopListNames;
-    [SerializeField] int[] collected;
+    int collected;
     public string[] displayItems;
     [SerializeField] bool[] striked;
 
@@ -104,14 +104,22 @@ public class ShoppingList : MonoBehaviour
     {
         for(int i = 0; i < shopListNames.Length; i++)
         {
+            collected = gm.shoppingList[i] - gm.inventory[i];
+            if(collected <= 0)
+            {
+                striked[i] = true;
+            }
             if (striked[i])
             {
-                displayItems[i] = "<i>" + shopListNames[i] + "</i>";
+                //TODO mess with tags and effects to change striked and not striked
+                //there is a color tag (look it up)
+                displayItems[i] = "<s><i>" + shopListNames[i] + "</i></s>";
             }
             else
             {
                 //replace 4 with get from game manager "i" in inventory
-                displayItems[i] = "<b>" + 4 +" "+ shopListNames[i] + "</b>";
+                
+                displayItems[i] = "<b>" + collected +" "+ shopListNames[i] + "</b>";
             }
         }
         BuildList();

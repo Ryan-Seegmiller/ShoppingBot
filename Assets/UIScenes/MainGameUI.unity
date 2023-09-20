@@ -134,12 +134,12 @@ GameObject:
   - component: {fileID: 43684889}
   - component: {fileID: 43684890}
   m_Layer: 5
-  m_Name: Broken
+  m_Name: Super OP Dev Console
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &43684889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -174,6 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b760266809867124a946c32eef135b0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameM: {fileID: 1939126585}
   shopList: 01000000020000000300000004000000
   shopListNames: []
   inventory: 
@@ -1702,7 +1703,7 @@ MonoBehaviour:
       - m_Target: {fileID: 43684890}
         m_TargetAssemblyTypeName: HacksFr, Assembly-CSharp
         m_MethodName: Increment
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2342,9 +2343,9 @@ MonoBehaviour:
   closedList: {fileID: 651691219}
   fullList: {fileID: 1188724580}
   listText: {fileID: 1409366385}
+  gm: {fileID: 1939126585}
   shopListVals: 
   shopListNames: []
-  collected: 
   displayItems: []
   striked: 
   pMenu: {fileID: 1260637629}
@@ -2653,6 +2654,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859989271}
   m_CullTransparentMesh: 1
+--- !u!1 &1939126584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939126586}
+  - component: {fileID: 1939126585}
+  m_Layer: 0
+  m_Name: FakeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1939126585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939126584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5898bd8b303f6fb489e1367ad7a0cf83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cash: 100
+  inventorySize: 10
+  inventory: 
+  shoppingList: 
+--- !u!4 &1939126586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939126584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -250.17654, y: -582.2477, z: -658.0146}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2040968126
 GameObject:
   m_ObjectHideFlags: 0

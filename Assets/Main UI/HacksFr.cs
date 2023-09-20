@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class HacksFr : MonoBehaviour
 {
-    [SerializeField] int[] shopList = new int[] {1, 2, 3, 4};
+    [SerializeField] GameManager gameM;
+
+    [SerializeField] int[] shopList;
     [SerializeField] string[] shopListNames;
     [SerializeField] int[] inventory;
 
@@ -12,29 +14,25 @@ public class HacksFr : MonoBehaviour
 
     private void Start()
     {
-        shopListNames = new string[shopList.Length];
-        inventory = new int[shopList.Length];
-
-        for(int i = 0; i < shopListNames.Length; i++)
-        {
-            shopListNames[i] = "filler" + i;
-        }
-        for(int i = 0; i < inventory.Length; i++)
-        {
-            inventory[i] = 0;
-        }
+        
     }
 
     public void SetSL()
     {
-        //ShoppingList.instance.SetShopList(shopList, shopListNames);
-    }
-    public void Increment(int i)
-    {
-        if (inventory[i] < shopList[i])
+        if(shopList != null && shopList.Length <= gameM.shoppingList.Length)
         {
-            inventory[i]++;
-            //ShoppingList.instance.SetInv(inventory);
+            for(int i = 0; i < shopList.Length; i++)
+            {
+                gameM.shoppingList[i] = shopList[i];
+            }
+        }
+    }
+    public void Increment()
+    {
+        //might or might not be necessary
+        if(gameM.inventory[Index] != null)
+        {
+            gameM.inventory[Index]++;
         }
     }
 }
