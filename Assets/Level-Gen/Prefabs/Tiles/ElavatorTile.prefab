@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9208566225419152404}
   - component: {fileID: 2295462708167477098}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ElavatorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,6 +104,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: f6003b2ff50f5f84691fdca6883b46ea, type: 2}
+    - target: {fileID: -6305039475700050535, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -4866640478502395794, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: -4525151458215737475, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -127,6 +135,22 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
       propertyPath: m_Name
       value: elevatorTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609995745970982318, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3668837565712159299, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6793008945383557088, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 723e9696d17650f4b9179a10699e16a7, type: 3}

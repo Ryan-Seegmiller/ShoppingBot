@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace PlayerContoller
@@ -10,6 +11,9 @@ namespace PlayerContoller
         private float moveSpeed;
         public float walkSpeed;
         public float sprintSpeed;
+        public float playerRotationSpeed;
+
+        public Animator playerAnimator;
 
         private float desiredMoveSpeed;
         private float lastDesiredMoveSpeed;
@@ -17,7 +21,7 @@ namespace PlayerContoller
         public float speedIncreaseMultiplier;
         public float slopeIncreaseMultiplier;
 
-        public float groundDrag; 
+        public float groundDrag;
 
         [Header("keybinds")]
         public KeyCode sprintKey = KeyCode.LeftShift;
@@ -35,12 +39,17 @@ namespace PlayerContoller
         public Transform orientation;
         public Transform camHolder;
 
+        [Header("Step handiling")]
+        public GameObject stepRayLower;
+        public GameObject stepRayUpper;
+
+        public float stepHeight = .4f;
+        public float stepSmooth = .1f;
 
         Vector2 playerInput;
-        private float playerRotationInput;
-        public float playerRotationSpeed;
 
-        public Vector3 moveDirection;
+
+        Vector3 moveDirection;
 
         Rigidbody rb;
 
@@ -53,13 +62,15 @@ namespace PlayerContoller
             air
         }
 
-       //public bool isSliding;
+        //public bool isSliding;
         //public bool wallRunning;
 
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
+
+            stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
         }
         private void Update()
         {
@@ -118,38 +129,10 @@ namespace PlayerContoller
 
             lastDesiredMoveSpeed = desiredMoveSpeed;
         }
-        private IEnumerator SmoothlyLerpMoveSpeed()
-        {
-            // Smoothly lerp movement speed to desired value
-            float time = 0;
-            float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
-            float startValue = moveSpeed;
-
-            while (time < difference)
-            {
-                moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
-
-                if (OnSlope())
-                {
-                    //Accelerates more based on the angle of the slope
-                    float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                    float slopeAngleIncrease = 1 + (slopeAngle / 90f);
-
-                    time += Time.deltaTime * speedIncreaseMultiplier * slopeIncreaseMultiplier * slopeAngleIncrease;
-                }
-                else
-                {
-                    time += Time.deltaTime * speedIncreaseMultiplier;
-                }
-
-                yield return null;
-            }
-            moveSpeed += desiredMoveSpeed;
-        }
         //Movesw the player based on player input
         private void MovePlayer()
         {
-            
+
             // Calculate movement direction
             moveDirection = playerInput.y * orientation.forward;
             //On slope
@@ -163,13 +146,51 @@ namespace PlayerContoller
             }
             else
             {
+                //Moves the chartacter
                 rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
-                //rb.AddTorque(0, playerInput.x * playerRotationSpeed * 5000, 0);
-                transform.Rotate(0,playerInput.normalized.x * playerRotationSpeed, 0);
-                camHolder.rotation = Quaternion.Euler(0,transform.rotation.y, 0);
-                
-            }
+                transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
+                camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
 
+                //Player animations
+                playerAnimatorController();
+
+                //Step Controller
+                StepClimb();
+
+            }
+        }
+        void playerAnimatorController()
+        {
+            if (playerInput.y * -1f == -playerInput.y && playerInput.y != 0)
+            {
+                playerAnimator.SetBool("RightTread", true);
+                playerAnimator.SetBool("LeftTread", true);
+            }
+            else if (playerInput.y * -1f == playerInput.y && playerInput.y != 0)
+            {
+                playerAnimator.SetBool("RightTread", true);
+                playerAnimator.SetBool("LeftTread", true);
+                playerAnimator.SetFloat("RightTreadBoost", -1);
+                playerAnimator.SetFloat("LeftTreadBoost", -1);
+            }
+            else
+            {
+                playerAnimator.SetBool("RightTread", false);
+                playerAnimator.SetBool("LeftTread", false);
+
+            }
+            if (playerInput.x * -1f == -1 && playerInput.x != 0)
+            {
+                print(playerInput.x * -1);
+                playerAnimator.SetBool("RightTread", true);
+                playerAnimator.SetFloat("RightTreadBoost", -20);
+            }
+            else if (playerInput.x * -1f == 1 && playerInput.x != 0)
+            {
+                print(playerInput.x * -1 + "twist");
+                playerAnimator.SetBool("LeftTread", true);
+                playerAnimator.SetFloat("LeftTreadBoost", -20);
+            }
         }
         //Checks the grpound
         void GroundCheck()
@@ -198,7 +219,6 @@ namespace PlayerContoller
                     rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
                 }
             }
-
         }
         public bool OnSlope()
         {
@@ -214,6 +234,46 @@ namespace PlayerContoller
         {
             //sets a new direction to move based off the slope direction
             return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
+        }
+        private IEnumerator SmoothlyLerpMoveSpeed()
+        {
+            // Smoothly lerp movement speed to desired value
+            float time = 0;
+            float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
+            float startValue = moveSpeed;
+
+            while (time < difference)
+            {
+                moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
+
+                if (OnSlope())
+                {
+                    //Accelerates more based on the angle of the slope
+                    float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                    float slopeAngleIncrease = 1 + (slopeAngle / 90f);
+
+                    time += Time.deltaTime * speedIncreaseMultiplier * slopeIncreaseMultiplier * slopeAngleIncrease;
+                }
+                else
+                {
+                    time += Time.deltaTime * speedIncreaseMultiplier;
+                }
+
+                yield return null;
+            }
+            moveSpeed += desiredMoveSpeed;
+        }
+        void StepClimb()
+        {
+            RaycastHit hitLower;
+            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .1f))
+            {
+                RaycastHit hitUpper;
+                if (!Physics.Raycast(stepRayUpper.transform.position, transform.forward, out hitUpper, .2f))
+                {
+                    rb.position -= new Vector3(0f, -stepSmooth, 0f);
+                }
+            }
         }
     }
 }
