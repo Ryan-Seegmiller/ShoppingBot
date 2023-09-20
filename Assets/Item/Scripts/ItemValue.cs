@@ -101,15 +101,16 @@ public class ItemValue : MonoBehaviour
 
     void Update()
     {
+        //DEBEUG
         if (Input.GetKeyDown(KeyCode.P)){
-            RandomiseFromCategory(itemCategory.food);
-            //RandomiseItem();
+            //RandomiseFromCategory(itemCategory.food);
+            RandomiseItem();
         }
     }
 
     
     //Assigns item value to a random item from a specified category
-    void RandomiseFromCategory(itemCategory categoryID) //Use the 'itemCategory' enum to choose the category to pick from. Example: (int)itemCategory.fruit
+    void RandomiseFromCategory(itemCategory categoryID) //Use the 'itemCategory' enum to choose the category to pick from. Example: itemCategory.food
     {
         int indexCount = 0; //Get the number of items in the itemID enum before the chosen category starts
         for (int i = 0; i < categorySize.Length - (categorySize.Length - (int)categoryID); i++) { //Repeat for each category before the chosen category
