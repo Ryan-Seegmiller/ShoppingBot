@@ -10,11 +10,11 @@ public class NumberDisplays : MonoBehaviour
 
     //Replaceable with call to player or game manager's values
     public int money;
-    
+    public int time;
 
     public void UpdateDisplay()
     {
         moneyAmt.text = money.ToString();
-
+        timer.text = time.ToString();
     }
 }

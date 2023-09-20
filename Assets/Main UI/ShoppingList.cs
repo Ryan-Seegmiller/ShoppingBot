@@ -84,6 +84,7 @@ public class ShoppingList : MonoBehaviour
         for(int i = 0; i < shopListNames.Length; i++)
         {
             collected = GameManager.Instance.shoppingList[i] - GameManager.Instance.inventory[i];
+            
             if(collected <= 0)
             {
                 striked[i] = true;
