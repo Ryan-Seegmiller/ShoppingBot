@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -42,10 +43,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public string ItemName(itemID itemID)
+    public string ItemName(int itemID)
     {
         //Assign name
-        string nameLower = (itemID).ToString();
+        string nameLower = ((itemID)itemID).ToString();
         return char.ToUpper(nameLower[0]) + nameLower.Substring(1);
     }
 
