@@ -19,6 +19,10 @@ public class HacksFr : MonoBehaviour
                 GameManager.Instance.shoppingList[i] = shopList[i];
             }
         }
+        for(int i = 0; i < GameManager.Instance.inventory.Length; i++)
+        {
+            GameManager.Instance.inventory[i] = 0;
+        }
     }
     public void Increment()
     {

@@ -38,8 +38,6 @@ public class ShoppingList : MonoBehaviour
         //test
         //would be set to game manager's preset
         shopListNames = new string[] {"Food", "Not Food", "Extra Not Food"};
-        displayItems = new string[GameManager.Instance.inventorySize];
-        striked = new bool[GameManager.Instance.inventorySize];
     }
 
     // Update is called once per frame
@@ -54,6 +52,11 @@ public class ShoppingList : MonoBehaviour
 
     void KeyCheck()
     {
+        if(displayItems.Length < 1 || striked.Length < 1)
+        {
+            displayItems = new string[GameManager.Instance.inventorySize];
+            striked = new bool[GameManager.Instance.inventorySize];
+        }
         if (showingList)
         {
             UpdateDisplay();
@@ -84,7 +87,8 @@ public class ShoppingList : MonoBehaviour
         for(int i = 0; i < shopListNames.Length; i++)
         {
             collected = GameManager.Instance.shoppingList[i] - GameManager.Instance.inventory[i];
-            
+            itemID current = (itemID)GameManager.Instance.shoppingList[i];
+            //string currentName = current.ToString();
             if(collected <= 0)
             {
                 striked[i] = true;
@@ -95,13 +99,13 @@ public class ShoppingList : MonoBehaviour
                 //there is a color tag (look it up)
 
                 //ToDo replace shopListNames with Item Names via GameManager
-                displayItems[i] = "<s><i>" + 3 + "</i></s>";
+                displayItems[i] = "<s><i>" + GameManager.Instance.ItemName(current) + "</i></s>";
             }
             else
             {
                 //replace 4 with get from game manager "i" in inventory
                 
-                displayItems[i] = "<b>" + collected +" "+ shopListNames[i] + "</b>";
+                displayItems[i] = "<b>" + collected +" "+ GameManager.Instance.ItemName(current) + "</b>";
             }
         }
         BuildList();
