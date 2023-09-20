@@ -100,4 +100,14 @@ public class GameManager : MonoBehaviour
             print(l + ":  " + shoppingList[l]);
         }
     }
+
+    public void RemoveRandomItem()
+    {
+
+    }
+
+    public void RemoveCash(int amount)
+    {
+
+    }
 }
