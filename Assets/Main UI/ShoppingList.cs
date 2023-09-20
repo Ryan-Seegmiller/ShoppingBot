@@ -87,8 +87,8 @@ public class ShoppingList : MonoBehaviour
         for(int i = 0; i < shopListNames.Length; i++)
         {
             collected = GameManager.Instance.shoppingList[i] - GameManager.Instance.inventory[i];
-            itemID current = (itemID)GameManager.Instance.shoppingList[i];
-            //string currentName = current.ToString();
+            //itemID current = (itemID)GameManager.Instance.shoppingList[i];
+            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
             if(collected <= 0)
             {
                 striked[i] = true;
@@ -99,13 +99,13 @@ public class ShoppingList : MonoBehaviour
                 //there is a color tag (look it up)
 
                 //ToDo replace shopListNames with Item Names via GameManager
-                displayItems[i] = "<s><i>" + GameManager.Instance.ItemName(current) + "</i></s>";
+                displayItems[i] = "<s><i>" + currentName + "</i></s>";
             }
             else
             {
                 //replace 4 with get from game manager "i" in inventory
                 
-                displayItems[i] = "<b>" + collected +" "+ GameManager.Instance.ItemName(current) + "</b>";
+                displayItems[i] = "<b>" + collected +" "+ currentName + "</b>";
             }
         }
         BuildList();
@@ -125,7 +125,7 @@ public class ShoppingList : MonoBehaviour
     }
     void BuildList()
     {
-        listText.text = "";
+        listText.text = "Gather\n";
         for( int i = 0; i < displayItems.Length; i++)
         {
             listText.text += displayItems[i] + "\n";
