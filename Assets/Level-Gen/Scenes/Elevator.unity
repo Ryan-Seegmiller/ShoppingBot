@@ -168,3 +168,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapData: {fileID: 11400000, guid: a688b3f25e3d00440a3432fa58381231, type: 2}
+  doGenerate: 1
