@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemValue : MonoBehaviour
 {
+
     //HOW TO ADD ITEMS
     //Step 1: Add item in the 'itemID' enum. (Make sure it's positioned with other items in the same category)
     //Step 2: Add the name of the item in the 'itemName' array.
@@ -21,40 +22,8 @@ public class ItemValue : MonoBehaviour
 
 
     //ITEMS
-    //Item id enum
-    public enum itemID {
-        //Food
-        apple,
-        banana,
-        strawberry,
-        pineapple,
-        //Clothes
-        shoe,
-        hat,
-        glasses,
-        //Tools
-        screwdriver,
-        hammer,
-        wrench
-    };
-    //Item name array
-    string[] itemName = {
-        //Food
-        "Apple",
-        "Banana",
-        "Strawberry",
-        "Pineapple",
-        //Clothes
-        "Shoe",
-        "Hat",
-        "Glasses",
-        //Tools
-        "Screwdriver",
-        "Hammer",
-        "Wrench",
-    };
     //Item cost array
-    int[] itemCost = {
+    public int[] itemCost = {
         //Food
         3, //Apple
         4, //Banana
@@ -71,18 +40,13 @@ public class ItemValue : MonoBehaviour
     };
 
     //ITEM CATEGORIES
-    //Item category enum
-    public enum itemCategory {
-        food,
-        clothes,
-        tools
-    };
     //Category sizes. Category position in this array is the same as the itemCategory enum. (i.e. fruit = 0, cheese = 1, tool = 2, etc.)
-    int[] categorySize = {
+    public int[] categorySize = {
         4, //Food
         3, //Clothes
         3, //Tools
     };
+
 
     //ITEM VALUES
     public int id = -1; //Item's ID. -1 = null/no item assigned
@@ -91,7 +55,6 @@ public class ItemValue : MonoBehaviour
 
     //References to the item models (children of the item gameObject). Change/add to these in the inspector, not here.
     [SerializeField] GameObject[] itemModels;
-
 
 
     void Start()
@@ -144,7 +107,9 @@ public class ItemValue : MonoBehaviour
         //Assign cost
         Cost = itemCost[id];
         //Assign name
-        Name = itemName[id];
+        string nameLower = ((itemID)id).ToString();
+        Name = char.ToUpper(nameLower[0]) + nameLower.Substring(1);
+        print(Name);
         
     }
     //Disable all item models if they're not the correct model for this item's id, and enable the correct one
