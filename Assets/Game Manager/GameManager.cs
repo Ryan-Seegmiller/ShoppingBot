@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public ItemFactory itemFactory;
 
     //PLAYER STATS
     public int cash = 100; //Player cash
@@ -36,10 +37,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
