@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameManager Instance;
+    public static GameManager Instance;
 
     //PLAYER STATS
     public int cash = 100; //Player cash
@@ -22,9 +22,15 @@ public class GameManager : MonoBehaviour
         } else {
             Destroy(this); }
 
-        //Assign inventory and shopping list array size
+        //Assign inventory and shopping list array size, and set each item to -1
         inventory = new int[inventorySize];
+        for (int i = 0; i < inventory.Length; i++) {
+            inventory[i] = -1; //Assign every item to -1
+        }
         shoppingList = new int[inventorySize];
+        for (int i = 0; i < inventory.Length; i++) {
+            shoppingList[i] = -1; //Assign every item to -1
+        }
     }
 
     // Update is called once per frame
@@ -32,4 +38,38 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+
+    //Adds an item to the first empty item slot (-1) in the inventory array
+    public void AddItem(int itemID)
+    {
+        for (int i = 0; i < inventory.Length; i++)
+        {
+            if (inventory[i] == -1) //Check if index is available
+            {
+                inventory[i] = itemID; //Add item to the available index
+                break;
+            }
+        }
+
+        //DEBUG
+        for (int d = 0; d < inventory.Length; d++)
+        {
+            print(d + ":  " + inventory[d]);
+        }
+    }
+
+    //Checks if there's any more space in your inventory
+    public bool CheckInventorySpace()
+    {
+        foreach (int i in inventory) //Check each item in inventory array
+        {
+            if (i == -1) //If a -1 is found, the inventory has space
+            {
+                return true;
+            }
+        }
+        return false; //No empty space (-1) was found, return false
+    }
+
 }
