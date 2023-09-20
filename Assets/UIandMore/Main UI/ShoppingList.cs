@@ -14,8 +14,6 @@ public class ShoppingList : MonoBehaviour
 
     [SerializeField] GameManager gm;
 
-    [SerializeField] int[] shopListVals;
-    [SerializeField] string[] shopListNames;
     bool collected;
     public string[] displayItems;
     [SerializeField] bool[] striked;
@@ -35,9 +33,6 @@ public class ShoppingList : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //test
-        //would be set to game manager's preset
-        shopListNames = new string[] {"Food", "Not Food", "Extra Not Food"};
     }
 
     // Update is called once per frame
