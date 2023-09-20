@@ -38,8 +38,8 @@ public class ShoppingList : MonoBehaviour
         //test
         //would be set to game manager's preset
         shopListNames = new string[] {"Food", "Not Food", "Extra Not Food"};
-        displayItems = new string[shopListNames.Length];
-        striked = new bool[shopListNames.Length];
+        displayItems = new string[GameManager.Instance.inventorySize];
+        striked = new bool[GameManager.Instance.inventorySize];
     }
 
     // Update is called once per frame
@@ -52,27 +52,6 @@ public class ShoppingList : MonoBehaviour
     //Text Gen from array
     //strikethough
 
-    /*
-    #region PassableVals
-    public void SetShopList(int[] ia, string[] sa)
-    {
-        shopListVals = ia;
-        shopListNames = sa;
-        striked = new bool[ia.Length];
-        collected = new int[ia.Length];
-    }
-    public void SetInv(int[] ia)
-    {
-        if(ia.Length == collected.Length)
-        {
-            for(int i = 0; i < ia.Length; i++)
-            {
-                collected[i] = ia[i];
-            }
-        }
-    }
-    #endregion
-    */
     void KeyCheck()
     {
         if (showingList)
@@ -104,7 +83,7 @@ public class ShoppingList : MonoBehaviour
     {
         for(int i = 0; i < shopListNames.Length; i++)
         {
-            collected = gm.shoppingList[i] - gm.inventory[i];
+            collected = GameManager.Instance.shoppingList[i] - GameManager.Instance.inventory[i];
             if(collected <= 0)
             {
                 striked[i] = true;
@@ -113,7 +92,9 @@ public class ShoppingList : MonoBehaviour
             {
                 //TODO mess with tags and effects to change striked and not striked
                 //there is a color tag (look it up)
-                displayItems[i] = "<s><i>" + shopListNames[i] + "</i></s>";
+
+                //ToDo replace shopListNames with Item Names via GameManager
+                displayItems[i] = "<s><i>" + 3 + "</i></s>";
             }
             else
             {
