@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     //Shopping list
     [HideInInspector] public int[] shoppingList;
 
+
+
     void Start()
     {
         //Singleton
@@ -40,6 +42,14 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public string ItemName(itemID itemID)
+    {
+        //Assign name
+        string nameLower = (itemID).ToString();
+        return char.ToUpper(nameLower[0]) + nameLower.Substring(1);
+    }
+
+
     //Adds an item to the first empty item slot (-1) in the inventory array
     public void AddItem(int itemID)
     {
@@ -53,10 +63,12 @@ public class GameManager : MonoBehaviour
         }
 
         //DEBUG
+        /*
         for (int d = 0; d < inventory.Length; d++)
         {
             print(d + ":  " + inventory[d]);
         }
+        */
     }
 
     //Checks if there's any more space in your inventory
@@ -72,4 +84,19 @@ public class GameManager : MonoBehaviour
         return false; //No empty space (-1) was found, return false
     }
 
+
+    public void RandomiseList()
+    {
+        for (int i = 0; i < shoppingList.Length; i++)
+        {
+            //shoppingList[i] = (int)Random.Range((float), (float));
+        }
+
+
+        //DEBUG
+        for (int l = 0; l < shoppingList.Length; l++)
+        {
+            print(l + ":  " + shoppingList[l]);
+        }
+    }
 }
