@@ -31,15 +31,20 @@ namespace PlayerContoller
 
             Rotation += new Vector2(-mouse.y, mouse.x);
 
-            //Clamps the roation of the up and down 
+            //Clamps the roation
             Rotation.x = Mathf.Clamp(Rotation.x, -10f, 30f);
             Rotation.y = Mathf.Clamp(Rotation.y, -20f, 20f);
 
-            // Rotate the camera
-            camHolder.rotation = Quaternion.Euler(Rotation.x, Rotation.y - CameraPos.localEulerAngles.y, 0);
-            orientation.rotation = Quaternion.Euler(0, Rotation.y - CameraPos.localEulerAngles.y, 0);
-            //playerObj.rotation = Quaternion.Euler(0,Rotation.y,0);
-            //orientation.GetComponentInParent<Transform>().Rotate(0, -Rotation.y * 100, 0);
+            Vector2 rotationClamp = new Vector2(Mathf.Clamp(Rotation.x, -5f, 5f), Mathf.Clamp(Rotation.y, -5f, 5f));
+
+            if (Rotation != rotationClamp)
+            {
+                // Rotate the camera
+                camHolder.rotation = Quaternion.Euler(Rotation.x, Rotation.y - CameraPos.localEulerAngles.y, 0);
+                orientation.rotation = Quaternion.Euler(0, Rotation.y - CameraPos.localEulerAngles.y, 0);
+                //playerObj.rotation = Quaternion.Euler(0,Rotation.y,0);
+                //orientation.GetComponentInParent<Transform>().Rotate(0, -Rotation.y * 100, 0);
+            }
             
 
 

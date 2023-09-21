@@ -13,21 +13,22 @@ public class Shooting : MonoBehaviour
     public LayerMask layersToHit;
     public Vector3 worldPosition;
 
-    Rigidbody rb;
+    Rigidbody rbItem;
 
 
     private RaycastHit currentObject;
 
     private RaycastHit raycastHit;
     private RaycastHit EmptyRaycastHit;
+
+    float mZCoord;
+    Vector3 mousePos;
+
     public bool ObjectDragActive = false;
 
-    public float maxObjectSpeed = 20f;
-    public float maxDistance = 10f;
-    public float minDistance = 10f;
+    
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -53,11 +54,25 @@ public class Shooting : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 
-            ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
-            if(raycastHit.collider != null)
+            if(raycastHit.collider != null && !ObjectDragActive)
             {
-                currentObject = raycastHit;
+                currentObject = raycastHit;//Sets the current object to the one clicked
+                rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
+
+                target.transform.position = currentObject.transform.position;//sets the objects position
+                
+                mZCoord = mainCamera.WorldToScreenPoint(target.transform.position).z;//Sets the z axis for the object
+                mousePos.z = mZCoord;//Sets the mouse pos axis for the z
+
             }
+            else if(ObjectDragActive)
+            {
+                //throws the item
+                rbItem.AddForce(mainCamera.transform.forward * 10f, ForceMode.Impulse);
+                
+            }
+            ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
+
         }
     }
     private void ObjectDrag()
@@ -66,32 +81,15 @@ public class Shooting : MonoBehaviour
         {
             worldPosition = new Vector3(Input.mousePosition.x + currentObject.transform.position.z, Input.mousePosition.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
             Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
-            Rigidbody rbObject = currentObject.transform.GetComponent<Rigidbody>();
-            //currentObject.transform.position = new Vector3(Mathf.Clamp(currentObject.transform.position.x, minDistance, maxDistance), Mathf.Clamp(currentObject.transform.position.y, minDistance, maxDistance), Mathf.Clamp(currentObject.transform.position.z, minDistance, maxDistance));
-            
-            Vector3 distance = mainCamera.transform.position - currentObject.transform.position;
-            Vector3 distanceToCursor = mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position;
-            //print(objectPosition);
-            //print(mainCamera.ScreenToWorldPoint(Input.mousePosition));
-            //print(distanceToCursor.magnitude);
-            //print(distance.magnitude);
-            if(!(distance.magnitude >= maxDistance) && !(distance.magnitude <= minDistance))
-            {
-                rbObject.isKinematic = false;
-                rbObject.velocity = ((objectPosition.normalized * objectPosition.magnitude * 20)) + rb.velocity;
-            }
-            else
-            {
-                print(distanceToCursor.magnitude);
-                rbObject.velocity = ((objectPosition.normalized * objectPosition.magnitude * 20) ) + rb.velocity;
-            }
 
-            
-            /*
-            if (rb.velocity.magnitude > maxObjectSpeed)
-            {
-                rb.velocity = rb.velocity.normalized * maxObjectSpeed;
-            }*/
+            //Sets the mouse position
+            mousePos = Input.mousePosition;
+            mousePos.z = mZCoord;
+            //Translates the the object to be pulled to to the mouse position in the world
+            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos);
+
+            //Move object towards the object that the camera creates
+            rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
         }
         else
         {
