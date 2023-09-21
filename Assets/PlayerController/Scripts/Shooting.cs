@@ -30,23 +30,24 @@ public class Shooting : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
+        PlayerInput();
+
+        //crosshair placement
         Image.transform.position = Input.mousePosition;
+
         Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(mainCamera.transform.up, rayLook.direction * 300, Color.red);
-        if (Physics.Raycast(rayLook, out raycastHit, 300, layersToHit))
+        if (Physics.Raycast(rayLook,out raycastHit, 10, layersToHit))
         {
-            Debug.DrawRay(mainCamera.transform.up, rayLook.direction * -300, Color.red);
+            //print(raycastHit.collider.gameObject.name);
+            Debug.DrawRay(rayLook.origin, rayLook.direction * 300, Color.red);
             
         }
         ObjectDrag();
         
     }
-    private void Update()
-    {
-        PlayerInput();
-    }
+    
     private void PlayerInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -63,18 +64,26 @@ public class Shooting : MonoBehaviour
     {
         if(ObjectDragActive && currentObject.collider != null)
         {
-            worldPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Input.mousePosition.z + currentObject.transform.position.z);
-            Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position).normalized;
+            worldPosition = new Vector3(Input.mousePosition.x + currentObject.transform.position.z, Input.mousePosition.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
+            Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
             Rigidbody rbObject = currentObject.transform.GetComponent<Rigidbody>();
-
+            //currentObject.transform.position = new Vector3(Mathf.Clamp(currentObject.transform.position.x, minDistance, maxDistance), Mathf.Clamp(currentObject.transform.position.y, minDistance, maxDistance), Mathf.Clamp(currentObject.transform.position.z, minDistance, maxDistance));
+            
             Vector3 distance = mainCamera.transform.position - currentObject.transform.position;
+            Vector3 distanceToCursor = mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position;
+            //print(objectPosition);
+            //print(mainCamera.ScreenToWorldPoint(Input.mousePosition));
+            //print(distanceToCursor.magnitude);
+            //print(distance.magnitude);
             if(!(distance.magnitude >= maxDistance) && !(distance.magnitude <= minDistance))
             {
-                rbObject.velocity = (objectPosition.normalized * objectPosition.magnitude *  10) + rb.velocity;
+                rbObject.isKinematic = false;
+                rbObject.velocity = ((objectPosition.normalized * objectPosition.magnitude * 20)) + rb.velocity;
             }
             else
             {
-                rbObject.velocity = rb.velocity;
+                print(distanceToCursor.magnitude);
+                rbObject.velocity = ((objectPosition.normalized * objectPosition.magnitude * 20) ) + rb.velocity;
             }
 
             

@@ -181,13 +181,11 @@ namespace PlayerContoller
             }
             if (playerInput.x * -1f == -1 && playerInput.x != 0)
             {
-                print(playerInput.x * -1);
                 playerAnimator.SetBool("RightTread", true);
                 playerAnimator.SetFloat("RightTreadBoost", -20);
             }
             else if (playerInput.x * -1f == 1 && playerInput.x != 0)
             {
-                print(playerInput.x * -1 + "twist");
                 playerAnimator.SetBool("LeftTread", true);
                 playerAnimator.SetFloat("LeftTreadBoost", -20);
             }
