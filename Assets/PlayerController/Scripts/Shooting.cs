@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,7 +12,10 @@ public class Shooting : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     public GameObject target;
     public LayerMask layersToHit;
-    public Vector3 worldPosition;
+
+    public float objectToGrabDistance = 10f;
+
+    private Vector3 worldPosition;
 
     Rigidbody rbItem;
 
@@ -25,8 +29,8 @@ public class Shooting : MonoBehaviour
     Vector3 mousePos;
 
     public bool ObjectDragActive = false;
+    private Vector3 pullPosition;
 
-    
     void Start()
     {
     }
@@ -39,7 +43,7 @@ public class Shooting : MonoBehaviour
         Image.transform.position = Input.mousePosition;
 
         Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(rayLook,out raycastHit, 10, layersToHit))
+        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance, layersToHit))
         {
             //print(raycastHit.collider.gameObject.name);
             Debug.DrawRay(rayLook.origin, rayLook.direction * 300, Color.red);
@@ -62,7 +66,7 @@ public class Shooting : MonoBehaviour
                 target.transform.position = currentObject.transform.position;//sets the objects position
                 
                 mZCoord = mainCamera.WorldToScreenPoint(target.transform.position).z;//Sets the z axis for the object
-                mousePos.z = mZCoord;//Sets the mouse pos axis for the z
+                pullPosition = Vector3.zero;
 
             }
             else if(ObjectDragActive)
@@ -71,10 +75,26 @@ public class Shooting : MonoBehaviour
                 rbItem.AddForce(mainCamera.transform.forward * 10f, ForceMode.Impulse);
                 
             }
+            //Sets the object drag mode
             ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
 
         }
+        if(Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
+        {
+            ObjectPull();
+        }
     }
+
+    private void ObjectPull()
+    {
+        Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
+        
+        //Move sthe object to and from the camera using a raycaster as a guide
+        pullPosition = Vector3.ClampMagnitude(pullPosition, objectToGrabDistance);
+        pullPosition += new Vector3(Mathf.Abs(rayLook.direction.x), Mathf.Abs(rayLook.direction.y), Mathf.Abs(rayLook.direction.z)) * Input.mouseScrollDelta.y;
+
+    }
+
     private void ObjectDrag()
     {
         if(ObjectDragActive && currentObject.collider != null)
@@ -86,7 +106,7 @@ public class Shooting : MonoBehaviour
             mousePos = Input.mousePosition;
             mousePos.z = mZCoord;
             //Translates the the object to be pulled to to the mouse position in the world
-            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos);
+            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition);
 
             //Move object towards the object that the camera creates
             rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
