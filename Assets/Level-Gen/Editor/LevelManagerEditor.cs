@@ -16,6 +16,7 @@ public class LevelManagerEditor : Editor
         DrawDefaultInspector();
         manager = (LevelManager)target;
 
+        // Level Instancing
         EditorGUILayout.Space();
         EditorGUILayout.Space();
         if (GUILayout.Button("Instance Full Mall"))
@@ -31,6 +32,7 @@ public class LevelManagerEditor : Editor
         {
             manager.InstanceMall();
         }
+        // Level Destruction
         EditorGUILayout.Space();
         if (GUILayout.Button("Destroy Full Level"))
         {
