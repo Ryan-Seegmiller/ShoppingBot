@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    /*
     //ITEM VALUES
     public int id = -1; //Item's ID. -1 = null/no item assigned
     [HideInInspector] public int itemCost = 0; //The cash cost of this item
@@ -20,5 +21,5 @@ public class Item : MonoBehaviour
     void Update()
     {
         
-    }
+    }*/
 }
