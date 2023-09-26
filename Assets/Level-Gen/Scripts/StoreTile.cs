@@ -9,10 +9,16 @@ namespace Level
         private Transform itemParent;
         [SerializeField] protected GameObject itemPrefab;
         [SerializeField] protected itemCategory spawnCategory;
+        [SerializeField] protected bool randomCategory = false;
         public Vector3[] spawns = new Vector3[1] { Vector3.zero };
 
         public void SpawnItems()
         {
+            if (randomCategory)
+            {
+                //int num = Enum.GetNames(typeof(itemCategory)).Length;
+                spawnCategory = (itemCategory)Random.Range(0, 2);
+            }
             itemParent = new GameObject("ItemParent").transform;
             itemParent.SetParent(transform);
             itemParent.localPosition = Vector3.zero;
