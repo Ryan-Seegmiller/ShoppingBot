@@ -12,7 +12,6 @@ namespace PlayerContoller
         public Transform camHolder;
         public Transform CameraPos;
         public Transform playerObj;
-
         Vector2 Rotation = new Vector2(0f, 0f);
 
         private void Start()
@@ -20,21 +19,27 @@ namespace PlayerContoller
             //Locks the cursor in the center of the window
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
-            
         }
 
         public void Update()
         {
             //Gets mouse input
+            
             Vector2 mouse = new Vector2(
                 Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensitivity.x,
                 Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensitivity.y);
 
             Rotation += new Vector2(-mouse.y, mouse.x);
-
             //Clamps the roation
             Rotation.x = Mathf.Clamp(Rotation.x, -10f, 30f);
             Rotation.y = Mathf.Clamp(Rotation.y, -20f, 20f);
+            /*
+            float bound = 5;
+            if (Rotation.y < bound && Rotation.y > -bound)
+                Rotation.y =0;        
+            if (Rotation.x < bound && Rotation.x > -bound)
+                Rotation.x =0;
+            */
 
             Vector2 rotationClamp = new Vector2(Mathf.Clamp(Rotation.x, -5f, 5f), Mathf.Clamp(Rotation.y, -5f, 5f));
 
