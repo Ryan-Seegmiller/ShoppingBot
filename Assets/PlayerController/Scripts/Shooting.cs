@@ -73,8 +73,10 @@ public class Shooting : MonoBehaviour
             }
             else if(ObjectDragActive)
             {
+                Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
+
                 //throws the item
-                rbItem.AddForce(mainCamera.transform.forward * 5f, ForceMode.Impulse);
+                rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
                 
             }
             //Sets the object drag mode
@@ -118,5 +120,9 @@ public class Shooting : MonoBehaviour
             currentObject = EmptyRaycastHit;
         }
     }
-    
+    private void OnMouseDrag()
+    {
+        ObjectDrag();
+    }
+
 }
