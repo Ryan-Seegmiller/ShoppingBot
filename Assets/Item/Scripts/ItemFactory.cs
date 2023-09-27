@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
-[CreateAssetMenu(menuName = "Items/Item Factory")]
 
+[CreateAssetMenu(menuName = "Items/Item Factory")]
 public class ItemFactory : ScriptableObject
 {
     [SerializeField] GameObject[] items;

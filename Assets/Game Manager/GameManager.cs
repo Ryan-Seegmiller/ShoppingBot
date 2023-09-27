@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+
+    //Item factory
+    public ItemFactory itemFactory;
+
     //PLAYER STATS
     public int cash = 100; //Player cash
     public int inventorySize = 10; //Inventory size
