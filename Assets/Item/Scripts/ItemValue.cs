@@ -5,6 +5,8 @@ using UnityEngine;
 public class ItemValue : MonoBehaviour
 {
 
+    public static ItemValue Instance;
+
     //HOW TO ADD ITEMS
     //Step 1: (In ItemEnums script) Add item in the 'itemID' enum. (Make sure it's positioned with other items in the same category)
     //Step 2: (In ItemValue script) Add the cost of the item in the 'itemCost' array and comment the item name beside it.
@@ -59,9 +61,19 @@ public class ItemValue : MonoBehaviour
 
     void Start()
     {
-        EnableModel(); //Disable all models at start
+        //Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        //EnableModel(); //Disable all models at start
     }
 
+    /*
     void Update()
     {
         //DEBEUG
@@ -123,6 +135,6 @@ public class ItemValue : MonoBehaviour
                 itemModels[i].SetActive(true);
             }
         }
-    }
+    }*/
 
 }
