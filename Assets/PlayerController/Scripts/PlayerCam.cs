@@ -47,7 +47,7 @@ namespace PlayerContoller
             {
                 // Rotate the camera
                 camHolder.rotation = Quaternion.Euler(Rotation.x - rotationClamp.x , Rotation.y - CameraPos.localEulerAngles.y - rotationClamp.y, 0);
-                orientation.rotation = Quaternion.Euler(0, Rotation.y - CameraPos.localEulerAngles.y, 0);
+                //orientation.rotation = Quaternion.Euler(0, Rotation.y - CameraPos.localEulerAngles.y, 0);
                 //playerObj.rotation = Quaternion.Euler(0,Rotation.y,0);
                 //orientation.GetComponentInParent<Transform>().Rotate(0, -Rotation.y * 100, 0);
             }
