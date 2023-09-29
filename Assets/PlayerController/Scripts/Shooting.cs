@@ -18,6 +18,7 @@ public class Shooting : MonoBehaviour
     private Vector3 worldPosition;
 
     Rigidbody rbItem;
+    Rigidbody rb;
 
 
     private RaycastHit currentObject;
@@ -33,6 +34,7 @@ public class Shooting : MonoBehaviour
 
     void Start()
     {
+        rb = transform.GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -71,8 +73,10 @@ public class Shooting : MonoBehaviour
             }
             else if(ObjectDragActive)
             {
+                Ray rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
+
                 //throws the item
-                rbItem.AddForce(mainCamera.transform.forward * 10f, ForceMode.Impulse);
+                rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
                 
             }
             //Sets the object drag mode
@@ -92,7 +96,7 @@ public class Shooting : MonoBehaviour
         //Move sthe object to and from the camera using a raycaster as a guide
         pullPosition = Vector3.ClampMagnitude(pullPosition, objectToGrabDistance);
         pullPosition += new Vector3(Mathf.Abs(rayLook.direction.x), Mathf.Abs(rayLook.direction.y), Mathf.Abs(rayLook.direction.z)) * Input.mouseScrollDelta.y;
-
+        
     }
 
     private void ObjectDrag()
@@ -106,7 +110,7 @@ public class Shooting : MonoBehaviour
             mousePos = Input.mousePosition;
             mousePos.z = mZCoord;
             //Translates the the object to be pulled to to the mouse position in the world
-            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition);
+            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition) + rb.velocity.normalized;
 
             //Move object towards the object that the camera creates
             rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
@@ -116,5 +120,9 @@ public class Shooting : MonoBehaviour
             currentObject = EmptyRaycastHit;
         }
     }
-    
+    private void OnMouseDrag()
+    {
+        ObjectDrag();
+    }
+
 }

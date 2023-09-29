@@ -24,7 +24,7 @@ public class ItemInteract : MonoBehaviour
 
     //Collect this item
     public void ItemCollect()
-    {
+    {/*
         if (GameManager.Instance != null && itemValue != null)//Make sure GameManager and ItemValue exist
         { if (GameManager.Instance.CheckInventorySpace()) // Make sure inventory has space
             {
@@ -32,7 +32,7 @@ public class ItemInteract : MonoBehaviour
             } else { //Inventory is full
                 print("ERROR: Trying to add an item when inventory is full.");
             }
-        }
+        }*/
         
     }
 

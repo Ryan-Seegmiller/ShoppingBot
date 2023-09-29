@@ -12,7 +12,7 @@ namespace Level
         public Vector3[] spawns = new Vector3[1] { Vector3.zero };
 
         public void SpawnItems()
-        {
+        {/*
             itemParent = new GameObject("ItemParent").transform;
             itemParent.SetParent(transform);
             itemParent.localPosition = Vector3.zero;
@@ -21,7 +21,7 @@ namespace Level
                 Vector3 pos = transform.position + transform.InverseTransformVector(spawns[i]);
                 GameObject go = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
                 go.GetComponent<ItemValue>().RandomiseFromCategory(spawnCategory);
-            }
+            }*/
         }
         public void DestroyItems()
         {

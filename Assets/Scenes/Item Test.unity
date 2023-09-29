@@ -309,7 +309,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1001720536}
   - component: {fileID: 1001720537}
-  - component: {fileID: 1001720538}
   - component: {fileID: 1001720539}
   m_Layer: 0
   m_Name: Game Manager
@@ -345,24 +344,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5898bd8b303f6fb489e1367ad7a0cf83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemFactory: {fileID: 11400000, guid: e32802cd8392a5e499f1eb778fe6f111, type: 2}
+  itemFactory: {fileID: 0}
   cash: 100
   inventorySize: 10
   inventory: 
   shoppingList: 
---- !u!114 &1001720538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001720535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e54b06be53a83947a04ca42db879568, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  items: []
 --- !u!114 &1001720539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,10 +363,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemCost: 030000000400000001000000050000000c000000080000000a000000100000001900000016000000
   categorySize: 040000000300000003000000
-  id: -1
-  Cost: 0
-  Name: 
-  itemModels: []
 --- !u!1 &1189638604 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7175786852201178532, guid: ed2d223556b766d4aa019ef9b5ca0ac0, type: 3}
@@ -648,20 +630,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemCost: 030000000400000001000000050000000c000000080000000a000000100000001900000016000000
   categorySize: 040000000300000003000000
-  id: 0
-  Cost: 0
-  Name: 
-  itemModels:
-  - {fileID: 1189638604}
-  - {fileID: 2045558173}
-  - {fileID: 1594850949}
-  - {fileID: 1940565492}
-  - {fileID: 1894565253}
-  - {fileID: 258452099}
-  - {fileID: 772556014}
-  - {fileID: 535289191}
-  - {fileID: 669154254}
-  - {fileID: 422963991}
 --- !u!4 &1248479039255562358
 Transform:
   m_ObjectHideFlags: 0
@@ -790,9 +758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &1696413059459261083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,9 +860,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &2425402602246991190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1000,9 +962,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &2835966984392429548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1105,9 +1064,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &3153625679227645933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1210,9 +1166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &5750522194287498352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1315,9 +1268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &6529264292940079605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1420,9 +1370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &6967051739523684286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1525,9 +1472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &7139365110642218607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1630,9 +1574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
 --- !u!1001 &7175786853247145064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1735,6 +1676,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf2db1168c0e314ebecd20a2abac298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: -1
-  Cost: 0
-  Name: 
