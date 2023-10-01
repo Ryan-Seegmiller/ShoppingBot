@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +24,7 @@ public class ObjectGrab : MonoBehaviour
     Rigidbody rb;
 
     //Raycast varibles
-    private RaycastHit currentObject;
+    [NonSerialized]public RaycastHit currentObject;
     private RaycastHit raycastHit;
     private RaycastHit EmptyRaycastHit;
 
@@ -36,7 +37,7 @@ public class ObjectGrab : MonoBehaviour
     //Bools
     [Header("Toggle drag")]
     public bool draggingActive = false;
-    private bool ObjectDragActive = false;
+    [NonSerialized] public bool ObjectDragActive = false;
 
 
 
@@ -77,7 +78,7 @@ public class ObjectGrab : MonoBehaviour
     
     private void PlayerInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             if (!ObjectDragActive)
             {
@@ -87,18 +88,17 @@ public class ObjectGrab : MonoBehaviour
            if(ObjectDragActive)
             {
                 //throws the item
-                ThrowObject();
+                //ThrowObject();
             }
             //Sets the object drag mode
             ResetObjectDrag();
         }
-        else if (Input.GetMouseButton(0) && draggingActive) 
+        else if (Input.GetMouseButton(1) && draggingActive) 
         {
             ObjectDrag();
         }
-        if(Input.GetMouseButtonUp(0) && ObjectDragActive && draggingActive)
+        if(Input.GetMouseButtonUp(1) && ObjectDragActive && draggingActive)
         {
-            ThrowObject();
             ResetObjectDrag();
         }
         if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
@@ -106,9 +106,9 @@ public class ObjectGrab : MonoBehaviour
             ObjectPull();
         }
     }
-    private void ResetObjectDrag()
+    public void ResetObjectDrag()
     {
-        ThrowObject();
+        //ThrowObject();
         ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
     }
     private void ObjectPull()
@@ -160,7 +160,9 @@ public class ObjectGrab : MonoBehaviour
     private void ThrowObject()
     {
         //throws the item
-
-        rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
+        if(rbItem != null)
+        {
+            rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
+        }
     }
 }
