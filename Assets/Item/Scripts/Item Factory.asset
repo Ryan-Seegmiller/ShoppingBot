@@ -9,7 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e54b06be53a83947a04ca42db879568, type: 3}
+  m_Script: {fileID: 11500000, guid: 704441a5573fecc4ba18f99f967b5b19, type: 3}
   m_Name: Item Factory
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 7175786852201178532, guid: ed2d223556b766d4aa019ef9b5ca0ac0, type: 3}
+  - {fileID: 3153625679363658352, guid: 3efd27c1799b9da4789bc10df45f4277, type: 3}
+  - {fileID: 2835966982933524841, guid: c967d581ac60ed4418ba0158ad0406f5, type: 3}
+  - {fileID: 2425402604182290594, guid: 5819cf6bf4af6304593740424e56475d, type: 3}
+  - {fileID: 1696413059962857077, guid: b41c8d0b8c13de9489c3b56f66abf696, type: 3}
+  - {fileID: 6967051739714567485, guid: 83c0b5c62c61886409743a606e614f68, type: 3}
+  - {fileID: 6529264291604407408, guid: 5ccae658d40c56e47a898c31759d8d69, type: 3}
+  - {fileID: 7139365110048877985, guid: 1500816e447ab8f49a5112487542e5a9, type: 3}
+  - {fileID: 5750522194034051351, guid: 8b928f9d49d989948a7533d6834f235a, type: 3}
+  - {fileID: 1411478267123274203, guid: 812d960292870ee4295cee36a6b757dc, type: 3}

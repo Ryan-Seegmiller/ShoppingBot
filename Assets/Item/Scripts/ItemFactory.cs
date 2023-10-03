@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System;
-[CreateAssetMenu(menuName = "Items/Item Factory")]
 
+[CreateAssetMenu(menuName = "Items/Item Factory")]
 public class ItemFactory : ScriptableObject
 {
     [SerializeField] GameObject[] items;
-
-    public GameObject CreateItem<T>(T id, Vector3 pos, Quaternion rot)
+    public GameObject InstanceItem<T>(T id, Vector3 pos)
     {
         //Create item using item ID
         if (id.GetType().Equals(typeof(itemID)))
@@ -19,7 +18,7 @@ public class ItemFactory : ScriptableObject
             int n = (int)o;
 
             //Instantiate object
-            return Instantiate(items[n], pos, rot);
+            return Instantiate(items[n], pos, Quaternion.identity);
         }
         //Create random item within a given category
         else if (id.GetType() == typeof(itemCategory))
@@ -37,10 +36,11 @@ public class ItemFactory : ScriptableObject
             int itemIdMax = indexCount + ItemValue.Instance.categorySize[n] - 1; //The item ID of the last available item in the chosen category
             int newChoice = Mathf.RoundToInt(UnityEngine.Random.Range((float)itemIdMin - 0.5f, (float)itemIdMax + 0.4f)); //Choose which item ID to assign the item
                                                                                                                           //Assign item to new item choice
-            return Instantiate(items[newChoice], pos, rot);
+            return Instantiate(items[newChoice], pos, Quaternion.identity);
         }
         //Create a random item
-        else {
+        else
+        {
             return null;
         }
     }
