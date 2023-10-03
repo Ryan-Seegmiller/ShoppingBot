@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5123003927311887266}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,9 +83,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2914198517677240564, guid: f558d00d6994f6f428082019ff325b10, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f558d00d6994f6f428082019ff325b10, type: 3}
       propertyPath: m_Name
       value: floorRamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f558d00d6994f6f428082019ff325b10, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2518721966739370045, guid: f558d00d6994f6f428082019ff325b10, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -99,6 +107,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4431bf98b47345046824c33ea3288991, type: 2}
+    - target: {fileID: 8714700346447161238, guid: f558d00d6994f6f428082019ff325b10, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f558d00d6994f6f428082019ff325b10, type: 3}
 --- !u!1 &1195212083663105023 stripped
