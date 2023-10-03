@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7621135203304938901}
+  - component: {fileID: 6479187155469499184}
   m_Layer: 0
   m_Name: GeneralStore
   m_TagString: Untagged
@@ -32,6 +33,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6479187155469499184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621135203304938902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61770cf48331e8449008bccccc39657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 1248479039362801851, guid: 5d02935b6e014714687266834b295c73, type: 3}
+  spawnCategory: 0
+  spawns:
+  - {x: 4.5, y: 0.75, z: 3.25}
+  - {x: 0.5, y: 0.75, z: 3.25}
+  - {x: -3.5, y: 0.75, z: 3.25}
+  - {x: 3.5, y: 0.75, z: 2.75}
+  - {x: -0.5, y: 0.75, z: 2.75}
+  - {x: -4.5, y: 0.75, z: 2.75}
+  - {x: 4.5, y: 0.75, z: 0.25}
+  - {x: 0.5, y: 0.75, z: 0.25}
+  - {x: -3.5, y: 0.75, z: 0.25}
+  - {x: 3.5, y: 0.75, z: -0.25}
+  - {x: -0.5, y: 0.75, z: -0.25}
+  - {x: -4.5, y: 0.75, z: -0.25}
+  - {x: 4.5, y: 0.75, z: -2.75}
+  - {x: 0.5, y: 0.75, z: -2.75}
+  - {x: -3.5, y: 0.75, z: -2.75}
+  - {x: 3.5, y: 0.75, z: -3.25}
+  - {x: -0.5, y: 0.75, z: -3.25}
+  - {x: -4.5, y: 0.75, z: -3.25}
 --- !u!1001 &7621135203779495534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,10 +117,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8391222552659086748, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: -4683669308469848369, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -102,14 +132,6 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}
       propertyPath: m_Name
       value: generalStore
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}
-      propertyPath: m_Layer
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3668837565712159299, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}
-      propertyPath: m_Layer
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3f2288722852c94484322cfc2c6a3ea, type: 3}

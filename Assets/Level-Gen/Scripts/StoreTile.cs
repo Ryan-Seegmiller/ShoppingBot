@@ -25,8 +25,8 @@ namespace Level
             for (int i = 0; i < spawns.Length; i++)
             {
                 Vector3 pos = transform.position + transform.InverseTransformVector(spawns[i]);
-                GameObject go = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
-                go.GetComponent<ItemValue>().RandomiseFromCategory(spawnCategory);
+                //GameObject go = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
+                //go.GetComponent<ItemValue>().RandomiseFromCategory(spawnCategory);
             }
         }
         public void DestroyItems()
