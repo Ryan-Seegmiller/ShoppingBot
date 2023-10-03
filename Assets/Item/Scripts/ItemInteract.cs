@@ -35,6 +35,5 @@ public class ItemInteract : MonoBehaviour
             }
         }*/
         
-    }*/
+ }
 
-}
