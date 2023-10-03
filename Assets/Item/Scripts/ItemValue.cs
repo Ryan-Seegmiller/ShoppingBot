@@ -2,6 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//Item id enum
+public enum itemID
+{
+    //Food
+    apple,
+    banana,
+    strawberry,
+    pineapple,
+    //Clothes
+    shoe,
+    hat,
+    glasses,
+    //Tools
+    screwdriver,
+    hammer,
+    wrench
+};
+
+//Item category enum
+public enum itemCategory
+{
+    food,
+    clothes,
+    tools
+};
+
 public class ItemValue : MonoBehaviour
 {
 
@@ -20,33 +47,6 @@ public class ItemValue : MonoBehaviour
     //Step 2: (In ItemEnums script) Add the category name into the 'itemCategory' enum
     //Step 3: (In ItemValue script) Add a new int to the 'categorySize' array and comment which category that int belongs to. Int value should match the number of individual items in that category.
     //NOTE: The category must be in the same position for all enums/arrays. If your new category is 4th in the 'itemID' enum, it should also be 4th in the'itemCategory' enum and 'categorySize' array 
-
-
-    //Item id enum
-    public enum itemID
-    {
-        //Food
-        apple,
-        banana,
-        strawberry,
-        pineapple,
-        //Clothes
-        shoe,
-        hat,
-        glasses,
-        //Tools
-        screwdriver,
-        hammer,
-        wrench
-    };
-
-    //Item category enum
-    public enum itemCategory
-    {
-        food,
-        clothes,
-        tools
-    };
 
     //ITEMS
     //Item cost array
