@@ -7,10 +7,12 @@ public class EnemyManager : MonoBehaviour
     public static EnemyManager instance;
     public List<GameObject> enemySpawns = new List<GameObject>();
     public List<GameObject> enemyPrefabs = new List<GameObject>();
-    public List<Enemy> currentEnemies=new List<Enemy>();
+    public List<EnemyBase> currentEnemies=new List<EnemyBase>();
     public float aerialEnemyHeight =3;
     public float groundEnemyHeight=0.5f;
-    // Start is called before the first frame update
+    public int airEnemies;
+    public int groundEnemies;
+    public int crawlerEnemies;
     void Start()
     {
         if (instance == null)
@@ -22,25 +24,18 @@ public class EnemyManager : MonoBehaviour
             Destroy(this);
         }
 
-        SpawnEnemies(50,0);
-        SpawnEnemies(50,1);
+        SpawnEnemies(groundEnemies, 0);
+        SpawnEnemies(airEnemies, 1);
+        SpawnEnemies(crawlerEnemies, 2);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SpawnEnemies(int count, int index)
     {
         for(int i=0; i< count; i++)
         {
-            Enemy e=Instantiate(enemyPrefabs[index], enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position, Quaternion.identity).GetComponent<Enemy>();
+            EnemyBase e =Instantiate(enemyPrefabs[index], enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-1,1),0,Random.Range(-1,1)), Quaternion.identity).GetComponent<EnemyBase>();
             currentEnemies.Add(e);
         }
     }
-
-    //subject to change
-    //This script will determine based on score/money wether or not to spawn enemies 
 }
