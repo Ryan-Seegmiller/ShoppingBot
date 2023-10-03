@@ -43,7 +43,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //DEBUG
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            itemFactory.InstanceItem(itemID.pineapple, new Vector3(0, 0, 0));
+        }
     }
 
 
