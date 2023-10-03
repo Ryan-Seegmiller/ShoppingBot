@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using System;
 
 [CreateAssetMenu(menuName = "Items/Item Factory")]
@@ -27,9 +26,12 @@ public class ItemFactory : ScriptableObject
             System.Object o = id;
             int n = (int)o;
 
+            Debug.Log(ItemValue.Instance.name);
+
             int indexCount = 0; //Get the number of items in the itemID enum before the chosen category starts
             for (int i = 0; i < ItemValue.Instance.categorySize.Length - (ItemValue.Instance.categorySize.Length - n); i++)
             { //Repeat for each category before the chosen category
+                Debug.Log(i);
                 indexCount += ItemValue.Instance.categorySize[i];
             }
             int itemIdMin = n > 0 ? indexCount : 0; //The item ID of the first available item in the chosen category

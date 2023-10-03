@@ -23,6 +23,7 @@ public class ItemInteract : MonoBehaviour
     }
 
     //Collect this item
+    /*
     public void ItemCollect()
     {/*
         if (GameManager.Instance != null && itemValue != null)//Make sure GameManager and ItemValue exist
@@ -34,6 +35,6 @@ public class ItemInteract : MonoBehaviour
             }
         }*/
         
-    }
+    }*/
 
 }

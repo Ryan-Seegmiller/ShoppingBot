@@ -22,6 +22,31 @@ public class ItemValue : MonoBehaviour
     //NOTE: The category must be in the same position for all enums/arrays. If your new category is 4th in the 'itemID' enum, it should also be 4th in the'itemCategory' enum and 'categorySize' array 
 
 
+    //Item id enum
+    public enum itemID
+    {
+        //Food
+        apple,
+        banana,
+        strawberry,
+        pineapple,
+        //Clothes
+        shoe,
+        hat,
+        glasses,
+        //Tools
+        screwdriver,
+        hammer,
+        wrench
+    };
+
+    //Item category enum
+    public enum itemCategory
+    {
+        food,
+        clothes,
+        tools
+    };
 
     //ITEMS
     //Item cost array
@@ -50,15 +75,6 @@ public class ItemValue : MonoBehaviour
     };
 
 
-    //ITEM VALUES
-    public int id = -1; //Item's ID. -1 = null/no item assigned
-    [HideInInspector] public int Cost = 0; //The cash cost of this item
-    [HideInInspector] public string Name = ""; //The name of this item
-
-    //References to the item models (children of the item gameObject). Change/add to these in the inspector, not here.
-    [SerializeField] GameObject[] itemModels;
-
-
     void Start()
     {
         //Singleton
@@ -70,71 +86,6 @@ public class ItemValue : MonoBehaviour
         {
             Destroy(this);
         }
-        //EnableModel(); //Disable all models at start
     }
-
-    /*
-    void Update()
-    {
-        //DEBEUG
-        if (Input.GetKeyDown(KeyCode.P)){
-            //RandomiseFromCategory(itemCategory.food);
-            RandomiseItem();
-        }
-    }
-
-    
-    //Assigns item value to a random item from a specified category
-    void RandomiseFromCategory(itemCategory categoryID) //Use the 'itemCategory' enum to choose the category to pick from. Example: itemCategory.food
-    {
-        int indexCount = 0; //Get the number of items in the itemID enum before the chosen category starts
-        for (int i = 0; i < categorySize.Length - (categorySize.Length - (int)categoryID); i++) { //Repeat for each category before the chosen category
-            indexCount += categorySize[i];
-        }
-        int itemIdMin = (int)categoryID > 0 ? indexCount : 0; //The item ID of the first available item in the chosen category
-        int itemIdMax = indexCount + categorySize[(int)categoryID] - 1; //The item ID of the last available item in the chosen category
-        int newChoice = Mathf.RoundToInt(Random.Range((float)itemIdMin - 0.5f, (float)itemIdMax + 0.4f)); //Choose which item ID to assign the item
-        //Assign item to new item choice
-        AssignItem(newChoice);
-    }
-    //Assigns item value to a random item
-    void RandomiseItem()
-    {
-        int itemIdMin = 0; //The item ID of the first available item in the chosen category
-        int itemIdMax = itemCost.Length - 1; //The item ID of the last available item in the chosen category
-        int newChoice = Mathf.RoundToInt(Random.Range((float)itemIdMin - 0.5f, (float)itemIdMax + 0.4f)); //Choose which item ID to assign the item
-        //Assign item to new item choice
-        AssignItem(newChoice);
-    }
-
-
-    //Assigns item values and model based on itemID
-    void AssignItem(int newID)
-    {
-        print(newID); //DEBUG
-        //Assign the item ID
-        id = newID;
-        //Assign the item model
-        EnableModel();
-        //Assign cost
-        Cost = itemCost[id];
-        //Assign name
-        Name = GameManager.Instance.ItemName(id);
-        print(Name);
-        
-    }
-    //Disable all item models if they're not the correct model for this item's id, and enable the correct one
-    void EnableModel()
-    {
-        for (int i = 0; i < itemModels.Length; i++) //Repeat for every model
-        {
-            if (i != id) //Check current ID
-            {
-                itemModels[i].SetActive(false); //Disable model
-            } else {
-                itemModels[i].SetActive(true);
-            }
-        }
-    }*/
 
 }
