@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         //DEBUG
         if (Input.GetKeyDown(KeyCode.P))
         {
-            itemFactory.InstanceItem(itemID.pineapple, new Vector3(0, 0, 0));
+            itemFactory.InstanceItem(itemCategory.clothes, new Vector3(0, 0, 0));
         }
     }
 
