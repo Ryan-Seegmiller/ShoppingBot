@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+
+    //Item factory
+    public ItemFactory itemFactory;
+
     //PLAYER STATS
     public int cash = 100; //Player cash
     public int inventorySize = 10; //Inventory size
@@ -39,7 +43,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //DEBUG
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            itemFactory.InstanceItem(itemCategory.clothes, new Vector3(0, 0, 0));
+        }
     }
 
 
@@ -90,7 +98,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < shoppingList.Length; i++)
         {
-            //shoppingList[i] = (int)Random.Range((float), (float));
+            shoppingList[i] = (int)Random.Range(0f, (float)System.Enum.GetValues(typeof(itemID)).Length);
         }
 
 
@@ -99,5 +107,15 @@ public class GameManager : MonoBehaviour
         {
             print(l + ":  " + shoppingList[l]);
         }
+    }
+
+    public void RemoveRandomItem()
+    {
+
+    }
+
+    public void RemoveCash(int amount)
+    {
+
     }
 }

@@ -8,101 +8,56 @@ namespace Level
     {
         [SerializeField] internal MapData mapData;
 
-        [SerializeField] internal bool doGenerate = true;
-
-        private int[] specialTiles = new int[1] {0};
-
         #region Level Instantiation
+        public void ElevatorShaft()
+        {
 
-        #region Other Functionality
+        }
+        public void DeleteLevel()
+        {
 
-        public void DeleteLevel(bool includeShaft = false)
-        {
-            if (!includeShaft && transform.childCount <= MapData.maxFloors) { return; }
-            int lastIndex = (!includeShaft) ? MapData.maxFloors : 0;
-            for (int i = transform.childCount - 1; i >= lastIndex; i--)
-            {
-                DestroyImmediate(transform.GetChild(i).gameObject);
-            }
-        }
-        private void SelectSpecialTiles()
-        {
-            specialTiles = new int[mapData.floorNum];
-            specialTiles[0] = 0;
-            for (int i = 1; i < mapData.floorNum; i++)
-            {
-                bool available = false;
-                do
-                {
-                    specialTiles[i] = Random.Range(1, mapData.mapSize - 1);
-                    available = specialTiles[i] == specialTiles[i - 1];
-                } while (available);
-            }
-        }
-        private bool IsSpecialTile(int floor, int x, int z)
-        {
-            if (floor >= specialTiles.Length) { return false; }
-            // check specialTiles array if the specified tile is special
-            return (specialTiles[floor] == x && specialTiles[floor] == z);
-        }
-        #endregion
-
-        public void InstanceElevatorShaft()
-        {
-            for (int i = 0; i < MapData.maxFloors; i++)
-            {
-                if (i == 0)
-                {
-                    Instantiate(mapData.elevator, Vector3.zero, Quaternion.identity, transform);
-                } else
-                {
-                    Instantiate(mapData.elevatorShaft, new Vector3(0, i * MapData.tileHeight, 0), Quaternion.identity, transform);
-                }
-            }
         }
         public void InstanceMall()
         {
-            SelectSpecialTiles();
             int floorRamp = (mapData.floorNum > 1) ? Random.Range(1, mapData.mapSize-1) : 0;
-            for (int i = 0; i < mapData.floorNum; i++) // loops through the floors
+            for (int i = 0; i < mapData.floorNum; i++)
             {
-                for (int j = 0; j < mapData.mapSize; j++) // loops through the x axis of a single floor
+                for (int j = 0; j < mapData.mapSize; j++)
                 {
-                    for (int k = 0; k < mapData.mapSize; k++) // loops through the z axis of a single floor
+                    for (int k = 0; k < mapData.mapSize; k++)
                     {
-                        // SPAWN TILES
-                        bool specialTile = IsSpecialTile(i+1, j, k); //(j == 0 && k == 0) || (j == floorRamp && k == floorRamp);
-                        if (j + k == 0)
+                        GameObject go;
+                        bool specialTile = (j == 0 && k == 0) || (j == floorRamp && k == floorRamp);
+                        if (j == 0 && k == 0)
                         {
-                            // Do nothing. This is the elevator shaft
-                        } else if (specialTile)
+                            go = Instantiate(mapData.elevatorTile, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.identity, transform);
+                        } else if (j == floorRamp && k == floorRamp && mapData.floorNum - i > 1)
                         {
                             int randRot = 90 * Random.Range(0, 4);
-                            Instantiate(mapData.ramp, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
+                            go = Instantiate(mapData.ramp, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
                         }
-                        else if (!IsSpecialTile(i, j, k))
+                        else if (!specialTile)
                         {
                             int mallTileIndex = (mapData.mallTiles.Length <= 1) ? 0 : Random.Range(0, mapData.mallTiles.Length);
                             int randRot = 90 * Random.Range(0, 4);
-                            Instantiate(mapData.mallTiles[mallTileIndex], new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
+                            go = Instantiate(mapData.mallTiles[mallTileIndex], new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
                         }
-
-                        // SPAWN EXTERIOR MALL WALLS
-                        if (j == 0 && k != 0)
+                        // spawn mall exterior walls
+                        if (j == 0)
                         {
-                            Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.identity, transform);
+                            GameObject wall = Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.identity, transform);
                         }
                         else if (j == mapData.mapSize - 1)
                         {
-                            Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, 180, 0), transform);
+                            GameObject wall = Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.Euler(0, 180, 0), transform);
                         }
-                        if (k == 0 && j != 0)
+                        if (k == 0)
                         {
-                            Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, -90, 0), transform);
+                            GameObject wall = Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.Euler(0, -90, 0), transform);
                         }
                         else if (k == mapData.mapSize - 1)
                         {
-                            Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, 90, 0), transform);
+                            GameObject wall = Instantiate(mapData.wall, new Vector3(j * MapData.tileSize, i * 5, k * MapData.tileSize), Quaternion.Euler(0, 90, 0), transform);
                         }
                     }
                 }
@@ -112,11 +67,7 @@ namespace Level
 
         private void Start()
         {
-            if (doGenerate)
-            {
-                InstanceElevatorShaft();
-                InstanceMall();
-            }
+            InstanceMall();
         }
     }
 }
