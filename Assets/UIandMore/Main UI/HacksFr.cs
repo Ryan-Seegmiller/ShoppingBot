@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using gameManager;
 
 public class HacksFr : MonoBehaviour
 {
@@ -32,7 +33,8 @@ public class HacksFr : MonoBehaviour
     public void diLength()
     {
         //print("di length: " + ShoppingList.instance.displayItems.Length);
-        print(GameManager.Instance.shoppingList[Index]);
+        //print(GameManager.Instance.shoppingList[Index]);
+        TimeCalc.instance.SetTimer(5900);
     }
     public void diCheck()
     {
