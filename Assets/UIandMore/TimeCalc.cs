@@ -32,7 +32,7 @@ public class TimeCalc : MonoBehaviour
     {
         //min
         timeString = "";
-        timeholder = (timer / 60) / 100;
+        timeholder = timer / 6000;
         if (timeholder >= 1)
         {
             if (timeholder < 10)
@@ -40,12 +40,25 @@ public class TimeCalc : MonoBehaviour
                 timeString += "0";
             }
             timeString += timeholder + ":";
+
+            if (timer > 599999)
+            {
+                timeString = "XX:";
+            }
         }
         else { timeString += "00:"; }
         //sec
         timeholder2 = timer / 100;
         if (timeholder2 >= 1)
         {
+            if (timer / 6000 > 0)
+            {
+                while(timeholder2 / 60 > 0)
+                {
+                    timeholder2 -= 60;
+                }
+                //timeholder2 -= 60;
+            }
             if (timeholder2 < 10)
             {
                 timeString += "0";
@@ -54,7 +67,7 @@ public class TimeCalc : MonoBehaviour
         }
         else { timeString += "00:"; }
         //ms
-        timeholder3 = timer - (timeholder * 6000) - (timeholder2 * 100);
+        timeholder3 = (timer - (timeholder * 6000)) - (timeholder2 * 100);
         if (timeholder3 < 10) { timeString += "0"; }
         timeString += timeholder3;
 

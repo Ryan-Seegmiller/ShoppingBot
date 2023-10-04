@@ -1,3 +1,14 @@
 {
-	"name": "AssemUI"
+    "name": "AssemUI",
+    "rootNamespace": "assemtesting",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
