@@ -24,6 +24,9 @@ public class RoverController : EnemyBase
         pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        aS = GetComponentInChildren<AudioSource>();
+        roamMode = Random.Range(0, 2);
+        health = Random.Range(3,6);
 
     }
 
@@ -39,6 +42,8 @@ public class RoverController : EnemyBase
         //found player timer
         if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
         {
+            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
+
             hasFoundPlayer = true;
         }
         if (time>attackStartTime+3 && !canAttack)
@@ -50,15 +55,22 @@ public class RoverController : EnemyBase
         {
             anim.SetBool("Action", false);
         }
-        RaycastHit h;
-        if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, 1.5f))
-        {
-            //take money from player
-            if(h.transform.gameObject==PlayerControllerTest.instance.gameObject)
-                Flee();
-        }
+
         if (fleeing)
             Debug.DrawLine(transform.position, fleeVector);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        //take money from player
+        if (collision.transform.gameObject.tag == "Player")
+        {
+            aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
+            Flee();
+            int cashToTake = Random.Range(5, 10);
+            if (GameManager.Instance != null)
+                GameManager.Instance.RemoveCash(cashToTake);
+            Debug.Log(gameObject.name + " took " + cashToTake + " from player.");
+        }
     }
     private void FixedUpdate()
     {
@@ -67,7 +79,7 @@ public class RoverController : EnemyBase
         //run away to random spot until close enough
         if (fleeing)
         {
-            transform.Translate(transform.forward * acceleration * Random.Range(1, 2));
+            transform.Translate(transform.forward * acceleration * Random.Range(2, 3));
             if (transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)
                 fleeing = false;
         }//main attack at player
@@ -116,7 +128,7 @@ public class RoverController : EnemyBase
     {
         fleeBeginTime = time;
         fleeing = true;
-        fleeVector = transform.position+new Vector3(Random.Range(-fleeBounds, fleeBounds), transform.position.y, Random.Range(-fleeBounds, fleeBounds));
+        fleeVector = transform.position+new Vector3(Random.Range(-fleeBounds, fleeBounds), 0.51f/*detemined to be sitting height of rover*/, Random.Range(-fleeBounds, fleeBounds));
         transform.LookAt(fleeVector);
     }
     void DoFlips()
@@ -160,7 +172,9 @@ public class RoverController : EnemyBase
         else if (roamMode == 1)
         {//random move mode
             if(Random.Range(0,100f)>98f)
-                targetRotationY = Random.Range(-3, 3);
+                targetRotationY = Random.Range(-1, 1);
+            if (Random.Range(0, 100f) > 35f)
+                transform.Translate(Vector3.forward * acceleration);
         }
 
         if (s)

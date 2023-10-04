@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class StalkerController : EnemyBase
         if (GenerateRandomValues)
             GetRandomAIValues();
         transform.position = new Vector3(transform.position.x, EnemyManager.instance.aerialEnemyHeight, transform.position.z);
-        GetComponent<SphereCollider>().radius = detectionRadius;
+        GetComponent<SphereCollider>().radius = detectionRadius+5;//aerial enemy gets wider range
         pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
@@ -21,6 +22,9 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(1, 0);
         rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
         rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
+        aS = GetComponentInChildren<AudioSource>();
+        health = 3;
+
     }
 
     void Update()
@@ -38,6 +42,8 @@ public class StalkerController : EnemyBase
         DoFlips();
         if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
         {
+            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
+
             hasFoundPlayer = true;
         }
         if (transform.position.y < -100)
@@ -69,6 +75,8 @@ public class StalkerController : EnemyBase
                     //take items from player
                     Debug.Log("Player contact");
                     anim.SetTrigger("Action");
+                    if(GameManager.Instance!=null)
+                        GameManager.Instance.RemoveRandomItem();
                 }
             }
         }
@@ -176,8 +184,8 @@ public class StalkerController : EnemyBase
     void DoFlips()
     {
         //random boolean flips used for AI
-        if (Random.Range(0, 100f) > 98f) { lowChanceFlip = !lowChanceFlip; }
-        if (Random.Range(0, 100f) > 70f) { lowChanceFlip2 *= -1; }
+        if (Random.Range(0, 100f) > 95f) { lowChanceFlip = !lowChanceFlip; }
+        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip2 *= -1; }
     }
     void PlayerTracking()
     {
