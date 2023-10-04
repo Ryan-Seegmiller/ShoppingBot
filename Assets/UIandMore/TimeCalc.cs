@@ -17,7 +17,7 @@ public class TimeCalc : MonoBehaviour
     void Start()
     {
         //Singleton
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -35,7 +35,7 @@ public class TimeCalc : MonoBehaviour
         timeholder = (timer / 60) / 100;
         if (timeholder >= 1)
         {
-            if(timeholder < 10)
+            if (timeholder < 10)
             {
                 timeString += "0";
             }
@@ -55,7 +55,7 @@ public class TimeCalc : MonoBehaviour
         else { timeString += "00:"; }
         //ms
         timeholder3 = timer - (timeholder * 6000) - (timeholder2 * 100);
-        if(timeholder3 < 10) { timeString += "0"; }
+        if (timeholder3 < 10) { timeString += "0"; }
         timeString += timeholder3;
 
         return timeString;
@@ -88,3 +88,4 @@ public class TimeCalc : MonoBehaviour
         }
     }
 }
+//TODO fix minutes
