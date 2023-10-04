@@ -43,7 +43,7 @@ public class TimeCalc : MonoBehaviour
 
             if (timer > 599999)
             {
-                timeString = "NN:";
+                timeString = "++:";
             }
         }
         else { timeString += "00:"; }
