@@ -11,6 +11,8 @@ public class BuzzBuzz : MonoBehaviour
 
     [SerializeField] Image display;
 
+    [SerializeField] float WaitTime;
+
     bool first = true;
     // Start is called before the first frame update
     void Start()
@@ -33,7 +35,7 @@ public class BuzzBuzz : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(WaitTime);
             if (first)
             {
                 display.sprite = sp2;

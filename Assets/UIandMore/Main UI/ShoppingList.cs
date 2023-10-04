@@ -12,7 +12,7 @@ public class ShoppingList : MonoBehaviour
     [SerializeField] TextMeshProUGUI listText;
     bool showingList = false;
 
-    [SerializeField] GameManager gm;
+    //[SerializeField] GameManager gm;
 
     bool collected;
     public string[] displayItems;
