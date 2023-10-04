@@ -10,7 +10,6 @@ namespace PlayerContoller {
         void FixedUpdate()
         {
             transform.position = target.position;
-            //transform.rotation = target.rotation;
         }
     }
 }

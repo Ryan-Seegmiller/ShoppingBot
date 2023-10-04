@@ -62,9 +62,6 @@ namespace PlayerContoller
             air
         }
 
-        //public bool isSliding;
-        //public bool wallRunning;
-
         private void Start()
         {
             rb = GetComponent<Rigidbody>();
@@ -159,6 +156,7 @@ namespace PlayerContoller
 
             }
         }
+        //TO BE REMOVED
         void playerAnimatorController()
         {
             if (playerInput.y * -1f == -playerInput.y && playerInput.y != 0)
