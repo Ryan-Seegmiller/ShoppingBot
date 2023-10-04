@@ -6,26 +6,53 @@ using UnityEngine.UI;
 
 public class ControlsPopup : MonoBehaviour
 {
-    [SerializeField] Sprite[] sprites = new Sprite[4];
-    [SerializeField] string[] displayText = new string[4]; 
+    [SerializeField] Sprite[] sprites = new Sprite[5];
     [SerializeField] Image img;
 
+    [SerializeField] string[] displayText = new string[5];
     [SerializeField] TextMeshProUGUI text;
 
-     void Start()
+    [SerializeField] string[] descString = new string[5];
+    [SerializeField] TextMeshProUGUI desc;
+    
+    [SerializeField] GameObject panel;
+    [SerializeField] GameObject theObject;
+    [SerializeField] GameObject HotKeySymbol;
+
+    void Start()
     {
-        //gameObject.transform.position = new Vector3(-180, -50, 0);
-        StartCoroutine(ShowControls());
+        theObject.SetActive(false);
+        HotKeySymbol.SetActive(true);
+        //StartCoroutine(ShowControls());
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.H))
+        {
+            HotKeySymbol.SetActive(false);
+            StartCoroutine(ShowControls());
+        }
     }
 
     public IEnumerator ShowControls()
     {
-        for(int i = 1; i < sprites.Length; i++)
+        for(int i = 0; i < sprites.Length; i++)
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(2);
             img.sprite = sprites[i];
             text.text = displayText[i];
+            desc.text = descString[i];
+            if (!theObject.activeSelf)
+            {
+                theObject.SetActive(true);
+            }
+            if (i == sprites.Length - 1)
+            {
+                panel.SetActive(false);
+            }
         }
-        gameObject.SetActive(false);
+        theObject.SetActive(false);
+        HotKeySymbol.SetActive(true);
     }
 }
