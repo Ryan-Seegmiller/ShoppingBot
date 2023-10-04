@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using items;
 
-namespace Level
+namespace LevelGen
 {
     public class StoreTile : MonoBehaviour
     {
         private Transform itemParent;
         [SerializeField] protected GameObject itemPrefab;
-        [SerializeField] protected itemCategory spawnCategory;
+        //[SerializeField] protected itemCategory spawnCategory;
         [SerializeField] protected bool randomCategory = false;
         public Vector3[] spawns = new Vector3[1] { Vector3.zero };
 
@@ -18,7 +18,7 @@ namespace Level
             if (randomCategory)
             {
                 //int num = Enum.GetNames(typeof(itemCategory)).Length;
-                spawnCategory = (itemCategory)Random.Range(0, 2);
+                //spawnCategory = (itemCategory)Random.Range(0, 2);
             }
             itemParent = new GameObject("ItemParent").transform;
             itemParent.SetParent(transform);
