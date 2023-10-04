@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Level;
+using LevelGen;
 
 [CustomEditor(typeof(StoreTile))]
 public class StoreTileEditor : Editor
