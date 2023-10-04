@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -41,6 +42,14 @@ public class EnemyBase : MonoBehaviour
     protected Vector2 stuckRotation = new Vector2(2, 3);
     protected bool lowChanceFlip = false;
     protected int lowChanceFlip2 = 1;
+
+    public List<AudioClip> deathAudio = new List<AudioClip>();
+    public List<AudioClip> detectedAudio = new List<AudioClip>();
+    public List<AudioClip> attackAudio = new List<AudioClip>();
+
+    public int health;
+
+    public AudioSource aS;
     protected float PointAtPlayerOffset{
         set
         {
@@ -82,8 +91,8 @@ public class EnemyBase : MonoBehaviour
         lrRayAngle = Random.Range(1, 75f);
 
         detectionRadius = Random.Range(5, 10f);
-        wanderRotationLimits = Random.Range(0.001f, 0.01f);
-        wanderForceLimits = Random.Range(0.001f, 2f);
+        wanderRotationLimits = Random.Range(0.01f, 0.01f);
+        wanderForceLimits = Random.Range(0.01f, 2f);
 
         yRotationPerArmDetection = Random.Range(0.001f, 0.1f);
         yRotationReturn = yRotationPerArmDetection+Random.Range(0.001f, 0.01f);
@@ -98,23 +107,38 @@ public class EnemyBase : MonoBehaviour
     }
     public void Die()
     {
+        aS.transform.parent = null;
+        aS.PlayOneShot(deathAudio[Random.Range(0, deathAudio.Count)]);
+        Destroy(aS.gameObject, 3);
         Debug.Log(gameObject.name + " enemy has died");
         //iterate through body parts and make parent null and rotate for death effect
         for(int i = 0; i < meshBody.transform.childCount;i++)
         {
-            Transform t = meshBody.transform.GetChild(i);
-            t.transform.parent = null;
-            Rigidbody tRb= t.AddComponent<Rigidbody>();
-            t.AddComponent<SphereCollider>().radius=0.1f;
-            tRb.AddTorque(transform.up * Random.Range(-360, 360));
-            tRb.AddForce(transform.forward * Random.Range(-25, 25));
-            Destroy(t.gameObject, 3);
+            PopBodyPart(meshBody.transform.GetChild(i).transform);
         }
         EnemyManager.instance.currentEnemies.Remove(this);
         Destroy(this.gameObject);
     }
+
+    void PopBodyPart(Transform t)
+    {
+        t.transform.parent = null;
+        Rigidbody tRb = t.AddComponent<Rigidbody>();
+        t.AddComponent<SphereCollider>().radius = 0.25f;
+        tRb.AddTorque(transform.up * Random.Range(-360, 360));
+        tRb.AddForce(transform.forward * Random.Range(-25, 25));
+        Destroy(t.gameObject, 3);
+    }
     private void OnCollisionEnter(Collision collision)
     {
         //Die();
+    }
+    public void Hit()
+    {
+        if(meshBody.transform.childCount>0)
+            PopBodyPart(meshBody.transform.GetChild(Random.Range(0,meshBody.transform.childCount)).transform);
+        health--;
+        if (health <= 0)
+            Die();
     }
 }
