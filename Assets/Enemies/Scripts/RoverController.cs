@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using gamemanager;
+
 public class RoverController : EnemyBase
 {
     public int roamMode = 0;
