@@ -1,9 +1,29 @@
 fileFormatVersion: 2
-guid: b3f2288722852c94484322cfc2c6a3ea
+guid: 5fe2231f337875746b6ff49355e9ce6e
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2100000, guid: 13bc9d50430622b48ba094fca5fcffba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DarkMat
+    second: {fileID: 2100000, guid: 704517557193ba34f91b069a57075616, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: cf7fbfa838a1a04498884a05dac9537d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreyMat
+    second: {fileID: 2100000, guid: 89b2f90451d3c8e47b998f6fd4dd3f30, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,7 +55,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.15
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -66,7 +86,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -88,7 +108,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.0015
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

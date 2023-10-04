@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8815283214688374327}
   - component: {fileID: 4877209859033248448}
   - component: {fileID: 3153625679363658316}
+  - component: {fileID: 5284932041298891430}
   m_Layer: 0
   m_Name: Banana
   m_TagString: Untagged
@@ -98,3 +99,19 @@ CapsuleCollider:
   m_Height: 4.5
   m_Direction: 2
   m_Center: {x: 0, y: 0.15, z: 0}
+--- !u!54 &5284932041298891430
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153625679363658352}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
