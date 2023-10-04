@@ -29,7 +29,24 @@ public class EnemyManager : MonoBehaviour
         SpawnEnemies(crawlerEnemies, 2);
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            if(Physics.Raycast(r, out hit))
+            {
+                EnemyBase eb;
+                if(hit.transform.gameObject.TryGetComponent<EnemyBase>(out eb))
+                {
+                    eb.Hit();
+                    Debug.Log("God hit " + hit.transform.name);
+                }
+            }
+        }
+    }
     public void SpawnEnemies(int count, int index)
     {
         for(int i=0; i< count; i++)
