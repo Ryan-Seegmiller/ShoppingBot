@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0e518c278f88774dbae75ed0abbf154, type: 3}
   m_Name: New Map Data
   m_EditorClassIdentifier: 
-  mapSize: 6
-  floorNum: 5
+  mapSize: 5
+  floorNum: 3
   elevator: {fileID: 9208566225419152403, guid: 03926bf0d5f87f74985ebd5670f24435, type: 3}
   elevatorShaft: {fileID: 1249108262895244423, guid: 2204aeecbb2988543954b48bdc07a849, type: 3}
   wall: {fileID: 6885873540023638393, guid: e9a4bf569b913304fae79d992ad1392e, type: 3}
   ramp: {fileID: 5123003927311887265, guid: de73ce22ddd40da49bf620d8ef955aa8, type: 3}
+  roof: {fileID: 2444538207495085243, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
   mallTiles:
   - {fileID: 2444538207495085243, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
   - {fileID: 7621135203304938902, guid: e7b93706cd027f1468e1dbc5dec956e5, type: 3}

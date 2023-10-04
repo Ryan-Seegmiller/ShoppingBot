@@ -7,7 +7,6 @@ namespace Level
     public class LevelManager : MonoBehaviour
     {
         [SerializeField] internal MapData mapData;
-
         [SerializeField] internal bool doGenerate = true;
 
         private int[] specialTiles = new int[1] {0};
@@ -64,12 +63,17 @@ namespace Level
         {
             SelectSpecialTiles();
             int floorRamp = (mapData.floorNum > 1) ? Random.Range(1, mapData.mapSize-1) : 0;
-            for (int i = 0; i < mapData.floorNum; i++) // loops through the floors
+            for (int i = 0; i < mapData.floorNum + 1; i++) // loops through the floors
             {
                 for (int j = 0; j < mapData.mapSize; j++) // loops through the x axis of a single floor
                 {
                     for (int k = 0; k < mapData.mapSize; k++) // loops through the z axis of a single floor
                     {
+                        if (i == mapData.floorNum)
+                        {
+                            Instantiate(mapData.roof, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.identity, transform);
+                            continue;
+                        }
                         // SPAWN TILES
                         bool specialTile = IsSpecialTile(i+1, j, k); //(j == 0 && k == 0) || (j == floorRamp && k == floorRamp);
                         if (j + k == 0)

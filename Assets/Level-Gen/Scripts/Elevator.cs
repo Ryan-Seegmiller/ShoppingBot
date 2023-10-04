@@ -6,7 +6,7 @@ namespace Level
 {
     public class Elevator : MonoBehaviour
     {
-        bool isOpen = false;
+        //bool isOpen = false;
 
         public void DoorTrigger()
         {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2444538206997412438}
   - component: {fileID: 2444538206997412439}
   - component: {fileID: 2444538206997412432}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2444538207495085242}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WorldTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

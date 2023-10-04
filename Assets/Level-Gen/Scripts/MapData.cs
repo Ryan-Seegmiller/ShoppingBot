@@ -18,6 +18,7 @@ namespace Level
         public GameObject elevatorShaft;
         public GameObject wall;
         public GameObject ramp;
+        public GameObject roof;
         public GameObject[] mallTiles;
     }
 }
