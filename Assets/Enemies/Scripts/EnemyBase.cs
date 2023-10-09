@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using enemymanager;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -50,6 +51,37 @@ public class EnemyBase : MonoBehaviour
     public int health;
 
     public AudioSource aS;
+    void Awake()
+    {
+        Debug.Log("start");
+        if (GenerateRandomValues)
+            GetRandomAIValues();
+        transform.position = new Vector3(transform.position.x, EnemyManager.instance.groundEnemyHeight, transform.position.z);
+        GetComponent<SphereCollider>().radius = detectionRadius;
+        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
+        rb = GetComponent<Rigidbody>();
+        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
+        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
+        aS = GetComponentInChildren<AudioSource>();
+    }
+    private void Update()
+    {
+        time += Time.deltaTime;
+    }
+    protected void FixedUpdate()
+    {
+        DoFlips();
+
+        if (transform.position.y < -100)
+        {
+            Die();
+        }
+        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
+        {
+            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
+            hasFoundPlayer = true;
+        }
+    }
     protected float PointAtPlayerOffset{
         set
         {
@@ -90,7 +122,7 @@ public class EnemyBase : MonoBehaviour
         sArmRange = Random.Range(0.25f, 3f);
         lrRayAngle = Random.Range(1, 75f);
 
-        detectionRadius = Random.Range(5, 10f);
+        detectionRadius = Random.Range(10f, 25f);
         wanderRotationLimits = Random.Range(0.01f, 0.01f);
         wanderForceLimits = Random.Range(0.01f, 2f);
 
@@ -98,12 +130,12 @@ public class EnemyBase : MonoBehaviour
         yRotationReturn = yRotationPerArmDetection+Random.Range(0.001f, 0.01f);
 
         pointAtPlayerChance = Random.Range(1, 90f);
-        timeDetectionToFind = Random.Range(1, 5f);
+        timeDetectionToFind = Random.Range(0.5f, 2f);
         pointAtPlayerOffset= Random.Range(-5, 5f);
-        acceleration = Random.Range(0.01f, 0.15f);
+        acceleration = Random.Range(5f,25f);
 
-        reverseModifier = new Vector2(Random.Range(0.01f, 0.02f), Random.Range(0.02f, 0.025f));
-        stuckRotation = new Vector2(Random.Range(0.01f, 0.2f), Random.Range(0.2f, 1f));
+        reverseModifier = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
+        stuckRotation = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
     }
     public void Die()
     {
@@ -140,5 +172,11 @@ public class EnemyBase : MonoBehaviour
         health--;
         if (health <= 0)
             Die();
+    }
+
+    void DoFlips()
+    {
+        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
+        if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
     }
 }

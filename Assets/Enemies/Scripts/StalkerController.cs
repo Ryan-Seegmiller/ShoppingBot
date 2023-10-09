@@ -3,67 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using gamemanager;
+using enemymanager;
+
 public class StalkerController : EnemyBase
 {
     AnimationCurve BaseCurve=new AnimationCurve();
     public List<Vector3> currentAttackCurve=null;
     public int frame = 0;
     public Animator anim;
-    void Start()
+    public void Start()
     {
-        if (GenerateRandomValues)
-            GetRandomAIValues();
-        transform.position = new Vector3(transform.position.x, EnemyManager.instance.aerialEnemyHeight, transform.position.z);
-        GetComponent<SphereCollider>().radius = detectionRadius+5;//aerial enemy gets wider range
-        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
-        rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
-        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
-        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
-        aS = GetComponentInChildren<AudioSource>();
         health = 3;
-
     }
-
-    void Update()
+    void FixedUpdate()
     {
-        if (hasFoundPlayer)
-        {
-            Debug.DrawLine(transform.position, PlayerControllerTest.instance.transform.position, Color.yellow);
-        }
+        base.FixedUpdate();
 
-        time += Time.deltaTime;
-    }
-    private void FixedUpdate()
-    {
         DropAndClampTargetYRot();
-        DoFlips();
-        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
-        {
-            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
 
-            hasFoundPlayer = true;
-        }
-        if (transform.position.y < -100)
-        {
-            Die();
-        }
         //if found player, create attack curve
         if (hasFoundPlayer && currentAttackCurve.Count < 1 && Random.Range(0, 100f) > 95)
-        {
             BeginAttackCurve();
-        }
         //if there is an attack curve, run it
         if (currentAttackCurve.Count >0)
-        {
             RunAttackCurve();
-        }
         else
         {
             DoAerialAI();
-            //PlayerTracking();
         }
         if (hasFoundPlayer)
         {
@@ -95,10 +64,6 @@ public class StalkerController : EnemyBase
     }
     void DoAerialAI()
     {
-
-
-
-        //SENSORS
         //arms/sensor rays
         Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
         Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
@@ -112,9 +77,9 @@ public class StalkerController : EnemyBase
         Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
         //WANDER
         if (lowChanceFlip && !s)
-            transform.Translate(Vector3.forward * acceleration * Random.Range(0, wanderForceLimits));
+            rb.AddForce(Vector3.forward * acceleration * Random.Range(0, wanderForceLimits));
         else
-            transform.Translate(Vector3.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
+            rb.AddForce(Vector3.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
         //rotate if arms have collided
         if (r)
             targetRotationY += yRotationPerArmDetection;
@@ -130,7 +95,7 @@ public class StalkerController : EnemyBase
         if (s)
         {
             //backup if stuck
-            transform.Translate(-Vector3.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
+            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
             targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
         }
         //set final rotation
@@ -180,22 +145,5 @@ public class StalkerController : EnemyBase
         //return list full of curve cordinates
         output.Add(new Vector3(target.x,origin.y,target.z));
         return output;
-    }
-    void DoFlips()
-    {
-        //random boolean flips used for AI
-        if (Random.Range(0, 100f) > 95f) { lowChanceFlip = !lowChanceFlip; }
-        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip2 *= -1; }
-    }
-    void PlayerTracking()
-    {
-        //while getting closer to the player, lerp closer to ground
-        float offset = 0;
-        if (hasFoundPlayer)
-        {
-            float dist = Mathf.Abs(Vector3.Distance(transform.position, PlayerControllerTest.instance.transform.position));
-            offset = Mathf.Clamp(Map(detectionRadius - dist, dist, detectionRadius, 0, EnemyManager.instance.aerialEnemyHeight - EnemyManager.instance.groundEnemyHeight), 0, EnemyManager.instance.aerialEnemyHeight - EnemyManager.instance.groundEnemyHeight);
-        }
-        transform.position = new Vector3(transform.position.x, EnemyManager.instance.aerialEnemyHeight - offset, transform.position.z);
     }
 }
