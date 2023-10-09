@@ -11,6 +11,8 @@ public class HacksFr : MonoBehaviour
 
     [SerializeField] int Index;
 
+    [SerializeField] int ItemToAdd;
+
     public void SetSL()
     {
         if(shopList != null && shopList.Length <= GameManager.Instance.shoppingList.Length)
@@ -34,10 +36,11 @@ public class HacksFr : MonoBehaviour
     {
         //print("di length: " + ShoppingList.instance.displayItems.Length);
         //print(GameManager.Instance.shoppingList[Index]);
-        TimeCalc.instance.SetTimer(599900);
+        //TimeCalc.instance.SetTimer(599900);
+        print(ScoreCalc.instance.GetScore() + "0 Points!");
     }
     public void diCheck()
     {
-        print(GameManager.Instance.inventory[Index]);
+        GameManager.Instance.AddItem(ItemToAdd);
     }
 }
