@@ -105,7 +105,7 @@ public class ShoppingList : MonoBehaviour
             {
                 //replace 4 with get from game manager "i" in inventory
                 
-                displayItems[i] = "<b>" + collected +" "+ currentName + "</b>";
+                displayItems[i] = "<b>"+ currentName + "</b>";
             }
         }
         BuildList();
