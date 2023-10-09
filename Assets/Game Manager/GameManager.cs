@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 
@@ -79,6 +80,24 @@ public class GameManager : MonoBehaviour
         }
         */
     }
+
+
+    public bool ListHasItem(int itemID)
+    {
+        if (shoppingList.Count() > 0)
+        {
+            foreach (int l in shoppingList)
+            {
+                if (l == itemID)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
 
     //Checks if there's any more space in your inventory
     public bool CheckInventorySpace()
