@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Items
 {
     //Item id enum
-    public enum itemID
+    public enum ItemID
     {
         //Food
         apple,
@@ -23,7 +23,7 @@ namespace Items
     };
 
     //Item category enum
-    public enum itemCategory
+    public enum ItemCategory
     {
         food,
         clothes,

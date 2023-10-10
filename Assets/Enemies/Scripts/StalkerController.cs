@@ -17,8 +17,6 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
-        startHealth = health;
-
     }
     new void FixedUpdate()
     {
@@ -46,8 +44,8 @@ public class StalkerController : EnemyBase
                     //take items from player
                     Debug.Log("Player contact");
                     anim.SetTrigger("Action");
-                    if(GameManager.Instance!=null)
-                        GameManager.Instance.RemoveRandomItem();
+                    if(GameManager.instance!=null)
+                        GameManager.instance.RemoveRandomItem();
                 }
             }
         }

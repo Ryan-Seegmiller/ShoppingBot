@@ -7,7 +7,7 @@ using Items;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager instance;
 
 
     //Item factory
@@ -23,12 +23,12 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
+    void Awake()
     {
         //Singleton
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         else
         {
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         //DEBUG
         if (Input.GetKeyDown(KeyCode.P))
         {
-            itemFactory.InstanceItem(itemCategory.clothes, new Vector3(0, 0, 0));
+            itemFactory.InstanceItem(ItemCategory.clothes, new Vector3(0, 0, 0));
         }
     }
 
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     public string ItemName(int itemID)
     {
         //Assign name
-        string nameLower = ((itemID)itemID).ToString();
+        string nameLower = ((ItemID)itemID).ToString();
         return char.ToUpper(nameLower[0]) + nameLower.Substring(1);
     }
 
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < shoppingList.Length; i++)
         {
-            shoppingList[i] = (int)Random.Range(0f, (float)System.Enum.GetValues(typeof(itemID)).Length);
+            shoppingList[i] = (int)Random.Range(0f, (float)System.Enum.GetValues(typeof(ItemID)).Length);
         }
 
 

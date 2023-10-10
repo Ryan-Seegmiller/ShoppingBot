@@ -12,7 +12,6 @@ public class CrawlerController : EnemyBase
     private void Start()
     {
         health = 2;
-        startHealth = health;
     }
 
     private new void FixedUpdate()
