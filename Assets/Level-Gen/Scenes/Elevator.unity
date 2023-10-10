@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5898bd8b303f6fb489e1367ad7a0cf83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemFactory: {fileID: 0}
+  itemFactory: {fileID: 11400000, guid: ccca11b828e44c2429087100c87dc084, type: 2}
   cash: 100
   inventorySize: 10
   inventory: 
