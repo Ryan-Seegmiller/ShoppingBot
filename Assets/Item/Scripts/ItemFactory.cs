@@ -20,7 +20,7 @@ namespace Items
 
                 //Instantiate object
                 GameObject newObj = Instantiate(items[n], pos, Quaternion.identity);
-                newObj.GetComponent<ItemInteract>().itemValue = n;
+                newObj.GetComponent<ItemInteract>().itemValue = n; //Cache item's ID in ItemInteract
 
                 //Return obj
                 return newObj;
@@ -41,8 +41,13 @@ namespace Items
                 int itemIdMin = n > 0 ? indexCount : 0; //The item ID of the first available item in the chosen category
                 int itemIdMax = indexCount + ItemManager.instance.categorySize[n] - 1; //The item ID of the last available item in the chosen category
                 int newChoice = Mathf.RoundToInt(UnityEngine.Random.Range((float)itemIdMin - 0.5f, (float)itemIdMax + 0.4f)); //Choose which item ID to assign the item
-                                                                                                                              //Assign item to new item choice
-                return Instantiate(items[newChoice], pos, Quaternion.identity);
+
+                //Instantiate object
+                GameObject newObj = Instantiate(items[n], pos, Quaternion.identity);
+                newObj.GetComponent<ItemInteract>().itemValue = n; //Cache item's ID in ItemInteract
+
+                //Return obj
+                return newObj;
             }
             //Create a random item
             else

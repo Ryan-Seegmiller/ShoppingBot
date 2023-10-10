@@ -149,7 +149,6 @@ namespace Items
             */
         }
 
-        #region Check against List
         public bool ListHasItem(int itemID)
         {
             if (shoppingList.Length > 0)
@@ -176,9 +175,6 @@ namespace Items
             }
             return result;
         }
-
-
-        #endregion
 
 
         //Checks if there's any more space in your inventory
