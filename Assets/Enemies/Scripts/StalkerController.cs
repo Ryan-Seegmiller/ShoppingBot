@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using gamemanager;
 public class StalkerController : EnemyBase
 {
     AnimationCurve BaseCurve=new AnimationCurve();

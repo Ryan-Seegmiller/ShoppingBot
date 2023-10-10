@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using items;
-using gamemanager;
 
 public class ItemInteract : MonoBehaviour
 {
