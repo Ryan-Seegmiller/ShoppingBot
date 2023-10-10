@@ -14,21 +14,21 @@ public class HacksFr : MonoBehaviour
 
     public void SetSL()
     {
-        if(shopList != null && shopList.Length <= GameManager.Instance.shoppingList.Length)
+        if(shopList != null && shopList.Length <= GameManager.instance.shoppingList.Length)
         {
             for(int i = 0; i < shopList.Length; i++)
             {
-                GameManager.Instance.shoppingList[i] = shopList[i];
+                GameManager.instance.shoppingList[i] = shopList[i];
             }
         }
-        for(int i = 0; i < GameManager.Instance.inventory.Length; i++)
+        for(int i = 0; i < GameManager.instance.inventory.Length; i++)
         {
-            GameManager.Instance.inventory[i] = -1;
+            GameManager.instance.inventory[i] = -1;
         }
     }
     public void Increment()
     {
-        GameManager.Instance.inventory[Index] = GameManager.Instance.shoppingList[Index];
+        GameManager.instance.inventory[Index] = GameManager.instance.shoppingList[Index];
     }
 
     public void diLength()
@@ -40,6 +40,6 @@ public class HacksFr : MonoBehaviour
     }
     public void diCheck()
     {
-        GameManager.Instance.AddItem(ItemToAdd);
+        GameManager.instance.AddItem(ItemToAdd);
     }
 }

@@ -44,8 +44,8 @@ public class StalkerController : EnemyBase
                     //take items from player
                     Debug.Log("Player contact");
                     anim.SetTrigger("Action");
-                    if(GameManager.Instance!=null)
-                        GameManager.Instance.RemoveRandomItem();
+                    if(GameManager.instance!=null)
+                        GameManager.instance.RemoveRandomItem();
                 }
             }
         }

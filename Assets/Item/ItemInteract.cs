@@ -19,7 +19,7 @@ public class ItemInteract : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             //ItemCollect();
-            GameManager.Instance.RandomiseList();
+            GameManager.instance.RandomiseList();
         }
     }
 
