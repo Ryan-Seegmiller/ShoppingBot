@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
+using Items;
 
 public class RoverController : EnemyBase
 {
@@ -45,8 +46,8 @@ public class RoverController : EnemyBase
             aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
             Flee();
             int cashToTake = Random.Range(5, 10);
-            if (GameManager.instance != null)
-                GameManager.instance.RemoveCash(cashToTake);
+            if (ItemManager.instance != null)
+                ItemManager.instance.RemoveCash(cashToTake);
             Debug.Log(gameObject.name + " took " + cashToTake + " from player.");
         }
     }

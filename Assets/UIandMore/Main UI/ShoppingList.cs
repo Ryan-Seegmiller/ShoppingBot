@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Items;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -50,8 +49,8 @@ public class ShoppingList : MonoBehaviour
     {
         if(displayItems.Length < 1 || striked.Length < 1)
         {
-            displayItems = new string[GameManager.instance.inventorySize];
-            striked = new bool[GameManager.instance.inventorySize];
+            displayItems = new string[ItemManager.instance.inventorySize];
+            striked = new bool[ItemManager.instance.inventorySize];
         }
         if (showingList)
         {
@@ -191,17 +190,11 @@ public class ShoppingList : MonoBehaviour
         {
             listText.text += displayItems[i] + "\n";
         }
-        /*
-        int[] ignores = new int[10];
-        int currIng;
-
-        int theItem;
-
-        for(int i=0; i < GameManager.instance.shoppingList.Length; i++)
+        for(int i=0; i < ItemManager.instance.shoppingList.Length; i++)
         {
-            if (!GameManager.instance.inventory.Contains(GameManager.instance.shoppingList[i]))
+            if (!ItemManager.instance.inventory.Contains(ItemManager.instance.shoppingList[i]))
             {
-                listText.text += GameManager.instance.ItemName(GameManager.instance.shoppingList[i]) + "\n";
+                listText.text += ItemManager.instance.ItemName(ItemManager.instance.shoppingList[i]) + "\n";
             }
             else
             {
@@ -211,13 +204,19 @@ public class ShoppingList : MonoBehaviour
                 //if more of item in list than in inv
                 if (difference > 0)
                 {
-                    ignores[theItem] = difference;
-
+                    currIng = 0;
+                    int theItem = ItemManager.instance.shoppingList[i];
+                    int difference = ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.shoppingList) - ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.inventory);
+                    //if more of item in list than in inv
+                    if (difference > 0)
+                    {
+                        ignores[theItem] = difference;
+                    }
                     
                 }
                 
             }
-        }*/
+        }
     }
     #endregion
 
