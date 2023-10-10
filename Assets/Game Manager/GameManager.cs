@@ -19,9 +19,10 @@ namespace gamemanager
         public int cash = 100; //Player cash
         public int inventorySize = 10; //Inventory size
         //Player inventory
-        [HideInInspector] public int[] inventory;
+        public int[] inventory;
         //Shopping list
-        [HideInInspector] public int[] shoppingList;
+        //[HideInInspector] 
+        public int[] shoppingList;
 
 
 
@@ -84,7 +85,7 @@ namespace gamemanager
             */
         }
 
-
+        #region Check against List
         public bool ListHasItem(int itemID)
         {
             if (shoppingList.Count() > 0)
@@ -100,7 +101,21 @@ namespace gamemanager
         
             return false;
         }
+        public int ItemTotalCount(int itemID, int[] intArr)
+        {
+            int result = 0;
+            for(int i = 0; i < intArr.Length; i++)
+            {
+                if(intArr[i] == itemID)
+                {
+                    result++;
+                }
+            }
+            return result;
+        }
 
+
+        #endregion
 
         //Checks if there's any more space in your inventory
         public bool CheckInventorySpace()

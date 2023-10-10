@@ -82,47 +82,48 @@ public class ShoppingList : MonoBehaviour
     {
         for(int i = 0; i < displayItems.Length; i++)
         {
-            //int ignorer = 0;
-            //collected = false;
+            int ignorer = 0;
+            collected = false;
 
             //Until further fixing, items will have to be collected in exact order
-            collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
-            //for (int j = 0; j < i; j++)
-            //{
-            //    ignorer = 0;
-            //    if (!striked[i])
-            //    {
-            //        //if they match, ignore that many in.
-            //        if (GameManager.Instance.inventory[i] == GameManager.Instance.inventory[j])
-            //        {
-            //                ignorer++;
-            //        }
-            //    }
-            //}
-            //for (int j = 0; j < GameManager.Instance.inventorySize; j++)
-            //{
-            //    if(GameManager.Instance.inventory[i] == GameManager.Instance.shoppingList[j])
-            //    {
-            //        if (ignorer > 0)
-            //        {
-            //            ignorer--;
-            //        }
-            //        else
-            //        {
-            //            collected = true;
-            //        }
-            //    }
-            //}
-            //^^^Change out for if it's anywhere in the list and prevent double checking on same item
-            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
-            if(collected)
+            //collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
+
+            if (GameManager.Instance.ItemTotalCount(GameManager.Instance.inventory[i], GameManager.Instance.shoppingList) > 1)
+            {
+                ignorer = 0;
+                if (i > 0)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (GameManager.Instance.inventory[j] == GameManager.Instance.shoppingList[i])
+                        {
+                            ignorer++;
+                        }
+                    }
+                }
+                if(ignorer <= i)
+                {
+                    collected = false;
+                }
+                else
+                {
+                    for(int j = 0; j < GameManager.Instance.inventorySize; j++)
+                    {
+                        if (GameManager.Instance.ListHasItem(GameManager.Instance.inventory[i]))
+                        {
+
+                        }
+                    }
+                }
+            }
+            else if(GameManager.Instance.ListHasItem(GameManager.Instance.inventory[i]))
             {
                 striked[i] = true;
             }
-            else
-            {
-                striked[i] = false;
-            }
+
+            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
+            
+            
             if (striked[i])
             {
                 //TODO mess with tags and effects to change striked and not striked
