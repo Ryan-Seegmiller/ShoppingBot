@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
         */
     }
 
-
+    #region Check against List
     public bool ListHasItem(int itemID)
     {
         if (shoppingList.Count() > 0)
@@ -104,6 +104,21 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+    public int ItemTotalCount(int itemID, int[] intArr)
+    {
+        int result = 0;
+        for (int i = 0; i < intArr.Length; i++)
+        {
+            if (intArr[i] == itemID)
+            {
+                result++;
+            }
+        }
+        return result;
+    }
+
+
+    #endregion
 
 
     //Checks if there's any more space in your inventory
