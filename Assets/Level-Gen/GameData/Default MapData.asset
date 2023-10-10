@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0e518c278f88774dbae75ed0abbf154, type: 3}
-  m_Name: New Map Data
+  m_Name: Default MapData
   m_EditorClassIdentifier: 
   mapSize: 5
   floorNum: 5
@@ -20,6 +20,12 @@ MonoBehaviour:
   ramp: {fileID: 5123003927311887265, guid: de73ce22ddd40da49bf620d8ef955aa8, type: 3}
   roof: {fileID: 2444538207495085243, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
   mallTiles:
-  - {fileID: 2444538207495085243, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
-  - {fileID: 7621135203304938902, guid: e7b93706cd027f1468e1dbc5dec956e5, type: 3}
-  - {fileID: 7621135203304938902, guid: ffb0b1ea388748741845230948b82893, type: 3}
+  - tile: {fileID: 2444538207495085243, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
+    spawnChance: 0.4005134
+    prevoiusSpawnChance: 0.5
+  - tile: {fileID: 7621135203304938902, guid: e7b93706cd027f1468e1dbc5dec956e5, type: 3}
+    spawnChance: 0.491838
+    prevoiusSpawnChance: 0.5
+  - tile: {fileID: 7621135203304938902, guid: ffb0b1ea388748741845230948b82893, type: 3}
+    spawnChance: 0.1076486
+    prevoiusSpawnChance: 0.5
