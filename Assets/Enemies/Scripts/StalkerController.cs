@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
+using Items;
 
 public class StalkerController : EnemyBase
 {
@@ -44,8 +45,8 @@ public class StalkerController : EnemyBase
                     //take items from player
                     Debug.Log("Player contact");
                     anim.SetTrigger("Action");
-                    if(GameManager.instance!=null)
-                        GameManager.instance.RemoveRandomItem();
+                    if(ItemManager.instance!=null)
+                        ItemManager.instance.RemoveRandomItem();
                 }
             }
         }

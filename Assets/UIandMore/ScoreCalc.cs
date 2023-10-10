@@ -1,3 +1,4 @@
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,7 +47,7 @@ public class ScoreCalc : MonoBehaviour
         }
 
         //Inventory Accurracy
-        for(int i = 0; i < GameManager.instance.inventorySize; i++)
+        for(int i = 0; i < ItemManager.instance.inventorySize; i++)
         {
             //check hom many items were correct, +30 for each?
         }

@@ -26,7 +26,7 @@ namespace LevelGen
             for (int i = 0; i < spawns.Length; i++)
             {
                 Vector3 pos = transform.position + transform.InverseTransformVector(spawns[i]);
-                GameManager.instance.itemFactory.InstanceItem<ItemCategory>(spawnCategory, pos);
+                ItemManager.instance.itemFactory.InstanceItem<ItemCategory>(spawnCategory, pos);
             }
         }
         public void DestroyItems()

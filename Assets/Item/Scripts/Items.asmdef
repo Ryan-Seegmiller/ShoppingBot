@@ -1,5 +1,5 @@
 {
-    "name": "Items",
+    "name": "ItemFactory",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

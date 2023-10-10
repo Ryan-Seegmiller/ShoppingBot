@@ -1,3 +1,4 @@
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,21 +15,21 @@ public class HacksFr : MonoBehaviour
 
     public void SetSL()
     {
-        if(shopList != null && shopList.Length <= GameManager.instance.shoppingList.Length)
+        if(shopList != null && shopList.Length <= ItemManager.instance.shoppingList.Length)
         {
             for(int i = 0; i < shopList.Length; i++)
             {
-                GameManager.instance.shoppingList[i] = shopList[i];
+                ItemManager.instance.shoppingList[i] = shopList[i];
             }
         }
-        for(int i = 0; i < GameManager.instance.inventory.Length; i++)
+        for(int i = 0; i < ItemManager.instance.inventory.Length; i++)
         {
-            GameManager.instance.inventory[i] = -1;
+            ItemManager.instance.inventory[i] = -1;
         }
     }
     public void Increment()
     {
-        GameManager.instance.inventory[Index] = GameManager.instance.shoppingList[Index];
+        ItemManager.instance.inventory[Index] = ItemManager.instance.shoppingList[Index];
     }
 
     public void diLength()
@@ -40,6 +41,6 @@ public class HacksFr : MonoBehaviour
     }
     public void diCheck()
     {
-        GameManager.instance.AddItem(ItemToAdd);
+        ItemManager.instance.AddItem(ItemToAdd);
     }
 }
