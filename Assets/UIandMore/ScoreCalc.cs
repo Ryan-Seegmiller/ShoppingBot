@@ -1,3 +1,4 @@
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,15 +33,29 @@ public class ScoreCalc : MonoBehaviour
     public void CalcScore()
     {
         scoreVal = 0;
+
+        //Time
         int t = TimeCalc.instance.timer;
         int j = testValues1.Length;
         for(int i = 0; i < testValues1.Length; i++)
         {
             if(t < testValues1[i])
             {
-                scoreVal += 10 * j;
+                scoreVal += 10 * j / 2;
             }
             j--;
+        }
+
+        //Inventory Accurracy
+        for(int i = 0; i < ItemManager.instance.inventorySize; i++)
+        {
+            //check hom many items were correct, +30 for each?
+
+            //temporary for items must be in order version
+            if(GameManager.instance.shoppingList[i] == GameManager.instance.inventory[i])
+            {
+                scoreVal += 30;
+            }
         }
     }
 }

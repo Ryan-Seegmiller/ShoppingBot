@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using items;
+using Items;
 
 namespace LevelGen
 {
@@ -9,7 +9,7 @@ namespace LevelGen
     {
         private Transform itemParent;
         [SerializeField] protected GameObject itemPrefab;
-        //[SerializeField] protected itemCategory spawnCategory;
+        [SerializeField] protected ItemCategory spawnCategory;
         [SerializeField] protected bool randomCategory = false;
         public Vector3[] spawns = new Vector3[1] { Vector3.zero };
 
@@ -17,8 +17,8 @@ namespace LevelGen
         {
             if (randomCategory)
             {
-                //int num = Enum.GetNames(typeof(itemCategory)).Length;
-                //spawnCategory = (itemCategory)Random.Range(0, 2);
+                int num = System.Enum.GetNames(typeof(ItemCategory)).Length;
+                spawnCategory = (ItemCategory)Random.Range(0, 2);
             }
             itemParent = new GameObject("ItemParent").transform;
             itemParent.SetParent(transform);
@@ -26,8 +26,7 @@ namespace LevelGen
             for (int i = 0; i < spawns.Length; i++)
             {
                 Vector3 pos = transform.position + transform.InverseTransformVector(spawns[i]);
-                //GameObject go = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
-                //go.GetComponent<ItemValue>().RandomiseFromCategory(spawnCategory);
+                ItemManager.instance.itemFactory.InstanceItem<ItemCategory>(spawnCategory, pos);
             }
         }
         public void DestroyItems()

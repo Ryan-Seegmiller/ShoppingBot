@@ -1,5 +1,5 @@
 using System.Collections;
-
+using enemymanager;
 using UnityEngine;
 public class CrawlerController : EnemyBase
 {
@@ -9,37 +9,16 @@ public class CrawlerController : EnemyBase
     public float explosionRadius = 5f;
     public Vector2 explosionForceRange = new Vector2(25, 100);
     public float explosionTorqueRange = 25;
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        if (GenerateRandomValues)
-            GetRandomAIValues();
-        transform.position = new Vector3(transform.position.x, EnemyManager.instance.groundEnemyHeight, transform.position.z);
-        GetComponent<SphereCollider>().radius = detectionRadius;
-        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
-        rb = GetComponent<Rigidbody>();
-        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
-        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
-        aS=GetComponentInChildren<AudioSource>();
         health = 2;
     }
 
-    // Update is called once per frame
-    void Update()
+    private new void FixedUpdate()
     {
-        time += Time.deltaTime;
-        //found player timer
-        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
-        {
-            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
+        base.FixedUpdate();
 
-            hasFoundPlayer = true;
-        }
-    }
-    private void FixedUpdate()
-    {
-
-        DoFlips();
+        if (Random.Range(0, 100f) > 99.9f) {roamMode = Random.Range(0, 2); }
 
         if (hasFoundPlayer)
         {
@@ -61,14 +40,9 @@ public class CrawlerController : EnemyBase
             }
         }
         DropAndClampTargetYRot();
-        if (transform.position.y < -100)
-        {
-            Die();
-        }
-        //set final rotation
         transform.Rotate(0, targetRotationY, 0);
     }
-    void DropAndClampTargetYRot()
+    private void DropAndClampTargetYRot()
     {
         if (targetRotationY > 0)
             targetRotationY -= yRotationReturn;
@@ -79,12 +53,8 @@ public class CrawlerController : EnemyBase
         if (targetRotationY <= -360)
             targetRotationY += 360;
     }
-    void DoFlips()
-    {
-        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip; roamMode = Random.Range(0, 2); }
-        if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
-    }
-    void DoRoamAI()
+
+    private void DoRoamAI()
     {
         //SENSORS
         //arms/sensor rays
@@ -107,10 +77,10 @@ public class CrawlerController : EnemyBase
         //move forward / back up and rotate, depending on sensors
         else if (roamMode==0)
         {
-            //use sensors in this mode mode
+            //use sensors in this mode
             if (!s)
             {
-                transform.Translate(Vector3.forward * acceleration);
+                rb.AddForce(transform.forward * acceleration);
             }
             else
             {
@@ -118,7 +88,7 @@ public class CrawlerController : EnemyBase
             }
         }
         else if (roamMode == 1)
-        {//random move mode
+        {//random rotate mode
             if(Random.Range(0,100f)>98f)
                 targetRotationY = Random.Range(-3, 3);
         }
@@ -126,12 +96,12 @@ public class CrawlerController : EnemyBase
         if (s)
         {
             //backup if stuck
-            transform.Translate(-Vector3.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
+            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
             targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
         }
 
     }
-    void explode()
+    private void explode()
     {
         aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);

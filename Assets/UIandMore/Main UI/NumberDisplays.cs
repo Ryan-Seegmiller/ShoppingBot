@@ -1,3 +1,4 @@
+using Items;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,7 +16,7 @@ public class NumberDisplays : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        moneyAmt.text = "$" + GameManager.Instance.cash.ToString();
+        moneyAmt.text = "$" + ItemManager.instance.cash.ToString();
         timer.text = TimeCalc.instance.GetTimeString();
     }
 }

@@ -1,6 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
+using enemymanager;
+using TMPro;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -26,7 +29,7 @@ public class EnemyBase : MonoBehaviour
     protected bool isFlying;
     protected float pointAtPlayerOffset;
     protected float detectionRadius = 15;
-    protected float timeDetectionToFind = 5;
+    protected float timeDetectionToFind = 2;
     protected float pointAtPlayerChance =30;
     protected float targetRotationY = 0;
     protected float yRotationReturn = 0.2f;
@@ -42,14 +45,67 @@ public class EnemyBase : MonoBehaviour
     protected Vector2 stuckRotation = new Vector2(2, 3);
     protected bool lowChanceFlip = false;
     protected int lowChanceFlip2 = 1;
-
+    int sh=0;
+    public int startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
     public List<AudioClip> deathAudio = new List<AudioClip>();
     public List<AudioClip> detectedAudio = new List<AudioClip>();
     public List<AudioClip> attackAudio = new List<AudioClip>();
-
-    public int health;
-
+    TMP_Text healthBar;
+    [SerializeField]
+    protected int _health;
+    public int health 
+    { get { return _health; }
+        set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
+    }
+    float lastDamagingBumpTime = 0;
     public AudioSource aS;
+    void Awake()
+    {
+        Debug.Log("start");
+        if (GenerateRandomValues)
+            GetRandomAIValues();
+        GetComponent<SphereCollider>().radius = detectionRadius;
+        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
+        rb = GetComponent<Rigidbody>();
+        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
+        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
+        aS = GetComponentInChildren<AudioSource>();
+        healthBar = GetComponentInChildren<TMP_Text>();
+    }
+    private void Update()
+    {
+        time += Time.deltaTime;
+        healthBar.transform.LookAt(Camera.main.transform);
+    }
+    public void SetHealthbar()
+    {
+        string s="";
+        Color c;
+        for (int i = 0; i < health; i++)
+            s += "-";
+        if (health >= 3)
+            c = Color.green;
+        else if (health >= 2)
+            c = Color.yellow;
+        else
+            c = Color.red;
+        healthBar.color = c;
+        healthBar.text = s;
+    }
+    protected void FixedUpdate()
+    {
+        DoFlips();
+
+        if (transform.position.y < -10)
+        {
+            Die();
+        }
+        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
+        {
+            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
+            hasFoundPlayer = true;
+        }
+    }
     protected float PointAtPlayerOffset{
         set
         {
@@ -90,7 +146,7 @@ public class EnemyBase : MonoBehaviour
         sArmRange = Random.Range(0.25f, 3f);
         lrRayAngle = Random.Range(1, 75f);
 
-        detectionRadius = Random.Range(5, 10f);
+        detectionRadius = Random.Range(10f, 25f);
         wanderRotationLimits = Random.Range(0.01f, 0.01f);
         wanderForceLimits = Random.Range(0.01f, 2f);
 
@@ -98,12 +154,12 @@ public class EnemyBase : MonoBehaviour
         yRotationReturn = yRotationPerArmDetection+Random.Range(0.001f, 0.01f);
 
         pointAtPlayerChance = Random.Range(1, 90f);
-        timeDetectionToFind = Random.Range(1, 5f);
+        timeDetectionToFind = Random.Range(0.5f, 2f);
         pointAtPlayerOffset= Random.Range(-5, 5f);
-        acceleration = Random.Range(0.01f, 0.15f);
+        acceleration = Random.Range(5f,25f);
 
-        reverseModifier = new Vector2(Random.Range(0.01f, 0.02f), Random.Range(0.02f, 0.025f));
-        stuckRotation = new Vector2(Random.Range(0.01f, 0.2f), Random.Range(0.2f, 1f));
+        reverseModifier = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
+        stuckRotation = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
     }
     public void Die()
     {
@@ -120,18 +176,22 @@ public class EnemyBase : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    void PopBodyPart(Transform t)
+    private void PopBodyPart(Transform t)
     {
         t.transform.parent = null;
-        Rigidbody tRb = t.AddComponent<Rigidbody>();
-        t.AddComponent<SphereCollider>().radius = 0.25f;
+        Rigidbody tRb = t.gameObject.AddComponent<Rigidbody>();
+        t.gameObject.AddComponent<SphereCollider>().radius = 0.25f;
         tRb.AddTorque(transform.up * Random.Range(-360, 360));
         tRb.AddForce(transform.forward * Random.Range(-25, 25));
         Destroy(t.gameObject, 3);
     }
     private void OnCollisionEnter(Collision collision)
     {
-        //Die();
+        if (rb.velocity.magnitude > 3 && time > lastDamagingBumpTime + 0.5f)
+        {
+            health--;
+            lastDamagingBumpTime = time;
+        }
     }
     public void Hit()
     {
@@ -140,5 +200,11 @@ public class EnemyBase : MonoBehaviour
         health--;
         if (health <= 0)
             Die();
+    }
+
+    private void DoFlips()
+    {
+        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
+        if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
     }
 }
