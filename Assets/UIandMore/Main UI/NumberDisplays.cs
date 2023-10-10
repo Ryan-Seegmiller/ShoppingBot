@@ -15,7 +15,7 @@ public class NumberDisplays : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        moneyAmt.text = "$" + GameManager.Instance.cash.ToString();
+        moneyAmt.text = "$" + GameManager.instance.cash.ToString();
         timer.text = TimeCalc.instance.GetTimeString();
     }
 }

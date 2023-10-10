@@ -45,8 +45,8 @@ public class RoverController : EnemyBase
             aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
             Flee();
             int cashToTake = Random.Range(5, 10);
-            if (GameManager.Instance != null)
-                GameManager.Instance.RemoveCash(cashToTake);
+            if (GameManager.instance != null)
+                GameManager.instance.RemoveCash(cashToTake);
             Debug.Log(gameObject.name + " took " + cashToTake + " from player.");
         }
     }

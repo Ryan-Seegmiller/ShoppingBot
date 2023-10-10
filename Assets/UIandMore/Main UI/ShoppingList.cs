@@ -49,8 +49,8 @@ public class ShoppingList : MonoBehaviour
     {
         if(displayItems.Length < 1 || striked.Length < 1)
         {
-            displayItems = new string[GameManager.Instance.inventorySize];
-            striked = new bool[GameManager.Instance.inventorySize];
+            displayItems = new string[GameManager.instance.inventorySize];
+            striked = new bool[GameManager.instance.inventorySize];
         }
         if (showingList)
         {
@@ -90,15 +90,15 @@ public class ShoppingList : MonoBehaviour
                 if (!striked[i])
                 {
                     //if they match, ignore that many in.
-                    if (GameManager.Instance.inventory[i] == GameManager.Instance.inventory[j])
+                    if (GameManager.instance.inventory[i] == GameManager.instance.inventory[j])
                     {
                             ignorer++;
                     }
                 }
             }
-            for (int j = 0; j < GameManager.Instance.inventorySize; j++)
+            for (int j = 0; j < GameManager.instance.inventorySize; j++)
             {
-                if(GameManager.Instance.inventory[i] == GameManager.Instance.shoppingList[j])
+                if(GameManager.instance.inventory[i] == GameManager.instance.shoppingList[j])
                 {
                     if (ignorer > 0)
                     {
@@ -111,7 +111,7 @@ public class ShoppingList : MonoBehaviour
                 }
             }
             //^^^Change out for if it's anywhere in the list and prevent double checking on same item
-            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
+            string currentName = GameManager.instance.ItemName(GameManager.instance.shoppingList[i]);
             if(collected)
             {
                 striked[i] = true;

@@ -46,7 +46,7 @@ public class ScoreCalc : MonoBehaviour
         }
 
         //Inventory Accurracy
-        for(int i = 0; i < GameManager.Instance.inventorySize; i++)
+        for(int i = 0; i < GameManager.instance.inventorySize; i++)
         {
             //check hom many items were correct, +30 for each?
         }

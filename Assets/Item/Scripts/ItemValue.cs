@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Items
 {
     //Item id enum
-    public enum itemID
+    public enum ItemID
     {
         //Food
         apple,
@@ -23,7 +23,7 @@ namespace Items
     };
 
     //Item category enum
-    public enum itemCategory
+    public enum ItemCategory
     {
         food,
         clothes,
@@ -33,7 +33,7 @@ namespace Items
     public class ItemValue : MonoBehaviour
     {
 
-        public static ItemValue Instance;
+        public static ItemValue instance;
 
         //HOW TO ADD ITEMS
         //Step 1: Add item in the 'itemID' enum. (Make sure it's positioned with other items in the same category)
@@ -75,12 +75,12 @@ namespace Items
         };
 
 
-        void Start()
+        void Awake()
         {
             //Singleton
-            if (Instance == null)
+            if (instance == null)
             {
-                Instance = this;
+                instance = this;
             }
             else
             {
