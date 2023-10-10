@@ -661,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 1939126585}
     - target: {fileID: 198776709333422665, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198776709526738405, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_sharedMaterial
@@ -775,6 +775,10 @@ PrefabInstance:
     - target: {fileID: 657242179326731453, guid: 5966a2d77ad51d5468f9609312ad1d4f, type: 3}
       propertyPath: m_Name
       value: MenuPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 657242179326731453, guid: 5966a2d77ad51d5468f9609312ad1d4f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8329005507881919198, guid: 5966a2d77ad51d5468f9609312ad1d4f, type: 3}
       propertyPath: m_RootOrder
