@@ -52,7 +52,7 @@ public class ScoreCalc : MonoBehaviour
             //check hom many items were correct, +30 for each?
 
             //temporary for items must be in order version
-            if(GameManager.instance.shoppingList[i] == GameManager.instance.inventory[i])
+            if(ItemManager.instance.shoppingList[i] == ItemManager.instance.inventory[i])
             {
                 scoreVal += 30;
             }
