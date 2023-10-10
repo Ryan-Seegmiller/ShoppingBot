@@ -85,11 +85,13 @@ public class ShoppingList : MonoBehaviour
     #region TasksOpen
     void UpdateDisplay()
     {
-        /*
+        
         for(int i = 0; i < displayItems.Length; i++)
         {
+            //Until further fixing, items will have to be collected in exact order
+            collected = GameManager.instance.shoppingList[i] == GameManager.instance.inventory[i];
             string currentName = GameManager.instance.ItemName(GameManager.instance.shoppingList[i]);
-
+            /*
             int ignorer = 0;
             collected = false;
 
@@ -136,9 +138,16 @@ public class ShoppingList : MonoBehaviour
                 striked[i] = true;
             }
 
-            
-            
-            
+            */
+
+            if (collected)
+            {
+                striked[i] = true;
+            }
+            else
+            {
+                striked[i] = false;
+            }
             if (striked[i])
             {
                 //TODO mess with tags and effects to change striked and not striked
@@ -152,8 +161,13 @@ public class ShoppingList : MonoBehaviour
                 //replace 4 with get from game manager "i" in inventory
                 
                 displayItems[i] = "<b>"+ currentName + "</b>";
+
+                if (GameManager.instance.inventory[i] != -1)
+                {
+                    displayItems[i] += " <b>X<b>";
+                }
             }
-        }*/
+        }
         BuildList();
     }
     //For later implementation
@@ -173,13 +187,16 @@ public class ShoppingList : MonoBehaviour
     {
         listText.text = "Gather\n";
 
-        int[] ignores = new int[10];
-        int currIng;
-        /*
         for( int i = 0; i < displayItems.Length; i++)
         {
             listText.text += displayItems[i] + "\n";
-        }*/
+        }
+        /*
+        int[] ignores = new int[10];
+        int currIng;
+
+        int theItem;
+
         for(int i=0; i < GameManager.instance.shoppingList.Length; i++)
         {
             if (!GameManager.instance.inventory.Contains(GameManager.instance.shoppingList[i]))
@@ -188,20 +205,19 @@ public class ShoppingList : MonoBehaviour
             }
             else
             {
-                if(i > 0)
+                currIng = 0;
+                theItem = GameManager.instance.shoppingList[i];
+                int difference = GameManager.instance.ItemTotalCount(theItem, GameManager.instance.shoppingList) - GameManager.instance.ItemTotalCount(theItem, GameManager.instance.inventory);
+                //if more of item in list than in inv
+                if (difference > 0)
                 {
-                    currIng = 0;
-                    int theItem = GameManager.instance.shoppingList[i];
-                    int difference = GameManager.instance.ItemTotalCount(theItem, GameManager.instance.shoppingList) - GameManager.instance.ItemTotalCount(theItem, GameManager.instance.inventory);
-                    //if more of item in list than in inv
-                    if (difference > 0)
-                    {
-                        ignores[theItem] = difference;
-                    }
+                    ignores[theItem] = difference;
+
                     
                 }
+                
             }
-        }
+        }*/
     }
     #endregion
 
