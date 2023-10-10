@@ -6,7 +6,7 @@ namespace LevelGen
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] internal MapData mapData;
+        [SerializeField] public MapData mapData;
         [SerializeField] internal bool doGenerate = true;
 
         private int[] specialTiles = new int[1] {0};
@@ -86,9 +86,19 @@ namespace LevelGen
                         }
                         else if (!IsSpecialTile(i, j, k))
                         {
-                            int mallTileIndex = (mapData.mallTiles.Length <= 1) ? 0 : Random.Range(0, mapData.mallTiles.Length);
+                            GameObject tile = null;
+                            if (mapData.mallTiles.Length == 0)
+                            {
+                                Debug.LogError("LevelManager.InstanceMall() :: No mall tiles in MapData", this);
+                            } else if (mapData.mallTiles.Length == 1)
+                            {
+                                tile = mapData.mallTiles[0].tile;
+                            } else
+                            {
+                                tile = MallTile.GetRandomTile(mapData.mallTiles);
+                            }
                             int randRot = 90 * Random.Range(0, 4);
-                            Instantiate(mapData.mallTiles[mallTileIndex], new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
+                            Instantiate(tile, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.Euler(0, randRot, 0), transform);
                         }
 
                         // SPAWN EXTERIOR MALL WALLS

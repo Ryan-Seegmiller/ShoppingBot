@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LevelGen
 {
     [CreateAssetMenu(menuName = "LevelGen/MapTiles")]
-    internal class MapData : ScriptableObject
+    public class MapData : ScriptableObject
     {
         public const int tileSize = 10;
         public const int tileHeight = 5;
@@ -19,6 +19,11 @@ namespace LevelGen
         public GameObject wall;
         public GameObject ramp;
         public GameObject roof;
-        public GameObject[] mallTiles;
+        public MallTile[] mallTiles;
+
+        private void OnValidate()
+        {
+            MallTile.Balance(mallTiles);
+        }
     }
 }
