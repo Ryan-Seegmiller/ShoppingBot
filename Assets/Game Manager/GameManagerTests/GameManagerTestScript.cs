@@ -3,7 +3,6 @@ using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using gamemanager;
 
 public class GameManagerTestScript
 {

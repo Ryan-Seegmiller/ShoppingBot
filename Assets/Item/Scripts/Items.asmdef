@@ -1,6 +1,6 @@
 {
-    "name": "ItemAssembly",
-    "rootNamespace": "items",
+    "name": "Items",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
