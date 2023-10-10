@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace items
+namespace Items
 {
     [CreateAssetMenu(menuName = "Items/Item Factory")]
 
