@@ -15,6 +15,9 @@ namespace LevelGen
 
         public void SpawnItems()
         {
+            if (ItemManager.instance == null) { Debug.LogWarning("StoreTile.SpawnItems() :: ItemManager.instance == null", this); return; }
+            if (ItemManager.instance.itemFactory == null) { Debug.LogWarning("StoreTile.SpawnItems() :: ItemManager.instance.itemFactory == null", this); return; }
+
             if (randomCategory)
             {
                 int num = System.Enum.GetNames(typeof(ItemCategory)).Length;
