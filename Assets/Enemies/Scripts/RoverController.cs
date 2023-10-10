@@ -24,6 +24,7 @@ public class RoverController : EnemyBase
         anim = GetComponentInChildren<Animator>();
         roamMode = Random.Range(0, 2);
         health = Random.Range(3, 6);
+        startHealth = health;
     }
 
     // Update is called once per frame
