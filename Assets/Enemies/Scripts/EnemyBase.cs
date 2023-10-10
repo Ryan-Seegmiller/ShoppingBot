@@ -64,7 +64,6 @@ public class EnemyBase : MonoBehaviour
         Debug.Log("start");
         if (GenerateRandomValues)
             GetRandomAIValues();
-        transform.position = new Vector3(transform.position.x, EnemyManager.instance.groundEnemyHeight, transform.position.z);
         GetComponent<SphereCollider>().radius = detectionRadius;
         pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
         rb = GetComponent<Rigidbody>();
