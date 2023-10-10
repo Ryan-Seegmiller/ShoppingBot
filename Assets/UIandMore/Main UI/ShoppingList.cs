@@ -50,8 +50,8 @@ public class ShoppingList : MonoBehaviour
     {
         if(displayItems.Length < 1 || striked.Length < 1)
         {
-            displayItems = new string[GameManager.Instance.inventorySize];
-            striked = new bool[GameManager.Instance.inventorySize];
+            displayItems = new string[GameManager.instance.inventorySize];
+            striked = new bool[GameManager.instance.inventorySize];
         }
         if (showingList)
         {
@@ -88,22 +88,22 @@ public class ShoppingList : MonoBehaviour
         /*
         for(int i = 0; i < displayItems.Length; i++)
         {
-            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
+            string currentName = GameManager.instance.ItemName(GameManager.instance.shoppingList[i]);
 
             int ignorer = 0;
             collected = false;
 
             //Until further fixing, items will have to be collected in exact order
-            //collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
+            //collected = GameManager.instance.shoppingList[i] == GameManager.instance.inventory[i];
 
-            if (GameManager.Instance.ItemTotalCount(GameManager.Instance.inventory[i], GameManager.Instance.shoppingList) > 1)
+            if (GameManager.instance.ItemTotalCount(GameManager.instance.inventory[i], GameManager.instance.shoppingList) > 1)
             {
                 ignorer = 0;
                 if (i > 0)
                 {
                     for (int j = 0; j < i; j++)
                     {
-                        if (GameManager.Instance.inventory[j] == GameManager.Instance.shoppingList[i])
+                        if (GameManager.instance.inventory[j] == GameManager.instance.shoppingList[i])
                         {
                             ignorer++;
                         }
@@ -115,9 +115,9 @@ public class ShoppingList : MonoBehaviour
                 }
                 else
                 {
-                    for(int j = 0; j < GameManager.Instance.inventorySize; j++)
+                    for(int j = 0; j < GameManager.instance.inventorySize; j++)
                     {
-                        if (GameManager.Instance.ListHasItem(GameManager.Instance.inventory[i]))
+                        if (GameManager.instance.ListHasItem(GameManager.instance.inventory[i]))
                         {
                             if(ignorer > 0)
                             {
@@ -131,7 +131,7 @@ public class ShoppingList : MonoBehaviour
                     }
                 }
             }
-            else if(GameManager.Instance.ListHasItem(GameManager.Instance.inventory[i]))
+            else if(GameManager.instance.ListHasItem(GameManager.instance.inventory[i]))
             {
                 striked[i] = true;
             }
@@ -175,31 +175,33 @@ public class ShoppingList : MonoBehaviour
 
         int[] ignores = new int[10];
         int currIng;
+
+        int theItem;
+
         /*
         for( int i = 0; i < displayItems.Length; i++)
         {
             listText.text += displayItems[i] + "\n";
         }*/
-        for(int i=0; i < GameManager.Instance.shoppingList.Length; i++)
+        for(int i=0; i < GameManager.instance.shoppingList.Length; i++)
         {
-            if (!GameManager.Instance.inventory.Contains(GameManager.Instance.shoppingList[i]))
+            if (!GameManager.instance.inventory.Contains(GameManager.instance.shoppingList[i]))
             {
-                listText.text += GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]) + "\n";
+                listText.text += GameManager.instance.ItemName(GameManager.instance.shoppingList[i]) + "\n";
             }
             else
             {
-                if(i > 0)
+                currIng = 0;
+                theItem = GameManager.instance.shoppingList[i];
+                int difference = GameManager.instance.ItemTotalCount(theItem, GameManager.instance.shoppingList) - GameManager.instance.ItemTotalCount(theItem, GameManager.instance.inventory);
+                //if more of item in list than in inv
+                if (difference > 0)
                 {
-                    currIng = 0;
-                    int theItem = GameManager.Instance.shoppingList[i];
-                    int difference = GameManager.Instance.ItemTotalCount(theItem, GameManager.Instance.shoppingList) - GameManager.Instance.ItemTotalCount(theItem, GameManager.Instance.inventory);
-                    //if more of item in list than in inv
-                    if (difference > 0)
-                    {
-                        ignores[theItem] = difference;
-                    }
+                    ignores[theItem] = difference;
+
                     
                 }
+                
             }
         }
     }
