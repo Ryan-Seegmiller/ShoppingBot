@@ -259,7 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5489563353184028751}
   - component: {fileID: 6967051739714567483}
-  - component: {fileID: 4212709890766115989}
+  - component: {fileID: -267391085762209915}
   m_Layer: 0
   m_Name: Hat
   m_TagString: Untagged
@@ -299,7 +299,7 @@ CapsuleCollider:
   m_Height: 8
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &4212709890766115989
+--- !u!54 &-267391085762209915
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

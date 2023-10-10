@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5935147096436832152}
   - component: {fileID: 7906387223494435668}
   - component: {fileID: 7139365110048878013}
-  - component: {fileID: 3722547256353102665}
+  - component: {fileID: -1319088542107914177}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -98,7 +98,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 33, y: 3, z: 6}
   m_Center: {x: -0.4, y: 0, z: 5.2}
---- !u!54 &3722547256353102665
+--- !u!54 &-1319088542107914177
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

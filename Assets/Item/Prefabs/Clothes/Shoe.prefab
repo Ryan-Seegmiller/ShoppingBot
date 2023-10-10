@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5384608275185201020}
   - component: {fileID: 6071987595593885233}
   - component: {fileID: 6529264291604407420}
-  - component: {fileID: 7330827560579412273}
+  - component: {fileID: -3987552649398656865}
   m_Layer: 0
   m_Name: Shoe
   m_TagString: Untagged
@@ -98,7 +98,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.13, y: 0.042, z: 0.05}
   m_Center: {x: -0.052, y: -0.003, z: -0.033}
---- !u!54 &7330827560579412273
+--- !u!54 &-3987552649398656865
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

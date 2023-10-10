@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5290661812153848358}
   - component: {fileID: 1696413059962857067}
-  - component: {fileID: 718418520706230959}
+  - component: {fileID: -7477375774316780343}
   m_Layer: 0
   m_Name: Glasses
   m_TagString: Untagged
@@ -49,7 +49,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.8, y: 0.3, z: 1.6}
   m_Center: {x: 0, y: -0.46, z: -0.96}
---- !u!54 &718418520706230959
+--- !u!54 &-7477375774316780343
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

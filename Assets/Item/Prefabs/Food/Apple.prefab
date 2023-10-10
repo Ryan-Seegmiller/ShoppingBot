@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3657307407348499871}
   - component: {fileID: 2772724910363662730}
   - component: {fileID: 7175786852201178552}
-  - component: {fileID: 4685286569730687946}
+  - component: {fileID: 7963896538782052897}
   m_Layer: 0
   m_Name: Apple
   m_TagString: Untagged
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!54 &4685286569730687946
+--- !u!54 &7963896538782052897
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

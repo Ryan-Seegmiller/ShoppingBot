@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7608197643911387707}
   - component: {fileID: 5750522194034051353}
-  - component: {fileID: 1392880805798019702}
+  - component: {fileID: -7534342659003522522}
   m_Layer: 0
   m_Name: Screwdriver
   m_TagString: Untagged
@@ -133,7 +133,7 @@ CapsuleCollider:
   m_Height: 13
   m_Direction: 0
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!54 &1392880805798019702
+--- !u!54 &-7534342659003522522
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
