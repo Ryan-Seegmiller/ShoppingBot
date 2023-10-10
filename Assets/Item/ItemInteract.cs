@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using items;
-using gamemanager;
+using Items;
 
 public class ItemInteract : MonoBehaviour
 {

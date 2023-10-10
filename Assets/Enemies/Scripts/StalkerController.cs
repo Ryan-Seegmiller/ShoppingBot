@@ -2,7 +2,6 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using gamemanager;
 using enemymanager;
 
 public class StalkerController : EnemyBase
@@ -11,25 +10,28 @@ public class StalkerController : EnemyBase
     public List<Vector3> currentAttackCurve=null;
     public int frame = 0;
     public Animator anim;
+    float lastAttackTime = 0;
     public void Start()
     {
         anim = GetComponentInChildren<Animator>();
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
+        startHealth = health;
+
     }
-    void FixedUpdate()
+    new void FixedUpdate()
     {
         base.FixedUpdate();
 
         DropAndClampTargetYRot();
 
         //if found player, create attack curve
-        if (hasFoundPlayer && currentAttackCurve.Count < 1 && Random.Range(0, 100f) > 95)
+        if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime+3<time)
             BeginAttackCurve();
         //if there is an attack curve, run it
-        if (currentAttackCurve.Count >0)
-            RunAttackCurve();
+        if (currentAttackCurve.Count > 0)
+            RunAttackCurvePhysics();
         else
         {
             DoAerialAI();
@@ -77,21 +79,14 @@ public class StalkerController : EnemyBase
         Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
         //WANDER
         if (lowChanceFlip && !s)
-            rb.AddForce(Vector3.forward * acceleration * Random.Range(0, wanderForceLimits));
+            rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits));
         else
-            rb.AddForce(Vector3.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
+            rb.AddForce(transform.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
         //rotate if arms have collided
         if (r)
             targetRotationY += yRotationPerArmDetection;
         if (l)
             targetRotationY -= yRotationPerArmDetection;
-
-        //move forward / back up and rotate, depending on sensors
-        /*if (!s && !(l || r))
-        {
-            //proceed forward
-            transform.Translate(Vector3.forward * acceleration);
-        }*/
         if (s)
         {
             //backup if stuck
@@ -104,6 +99,7 @@ public class StalkerController : EnemyBase
     void BeginAttackCurve()
     {
         //reset and ready curve list
+        lastAttackTime = time;
         Vector3 v = new Vector3(PlayerControllerTest.instance.transform.position.x, transform.position.y, PlayerControllerTest.instance.transform.position.z);
         transform.LookAt(v);
         currentAttackCurve.Clear();
@@ -115,8 +111,19 @@ public class StalkerController : EnemyBase
         //call repeatedly until currentAttackCurve clear, which happens at ELSE
         if (frame < currentAttackCurve.Count)
         {
-            Debug.DrawLine(transform.position, currentAttackCurve[frame], Color.magenta, 5f);
             transform.position = currentAttackCurve[frame];
+            frame++;
+        }
+        else
+            currentAttackCurve.Clear();
+    }    
+    void RunAttackCurvePhysics()
+    {
+        //call repeatedly until currentAttackCurve clear, which happens at ELSE
+        if (frame < currentAttackCurve.Count)
+        {
+            transform.LookAt(currentAttackCurve[frame]);
+            rb.AddForce(transform.forward * 35);
             frame++;
         }
         else

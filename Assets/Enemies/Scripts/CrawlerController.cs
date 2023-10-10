@@ -9,13 +9,13 @@ public class CrawlerController : EnemyBase
     public float explosionRadius = 5f;
     public Vector2 explosionForceRange = new Vector2(25, 100);
     public float explosionTorqueRange = 25;
-    // Start is called before the first frame update
-    public void Start()
+    private void Start()
     {
         health = 2;
+        startHealth = health;
     }
 
-    private void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
 
@@ -43,7 +43,7 @@ public class CrawlerController : EnemyBase
         DropAndClampTargetYRot();
         transform.Rotate(0, targetRotationY, 0);
     }
-    void DropAndClampTargetYRot()
+    private void DropAndClampTargetYRot()
     {
         if (targetRotationY > 0)
             targetRotationY -= yRotationReturn;
@@ -55,7 +55,7 @@ public class CrawlerController : EnemyBase
             targetRotationY += 360;
     }
 
-    void DoRoamAI()
+    private void DoRoamAI()
     {
         //SENSORS
         //arms/sensor rays
@@ -102,7 +102,7 @@ public class CrawlerController : EnemyBase
         }
 
     }
-    void explode()
+    private void explode()
     {
         aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
