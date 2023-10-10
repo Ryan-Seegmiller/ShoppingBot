@@ -18,8 +18,6 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
-        startHealth = health;
-
     }
     new void FixedUpdate()
     {

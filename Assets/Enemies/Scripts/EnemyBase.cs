@@ -29,7 +29,7 @@ public class EnemyBase : MonoBehaviour
     protected bool isFlying;
     protected float pointAtPlayerOffset;
     protected float detectionRadius = 15;
-    protected float timeDetectionToFind = 5;
+    protected float timeDetectionToFind = 2;
     protected float pointAtPlayerChance =30;
     protected float targetRotationY = 0;
     protected float yRotationReturn = 0.2f;
@@ -55,7 +55,7 @@ public class EnemyBase : MonoBehaviour
     protected int _health;
     public int health 
     { get { return _health; }
-        set { _health = value; if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { SetHealthbar(); } }
+        set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
     }
     float lastDamagingBumpTime = 0;
     public AudioSource aS;

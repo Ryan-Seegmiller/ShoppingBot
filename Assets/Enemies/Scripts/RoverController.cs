@@ -24,7 +24,6 @@ public class RoverController : EnemyBase
         anim = GetComponentInChildren<Animator>();
         roamMode = Random.Range(0, 2);
         health = Random.Range(3, 6);
-        startHealth = health;
     }
 
     // Update is called once per frame
@@ -52,7 +51,7 @@ public class RoverController : EnemyBase
             Debug.Log(gameObject.name + " took " + cashToTake + " from player.");
         }
     }
-    private void FixedUpdate()
+    private new void FixedUpdate()
     {
         base.FixedUpdate();
         if (Random.Range(0, 100f) > 99.9f && !fleeing){ roamMode = Random.Range(0, 2); }
