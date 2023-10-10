@@ -82,8 +82,36 @@ public class ShoppingList : MonoBehaviour
     {
         for(int i = 0; i < displayItems.Length; i++)
         {
-            collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
-            //itemID current = (itemID)GameManager.Instance.shoppingList[i];
+            int ignorer = 0;
+            collected = false;
+            //collected = GameManager.Instance.shoppingList[i] == GameManager.Instance.inventory[i];
+            for (int j = 0; j < i; j++)
+            {
+                ignorer = 0;
+                if (!striked[i])
+                {
+                    //if they match, ignore that many in.
+                    if (GameManager.Instance.inventory[i] == GameManager.Instance.inventory[j])
+                    {
+                            ignorer++;
+                    }
+                }
+            }
+            for (int j = 0; j < GameManager.Instance.inventorySize; j++)
+            {
+                if(GameManager.Instance.inventory[i] == GameManager.Instance.shoppingList[j])
+                {
+                    if (ignorer > 0)
+                    {
+                        ignorer--;
+                    }
+                    else
+                    {
+                        collected = true;
+                    }
+                }
+            }
+            //^^^Change out for if it's anywhere in the list and prevent double checking on same item
             string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
             if(collected)
             {
@@ -105,7 +133,7 @@ public class ShoppingList : MonoBehaviour
             {
                 //replace 4 with get from game manager "i" in inventory
                 
-                displayItems[i] = "<b>" + collected +" "+ currentName + "</b>";
+                displayItems[i] = "<b>"+ currentName + "</b>";
             }
         }
         BuildList();
