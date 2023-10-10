@@ -91,18 +91,25 @@ public class GameManager : MonoBehaviour
     #region Check against List
     public bool ListHasItem(int itemID)
     {
-        if (shoppingList.Count() > 0)
+        if (shoppingList.Length > 0)
         {
-            foreach (int l in shoppingList)
+            for(int i = 0; i < shoppingList.Length; i++)
             {
-                if (l == itemID)
+                if (shoppingList[i] == itemID)
                 {
                     return true;
                 }
             }
-        }
 
-        return false;
+            //foreach (int l in shoppingList)
+            //{
+            //    if (l == itemID)
+            //    {
+            //        return true;
+            //    }
+            //}
+        }
+            return false;
     }
     public int ItemTotalCount(int itemID, int[] intArr)
     {

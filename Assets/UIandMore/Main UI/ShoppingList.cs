@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -54,7 +55,8 @@ public class ShoppingList : MonoBehaviour
         }
         if (showingList)
         {
-            UpdateDisplay();
+            //Just build list when list is opened not every frame that it's showing
+            //UpdateDisplay();
             if (Input.anyKeyDown)
             {
                 ToggleList();
@@ -75,12 +77,19 @@ public class ShoppingList : MonoBehaviour
         fullList.SetActive(!showingList);
         closedList.SetActive(showingList);
         showingList = !showingList;
+        if (showingList)
+        {
+            UpdateDisplay();
+        }
     }
     #region TasksOpen
     void UpdateDisplay()
     {
+        /*
         for(int i = 0; i < displayItems.Length; i++)
         {
+            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
+
             int ignorer = 0;
             collected = false;
 
@@ -110,7 +119,14 @@ public class ShoppingList : MonoBehaviour
                     {
                         if (GameManager.Instance.ListHasItem(GameManager.Instance.inventory[i]))
                         {
-
+                            if(ignorer > 0)
+                            {
+                                ignorer--;
+                            }
+                            else
+                            {
+                                striked[j] = true;
+                            }
                         }
                     }
                 }
@@ -120,7 +136,7 @@ public class ShoppingList : MonoBehaviour
                 striked[i] = true;
             }
 
-            string currentName = GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]);
+            
             
             
             if (striked[i])
@@ -137,7 +153,7 @@ public class ShoppingList : MonoBehaviour
                 
                 displayItems[i] = "<b>"+ currentName + "</b>";
             }
-        }
+        }*/
         BuildList();
     }
     //For later implementation
@@ -156,10 +172,37 @@ public class ShoppingList : MonoBehaviour
     void BuildList()
     {
         listText.text = "Gather\n";
+
+        int[] ignores = new int[10];
+        int currIng;
+        /*
         for( int i = 0; i < displayItems.Length; i++)
         {
             listText.text += displayItems[i] + "\n";
+        }*/
+        for(int i=0; i < GameManager.Instance.shoppingList.Length; i++)
+        {
+            if (!GameManager.Instance.inventory.Contains(GameManager.Instance.shoppingList[i]))
+            {
+                listText.text += GameManager.Instance.ItemName(GameManager.Instance.shoppingList[i]) + "\n";
+            }
+            else
+            {
+                if(i > 0)
+                {
+                    currIng = 0;
+                    int theItem = GameManager.Instance.shoppingList[i];
+                    int difference = GameManager.Instance.ItemTotalCount(theItem, GameManager.Instance.shoppingList) - GameManager.Instance.ItemTotalCount(theItem, GameManager.Instance.inventory);
+                    //if more of item in list than in inv
+                    if (difference > 0)
+                    {
+                        ignores[theItem] = difference;
+                    }
+                    
+                }
+            }
         }
     }
     #endregion
+
 }
