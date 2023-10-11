@@ -19,6 +19,7 @@ namespace enemymanager
         protected float lastCheckTime = 0;
         protected float lastSpawnTime = 0;
         public float spawnDelay = 5;
+        public int maxEnemies = 15;
 
         void Awake()
         {
@@ -51,7 +52,7 @@ namespace enemymanager
             {
                 lastCheckTime = time;
                 enemiesSpawnQueue = enemySpawns.Count - currentEnemies.Count;
-                if (enemiesSpawnQueue > 0 && time > lastSpawnTime + spawnDelay)
+                if (enemiesSpawnQueue > 0 && time > lastSpawnTime + spawnDelay && currentEnemies.Count<maxEnemies)
                 {
                     lastSpawnTime = time;
                     SpawnEnemies(1, Random.Range(0, enemyPrefabs.Count));

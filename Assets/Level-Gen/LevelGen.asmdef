@@ -2,8 +2,7 @@
     "name": "LevelGen",
     "rootNamespace": "",
     "references": [
-        "GUID:250b2ea047c69c74d97a0b7b2f5e628f",
-        "GUID:a9e492c546ba7b04cbc442684f763e31"
+        "GUID:250b2ea047c69c74d97a0b7b2f5e628f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

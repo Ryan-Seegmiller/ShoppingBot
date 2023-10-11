@@ -1,6 +1,6 @@
 {
-    "name": "LevelGenTests",
-    "rootNamespace": "",
+    "name": "LevelGen.Test",
+    "rootNamespace": "LevelGen",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

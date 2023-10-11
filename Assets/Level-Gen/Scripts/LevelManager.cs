@@ -15,7 +15,7 @@ namespace LevelGen
                 instance = this;
             } else
             {
-                Debug.LogWarning("LevelManager.Awake() :: Another instance of LevelManager attempted to exist.", GameManager.instance);
+                Debug.LogWarning("LevelManager.Awake() :: Another instance of LevelManager attempted to exist.", LevelManager.instance);
                 Destroy(gameObject);
             }
         }
