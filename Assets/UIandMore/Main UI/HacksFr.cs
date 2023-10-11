@@ -37,7 +37,7 @@ public class HacksFr : MonoBehaviour
         //print("di length: " + ShoppingList.instance.displayItems.Length);
         //print(GameManager.Instance.shoppingList[Index]);
         //TimeCalc.instance.SetTimer(599900);
-        print(ScoreCalc.instance.GetScore() + "0 Points!");
+        print(ScoreCalc.instance.GetScore() + " Points!");
     }
     public void diCheck()
     {
