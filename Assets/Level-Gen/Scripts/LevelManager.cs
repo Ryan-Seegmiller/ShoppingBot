@@ -89,6 +89,7 @@ namespace LevelGen
                     {
                         if (i == mapData.floorNum)
                         {
+                            if (j + k == 0) { continue; }
                             Instantiate(mapData.roof, new Vector3(j * MapData.tileSize, i * MapData.tileHeight, k * MapData.tileSize), Quaternion.identity, transform);
                             continue;
                         }
