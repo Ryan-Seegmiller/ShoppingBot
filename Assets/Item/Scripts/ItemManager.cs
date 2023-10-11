@@ -102,6 +102,7 @@ namespace Items
             //Assign inventory and shopping list array size, and set each item to -1
             inventory = new int[inventorySize];
             shoppingList = new int[inventorySize];
+            completionList = new bool[inventorySize];
             for (int i = 0; i < inventory.Length; i++)
             {
                 inventory[i] = -1; //Assign every item in inventory to -1
