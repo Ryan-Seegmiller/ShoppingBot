@@ -161,10 +161,10 @@ public class ShoppingList : MonoBehaviour
                 
                 displayItems[i] = "<b>"+ currentName + "</b>";
 
-                if (ItemManager.instance.inventory[i] != -1)
-                {
-                    displayItems[i] += " <b>X<b>";
-                }
+                //if (ItemManager.instance.inventory[i] != -1)
+                //{
+                //    displayItems[i] += " <b>X</b>";
+                //}
             }
         }
         BuildList();
