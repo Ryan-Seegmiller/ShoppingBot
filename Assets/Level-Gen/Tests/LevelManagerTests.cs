@@ -9,7 +9,7 @@ public class LevelManagerTests
 {
     public static GameObject level;
 
-    public GameObject InstanceLevel()
+    public static GameObject InstanceLevel()
     {
         string[] result = AssetDatabase.FindAssets("Level", new[] { "Assets/Level-Gen/Prefabs" });
         string assetPath = AssetDatabase.GUIDToAssetPath(result[0]);

@@ -10,20 +10,23 @@ namespace LevelGen
         public static LevelManager instance;
         private void Awake()
         {
-            if (instance != null)
+            if (instance == null)
             {
                 instance = this;
             } else
             {
-                Debug.LogWarning("LevelManager.Awake() :: Another instance of GameManager attempted to exist.", GameManager.instance);
+                Debug.LogWarning("LevelManager.Awake() :: Another instance of LevelManager attempted to exist.", GameManager.instance);
                 Destroy(gameObject);
             }
         }
         #endregion
 
+        [Header("Mall")]
         [SerializeField] public MapData mapData;
         [SerializeField] internal bool doGenerate = true;
 
+        [Header("Items")]
+        [Range(.001f,1), SerializeField] internal float itemSpawnChance = .8f;
         private int[] specialTiles = new int[1] {0};
 
         #region Level Instantiation

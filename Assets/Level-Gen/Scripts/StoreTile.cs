@@ -17,6 +17,7 @@ namespace LevelGen
         {
             if (ItemManager.instance == null) { Debug.LogWarning("StoreTile.SpawnItems() :: ItemManager.instance == null", this); return; }
             if (ItemManager.instance.itemFactory == null) { Debug.LogWarning("StoreTile.SpawnItems() :: ItemManager.instance.itemFactory == null", this); return; }
+            if (LevelManager.instance == null) { Debug.LogWarning("StoreTile.SpawnItems() :: LevelManager.instance == null", this); return; }
 
             if (randomCategory)
             {
@@ -28,6 +29,8 @@ namespace LevelGen
             itemParent.localPosition = Vector3.zero;
             for (int i = 0; i < spawns.Length; i++)
             {
+                float num = Random.Range(0f, 1f);
+                if (num > LevelManager.instance.itemSpawnChance) { continue; }
                 Vector3 pos = transform.position + transform.InverseTransformVector(spawns[i]);
                 ItemManager.instance.itemFactory.InstanceItem<ItemCategory>(spawnCategory, pos);
             }
