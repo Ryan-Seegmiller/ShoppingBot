@@ -673,7 +673,11 @@ PrefabInstance:
     - target: {fileID: 198776708847816663, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1939126585}
+      objectReference: {fileID: 1939126587}
+    - target: {fileID: 198776708847816663, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Items.ItemManager, Items
+      objectReference: {fileID: 0}
     - target: {fileID: 198776709333422665, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_IsActive
       value: 0
