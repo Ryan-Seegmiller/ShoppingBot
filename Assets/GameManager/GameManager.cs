@@ -12,15 +12,15 @@ public class GameManager : MonoBehaviour
     public bool gameActive = false;
     public Transform elevatorPoint;
     public GameObject player;//Refactor to playercontroller class/namespace when functional
-    public GameObject playerPrefab;
     public EnemyManager enemyManager;
     public Animator elevatorAnim;
     public GameObject elevatorViewCamera;
     public float GameTime = 0;
+    /*
     public Vector3 starRatingsPerTime = new Vector3(180, 300, 500);//Time in seconds less than x for 3 star, between x and y for 2, more than y for 1, more than z for 0.
     public int TimePenaltyPerMissedItemPerDollar = 15;
     public float finalCalculatedTime = 0;
-    int CurrentStars = 0;
+    */
     //GAME SCORING : 
     // time<180=3star
     // time>180 time < 500=2star

@@ -40,7 +40,7 @@ public class StalkerController : EnemyBase
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
             {
-                if (hit.collider.gameObject == PlayerControllerTest.instance.gameObject)
+                if (hit.collider.gameObject == player.gameObject)
                 {
                     //take items from player
                     Debug.Log("Player contact");
@@ -99,11 +99,11 @@ public class StalkerController : EnemyBase
     {
         //reset and ready curve list
         lastAttackTime = time;
-        Vector3 v = new Vector3(PlayerControllerTest.instance.transform.position.x, transform.position.y, PlayerControllerTest.instance.transform.position.z);
+        Vector3 v = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
         transform.LookAt(v);
         currentAttackCurve.Clear();
         frame = 0;
-        currentAttackCurve = CalculateAttackCurve(BaseCurve, transform.position, (transform.position + transform.forward * (2 * Vector3.Distance(transform.position, v))), 30);
+        currentAttackCurve = CalculateAttackCurve(BaseCurve, transform.position, (transform.position + transform.forward * (2 * Vector3.Distance(transform.position, v))), 30, player.transform.position);
     }
     void RunAttackCurve()
     {
@@ -128,7 +128,7 @@ public class StalkerController : EnemyBase
         else
             currentAttackCurve.Clear();
     }
-    static List<Vector3> CalculateAttackCurve(AnimationCurve baseCurve, Vector3 origin, Vector3 target, float steps)
+    static List<Vector3> CalculateAttackCurve(AnimationCurve baseCurve, Vector3 origin, Vector3 target, float steps, Vector3 centerPoint)
     {
         //calculate a swooping curve between origin and target, using basecurve as the curve.
         AnimationCurve curve = new AnimationCurve();
@@ -138,7 +138,7 @@ public class StalkerController : EnemyBase
             curve.AddKey(baseCurve.keys[b]);
         }
         //add middle keyframe here for a negative slope.     ex. base keyframe at (0,0), new keyframe at (0.5,-5), base keyframe at (0,1). the new keyframe is in the middle(0.5f), and 5 down
-        curve.AddKey(0.5f, -(origin.y-(PlayerControllerTest.instance.transform.position.y+1)));
+        curve.AddKey(0.5f, -(origin.y-(centerPoint.y+1)));
 
         List<Vector3> output=new List<Vector3>();
         float slopeMod = 1 / steps;
