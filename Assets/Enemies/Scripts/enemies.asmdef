@@ -1,9 +1,9 @@
 {
-    "name": "GameManager",
-    "rootNamespace": "",
+    "name": "enemies",
+    "rootNamespace": "enemymanager",
     "references": [
         "GUID:250b2ea047c69c74d97a0b7b2f5e628f",
-        "GUID:f2622d42528eb6445b697c000cdc8fb3"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
