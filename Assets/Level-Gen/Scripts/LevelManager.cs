@@ -6,6 +6,21 @@ namespace LevelGen
 {
     public class LevelManager : MonoBehaviour
     {
+        #region Singleton
+        public static LevelManager instance;
+        private void Awake()
+        {
+            if (instance != null)
+            {
+                instance = this;
+            } else
+            {
+                Debug.LogWarning("LevelManager.Awake() :: Another instance of GameManager attempted to exist.", GameManager.instance);
+                Destroy(gameObject);
+            }
+        }
+        #endregion
+
         [SerializeField] public MapData mapData;
         [SerializeField] internal bool doGenerate = true;
 
@@ -13,7 +28,7 @@ namespace LevelGen
 
         #region Level Instantiation
 
-        #region Other Functionality
+        #region Methods
 
         public void DeleteLevel(bool includeShaft = false)
         {
