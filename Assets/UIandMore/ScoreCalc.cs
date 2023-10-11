@@ -41,7 +41,7 @@ public class ScoreCalc : MonoBehaviour
         {
             if(t < testValues1[i])
             {
-                scoreVal += 10 * j / 2;
+                scoreVal += 60 * j / 2;
             }
             j--;
         }
@@ -52,9 +52,9 @@ public class ScoreCalc : MonoBehaviour
             //check hom many items were correct, +30 for each?
 
             //temporary for items must be in order version
-            if(ItemManager.instance.shoppingList[i] == ItemManager.instance.inventory[i])
+            if (ItemManager.instance.completionList[i])
             {
-                scoreVal += 30;
+                scoreVal += 100;
             }
         }
     }
