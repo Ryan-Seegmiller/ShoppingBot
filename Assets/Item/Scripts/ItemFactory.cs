@@ -42,8 +42,8 @@ namespace Items
                 int newChoice = Mathf.RoundToInt(UnityEngine.Random.Range((float)itemIdMin - 0.5f, (float)itemIdMax + 0.4f)); //Choose which item ID to assign the item
 
                 //Instantiate object
-                GameObject newObj = Instantiate(items[n], pos, Quaternion.identity);
-                newObj.GetComponent<ItemInteract>().itemValue = n; //Cache item's ID in ItemInteract
+                GameObject newObj = Instantiate(items[newChoice], pos, Quaternion.identity);
+                newObj.GetComponent<ItemInteract>().itemValue = newChoice; //Cache item's ID in ItemInteract
 
                 //Return obj
                 return newObj;
