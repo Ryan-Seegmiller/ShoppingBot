@@ -525,6 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1939126586}
   - component: {fileID: 1939126585}
+  - component: {fileID: 1939126587}
   m_Layer: 0
   m_Name: FakeManager
   m_TagString: Untagged
@@ -544,11 +545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5898bd8b303f6fb489e1367ad7a0cf83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemFactory: {fileID: 11400000, guid: ccca11b828e44c2429087100c87dc084, type: 2}
-  cash: 100
-  inventorySize: 10
-  inventory: 
-  shoppingList: 
 --- !u!4 &1939126586
 Transform:
   m_ObjectHideFlags: 0
@@ -564,6 +560,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1939126587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939126584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd263afd96078204dbd08a86b3497a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemFactory: {fileID: 0}
+  itemCost: 030000000400000001000000050000000c000000080000000a000000100000001900000016000000
+  categorySize: 040000000300000003000000
+  cash: 100
+  inventorySize: 10
+  inventory: 
+  shoppingList: 
 --- !u!1 &2053952612
 GameObject:
   m_ObjectHideFlags: 0
