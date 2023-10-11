@@ -161,16 +161,16 @@ public class ShoppingList : MonoBehaviour
                 
                 displayItems[i] = "<b>"+ currentName + "</b>";
 
-                if (ItemManager.instance.inventory[i] != -1)
-                {
-                    displayItems[i] += " <b>X<b>";
-                }
+                //if (ItemManager.instance.inventory[i] != -1)
+                //{
+                //    displayItems[i] += " <b>X</b>";
+                //}
             }
         }
         BuildList();
     }
-    //For later implementation
-    //talks to inventory to see if it has what it needs.
+    //Note: list will not render properly if the shoplist is randomized while correct items are in inventory.
+    //should never occur but is a bug
     public void MarkItem(int i)
     {
         if (striked[i])
