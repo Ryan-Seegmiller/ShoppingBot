@@ -196,6 +196,7 @@ namespace Items
 
         //SHOPPING LIST
 
+        //Returns true if the shopping list has the given item, whether it's completed or not
         public bool ListHasItem(int itemID)
         {
             if (shoppingList.Length > 0)
@@ -203,6 +204,22 @@ namespace Items
                 for (int i = 0; i < shoppingList.Length; i++)
                 {
                     if (shoppingList[i] == itemID)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        //Returns true if the shopping list has the given item AND that item isn't in your inventory
+        public bool ListNeedsItem(int itemID)
+        {
+            if (shoppingList.Length > 0)
+            {
+                for (int i = 0; i < shoppingList.Length; i++)
+                {
+                    if (shoppingList[i] == itemID && completionList[i] == false)
                     {
                         return true;
                     }
@@ -231,6 +248,7 @@ namespace Items
 
         //COMPLETION LIST
 
+        //Updates the completion list with player's inventory
         public void UpdateCompletion()
         {
             ClearCompletion(); //Start from a clean slate
@@ -252,6 +270,7 @@ namespace Items
             }
         }
 
+        //Returns the number of completed shopping list items
         public int CountCompletion()
         {
             int count = 0;
@@ -263,12 +282,17 @@ namespace Items
             return 0;
         }
 
+        //Clears the completion list. Changes every value in the array to 'false'
         public void ClearCompletion()
         {
             for (int i = 0; i < completionList.Length; i++)
             { completionList[i] = false; }
         }
 
+
+
+
+        //CASH
 
 
         public void RemoveCash(int amount)
