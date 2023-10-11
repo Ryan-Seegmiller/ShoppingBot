@@ -147,7 +147,7 @@ public class ShoppingList : MonoBehaviour
             {
                 striked[i] = false;
             }
-            if (striked[i])
+            if (ItemManager.instance.completionList[i])
             {
                 //TODO mess with tags and effects to change striked and not striked
                 //there is a color tag (look it up)

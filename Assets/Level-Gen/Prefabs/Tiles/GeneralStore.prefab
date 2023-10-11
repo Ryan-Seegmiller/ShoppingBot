@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 1248479039362801851, guid: 5d02935b6e014714687266834b295c73, type: 3}
+  spawnCategory: 0
   randomCategory: 0
   spawns:
   - {x: 3, y: 0.6, z: 3.25}
