@@ -8,6 +8,7 @@ namespace enemymanager
     {
         public static EnemyManager instance;
         protected List<GameObject> enemySpawns = new List<GameObject>();
+        public GameObject spawnObject;
         protected List<GameObject> enemyPrefabs = new List<GameObject>();
         public List<EnemyBase> currentEnemies = new List<EnemyBase>();
         protected int airEnemies;
@@ -17,7 +18,7 @@ namespace enemymanager
         protected float time = 0;
         protected float lastCheckTime = 0;
         protected float lastSpawnTime = 0;
-        protected float spawnDelay = 5;
+        public float spawnDelay = 5;
 
         void Awake()
         {
@@ -28,6 +29,11 @@ namespace enemymanager
             else
             {
                 Destroy(this);
+            }
+            enemySpawns.Clear();
+            for(int i=0; i<spawnObject.transform.childCount; i++)
+            {
+                enemySpawns.Add(spawnObject.transform.GetChild(i).gameObject);
             }
         }
         public void SpawnEnemies(int count, int index)
