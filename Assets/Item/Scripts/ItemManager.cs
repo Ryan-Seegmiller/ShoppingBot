@@ -83,6 +83,8 @@ namespace Items
         [HideInInspector] public int[] inventory;
         //Shopping list
         [HideInInspector] public int[] shoppingList;
+        //Shopping list complete
+        [HideInInspector] public bool[] completionList;
 
 
         void Awake()
@@ -99,14 +101,12 @@ namespace Items
 
             //Assign inventory and shopping list array size, and set each item to -1
             inventory = new int[inventorySize];
-            for (int i = 0; i < inventory.Length; i++)
-            {
-                inventory[i] = -1; //Assign every item to -1
-            }
             shoppingList = new int[inventorySize];
             for (int i = 0; i < inventory.Length; i++)
             {
-                shoppingList[i] = -1; //Assign every item to -1
+                inventory[i] = -1; //Assign every item in inventory to -1
+                shoppingList[i] = -1; //Assign every item in list to -1
+                completionList[i] = false;
             }
         }
 
@@ -120,6 +120,7 @@ namespace Items
         }
 
 
+        //Returns the string name of an item from given ID
         public string ItemName(int itemID)
         {
             //Assign name
@@ -127,10 +128,30 @@ namespace Items
             return char.ToUpper(nameLower[0]) + nameLower.Substring(1);
         }
 
+        //Counts the number of times 'itemID' item appears in 'intArr' array
+        public int ItemTotalCount(int itemID, int[] intArr)
+        {
+            int result = 0;
+            for (int i = 0; i < intArr.Length; i++)
+            {
+                if (intArr[i] == itemID)
+                {
+                    result++;
+                }
+            }
+            return result;
+        }
+
+
+
+
+
+        //INVENTORY
 
         //Adds an item to the first empty item slot (-1) in the inventory array
         public void AddItem(int itemID)
         {
+            //Add item to inventory
             for (int i = 0; i < inventory.Length; i++)
             {
                 if (inventory[i] == -1) //Check if index is available
@@ -140,6 +161,9 @@ namespace Items
                 }
             }
 
+            //Update shopping list completion
+            UpdateCompletion();
+
             //DEBUG
             /*
             for (int d = 0; d < inventory.Length; d++)
@@ -148,6 +172,28 @@ namespace Items
             }
             */
         }
+
+        //Checks if there's any more space in your inventory
+        public bool CheckInventorySpace()
+        {
+            foreach (int i in inventory) //Check each item in inventory array
+            {
+                if (i == -1) //If a -1 is found, the inventory has space
+                {
+                    return true;
+                }
+            }
+            return false; //No empty space (-1) was found, return false
+        }
+
+        public void RemoveRandomItem()
+        {
+
+        }
+
+
+
+        //SHOPPING LIST
 
         public bool ListHasItem(int itemID)
         {
@@ -163,34 +209,8 @@ namespace Items
             }
             return false;
         }
-        public int ItemTotalCount(int itemID, int[] intArr)
-        {
-            int result = 0;
-            for (int i = 0; i < intArr.Length; i++)
-            {
-                if (intArr[i] == itemID)
-                {
-                    result++;
-                }
-            }
-            return result;
-        }
 
-
-        //Checks if there's any more space in your inventory
-        public bool CheckInventorySpace()
-        {
-            foreach (int i in inventory) //Check each item in inventory array
-            {
-                if (i == -1) //If a -1 is found, the inventory has space
-                {
-                    return true;
-                }
-            }
-            return false; //No empty space (-1) was found, return false
-        }
-
-
+        //Randomizes the shopping list
         public void RandomiseList()
         {
             for (int i = 0; i < shoppingList.Length; i++)
@@ -200,16 +220,55 @@ namespace Items
 
 
             //DEBUG
+            /*
             for (int l = 0; l < shoppingList.Length; l++)
             {
                 print(l + ":  " + shoppingList[l]);
+            }*/
+        }
+
+
+        //COMPLETION LIST
+
+        public void UpdateCompletion()
+        {
+            ClearCompletion(); //Start from a clean slate
+
+            bool[] itemFound = new bool[inventory.Length]; //Elements of this array will become 'true' if this item has already been used to check off a shopping list element
+            for (int sl = 0; sl < shoppingList.Length; sl++) //Check every shopping list item
+            {
+                //Find the correct item in player inventory
+                for (int inv = 0; inv < inventory.Length; inv++)
+                {
+                    if (inventory[inv] == shoppingList[sl] //Check if this inventory slot contains the correct item
+                        && itemFound[inv] == false) //Make sure this item slot wasn't already marked as used
+                    {
+                        completionList[sl] = true; //This shopping list slot is complete
+                        itemFound[inv] = true; //Mark this item slot as 'used'
+                        break;
+                    }
+                }
             }
         }
 
-        public void RemoveRandomItem()
+        public int CountCompletion()
         {
+            int count = 0;
+            foreach (bool cl in completionList)
+            {
+                if (cl) { count++; }
+            }
 
+            return 0;
         }
+
+        public void ClearCompletion()
+        {
+            for (int i = 0; i < completionList.Length; i++)
+            { completionList[i] = false; }
+        }
+
+
 
         public void RemoveCash(int amount)
         {
