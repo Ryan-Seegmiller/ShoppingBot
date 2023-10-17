@@ -71,11 +71,11 @@ public class RoverController : EnemyBase
             if (canAttack)
             {
                 dustEffect.Play();
-                transform.LookAt(new Vector3(PlayerControllerTest.instance.transform.position.x,transform.position.y,PlayerControllerTest.instance.transform.position.z));
+                transform.LookAt(new Vector3(player.transform.position.x,transform.position.y,player.transform.position.z));
                 //pounce player
                 canAttack = false;
                 attackStartTime = time;
-                rb.AddForce(transform.forward * pounceForwardForce * (Mathf.Abs(Vector3.Distance(transform.position, PlayerControllerTest.instance.transform.position))*8));
+                rb.AddForce(transform.forward * pounceForwardForce * (Mathf.Abs(Vector3.Distance(transform.position, player.transform.position))*8));
                 rb.AddForce(Vector3.up * pounceUpForce);
             }
         }      

@@ -25,7 +25,7 @@ public class TimeCalc : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        StartTimer();
+        //StartTimer();
     }
 
     public string GetTimeString()
@@ -101,4 +101,3 @@ public class TimeCalc : MonoBehaviour
         }
     }
 }
-//TODO fix minutes

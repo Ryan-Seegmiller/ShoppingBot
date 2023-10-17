@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using enemymanager;
 using TMPro;
 
@@ -59,6 +58,7 @@ public class EnemyBase : MonoBehaviour
     }
     float lastDamagingBumpTime = 0;
     public AudioSource aS;
+    protected GameObject player;
     void Awake()
     {
         Debug.Log("start");
@@ -71,6 +71,7 @@ public class EnemyBase : MonoBehaviour
         rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
         aS = GetComponentInChildren<AudioSource>();
         healthBar = GetComponentInChildren<TMP_Text>();
+        player = EnemyManager.instance.player;
     }
     private void Update()
     {
@@ -121,7 +122,7 @@ public class EnemyBase : MonoBehaviour
     //Trigger sphere collider on all enemies for detection of player
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == PlayerControllerTest.instance.gameObject && !hasFoundPlayer && !hasDetectedPlayer)
+        if (other.gameObject == player && !hasFoundPlayer && !hasDetectedPlayer)
         {
             hasDetectedPlayer = true;
             firstDetectedTime = time;
@@ -129,7 +130,7 @@ public class EnemyBase : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == PlayerControllerTest.instance.gameObject)
+        if (other.gameObject == player)
         {
             firstDetectedTime = 0;
             hasFoundPlayer = false;
