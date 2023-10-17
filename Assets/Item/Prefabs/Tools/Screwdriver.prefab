@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5750522194034051353}
   - component: {fileID: -7534342659003522522}
   - component: {fileID: 9153634945905583769}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Screwdriver
   m_TagString: Untagged
   m_Icon: {fileID: 0}

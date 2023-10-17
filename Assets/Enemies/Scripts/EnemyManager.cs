@@ -9,7 +9,7 @@ namespace enemymanager
         public static EnemyManager instance;
         protected List<GameObject> enemySpawns = new List<GameObject>();
         public GameObject spawnObject;
-        protected List<GameObject> enemyPrefabs = new List<GameObject>();
+        public List<GameObject> enemyPrefabs = new List<GameObject>();
         public List<EnemyBase> currentEnemies = new List<EnemyBase>();
         protected int airEnemies;
         protected int groundEnemies;
@@ -20,6 +20,7 @@ namespace enemymanager
         protected float lastSpawnTime = 0;
         public float spawnDelay = 5;
         public int maxEnemies = 15;
+        public GameObject player;
 
         void Awake()
         {

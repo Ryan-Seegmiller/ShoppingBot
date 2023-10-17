@@ -279,7 +279,7 @@ namespace Items
                 if (cl) { count++; }
             }
 
-            return 0;
+            return count;
         }
 
         //Clears the completion list. Changes every value in the array to 'false'

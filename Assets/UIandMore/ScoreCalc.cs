@@ -9,6 +9,7 @@ public class ScoreCalc : MonoBehaviour
 
     public int scoreVal;
 
+    //Time intervals
     int[] testValues1 = new int[] {6000, 12000, 24000};
 
     void Start()
@@ -41,7 +42,7 @@ public class ScoreCalc : MonoBehaviour
         {
             if(t < testValues1[i])
             {
-                scoreVal += 10 * j / 2;
+                scoreVal += 60 * j / 2;
             }
             j--;
         }
@@ -49,12 +50,10 @@ public class ScoreCalc : MonoBehaviour
         //Inventory Accurracy
         for(int i = 0; i < ItemManager.instance.inventorySize; i++)
         {
-            //check hom many items were correct, +30 for each?
-
-            //temporary for items must be in order version
-            if(ItemManager.instance.shoppingList[i] == ItemManager.instance.inventory[i])
+            //check how many items were correct, +100 for each?
+            if (ItemManager.instance.completionList[i])
             {
-                scoreVal += 30;
+                scoreVal += 100;
             }
         }
     }

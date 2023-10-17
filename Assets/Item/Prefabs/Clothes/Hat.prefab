@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 6967051739714567483}
   - component: {fileID: -267391085762209915}
   - component: {fileID: 5386516243219365236}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

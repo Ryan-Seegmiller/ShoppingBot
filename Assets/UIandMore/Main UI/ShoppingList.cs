@@ -68,6 +68,7 @@ public class ShoppingList : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pMenu.SetActive(true);
+            prefabSceneFinder.PauseGame();
             mScreen.SetActive(false);
         }
     }
@@ -149,10 +150,7 @@ public class ShoppingList : MonoBehaviour
             }
             if (ItemManager.instance.completionList[i])
             {
-                //TODO mess with tags and effects to change striked and not striked
                 //there is a color tag (look it up)
-
-                //ToDo replace shopListNames with Item Names via ItemManager
                 displayItems[i] = "<s><i>" + currentName + "</i></s>";
             }
             else
@@ -161,16 +159,16 @@ public class ShoppingList : MonoBehaviour
                 
                 displayItems[i] = "<b>"+ currentName + "</b>";
 
-                if (ItemManager.instance.inventory[i] != -1)
-                {
-                    displayItems[i] += " <b>X<b>";
-                }
+                //if (ItemManager.instance.inventory[i] != -1)
+                //{
+                //    displayItems[i] += " <b>X</b>";
+                //}
             }
         }
         BuildList();
     }
-    //For later implementation
-    //talks to inventory to see if it has what it needs.
+    //Note: list will not render properly if the shoplist is randomized while correct items are in inventory.
+    //should never occur but is a bug
     public void MarkItem(int i)
     {
         if (striked[i])

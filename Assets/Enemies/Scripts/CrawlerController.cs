@@ -24,7 +24,7 @@ public class CrawlerController : EnemyBase
         {
             rb.AddForce(transform.forward * ramForce);
             if (Random.Range(0, 100f) > 90f)
-                transform.LookAt(PlayerControllerTest.instance.transform.position);
+                transform.LookAt(player.transform.position);
         }
         else
         {
@@ -33,7 +33,7 @@ public class CrawlerController : EnemyBase
         RaycastHit h;
         if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, sArmRange+0.1f))
         {
-            if (h.transform == PlayerControllerTest.instance.transform)
+            if (h.transform == player.transform)
             {
                 explode();
                 Die();
