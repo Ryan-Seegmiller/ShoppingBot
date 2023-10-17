@@ -68,6 +68,7 @@ public class ShoppingList : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pMenu.SetActive(true);
+            prefabSceneFinder.PauseGame();
             mScreen.SetActive(false);
         }
     }
@@ -149,10 +150,7 @@ public class ShoppingList : MonoBehaviour
             }
             if (ItemManager.instance.completionList[i])
             {
-                //TODO mess with tags and effects to change striked and not striked
                 //there is a color tag (look it up)
-
-                //ToDo replace shopListNames with Item Names via ItemManager
                 displayItems[i] = "<s><i>" + currentName + "</i></s>";
             }
             else
