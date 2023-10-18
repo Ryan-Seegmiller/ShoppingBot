@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0e518c278f88774dbae75ed0abbf154, type: 3}
   m_Name: Default MapData
   m_EditorClassIdentifier: 
-  mapSize: 7
-  floorNum: 5
+  mapSize: 8
+  floorNum: 3
   elevator: {fileID: 9208566225419152403, guid: 03926bf0d5f87f74985ebd5670f24435, type: 3}
   elevatorShaft: {fileID: 1249108262895244423, guid: 2204aeecbb2988543954b48bdc07a849, type: 3}
   wall: {fileID: 6885873540023638393, guid: e9a4bf569b913304fae79d992ad1392e, type: 3}
