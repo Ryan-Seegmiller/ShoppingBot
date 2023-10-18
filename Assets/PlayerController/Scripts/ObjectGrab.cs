@@ -54,10 +54,10 @@ public class ObjectGrab : MonoBehaviour
         crosshair.transform.position = Input.mousePosition;
 
         rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
-
+        
         
 
-        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance, layersToHit))
+        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance))
         {
             //print(raycastHit.collider.gameObject.name);
             Debug.DrawRay(rayLook.origin, rayLook.direction * 300, Color.red);
@@ -67,13 +67,16 @@ public class ObjectGrab : MonoBehaviour
         {
             ObjectDrag();
         }
-        if (!ObjectDragActive)
+        if (!ObjectDragActive && Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance))
         {
             //Arm look rotiation reset
-            armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
+            if (!(raycastHit.collider.gameObject.name == "Rob Door"))
+                armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
+            print(raycastHit.collider.gameObject.name);
+
         }
-        
-        
+
+
     }
     
     private void PlayerInput()

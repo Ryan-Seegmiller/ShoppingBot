@@ -87,6 +87,7 @@ public class Laser : MonoBehaviour
         //Points the arm to the crosshair placement
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
+        
 
         //Gets if an object has been grabbed
         bool objectGrabbed = grab.ObjectDragActive;
@@ -94,7 +95,9 @@ public class Laser : MonoBehaviour
         //Makes sure the arm is pointing as accuratley as possible
         if (cast && !objectGrabbed)
         {
-            armPivot.transform.LookAt(hit.point);
+            if (!(hit.collider.gameObject.name == "Rob Door"))
+
+                armPivot.transform.LookAt(hit.point);
         }
         else if (!objectGrabbed)
         {
