@@ -25,7 +25,7 @@ public class ItemRender : MonoBehaviour
 
     void Update()
     {
-        EnablePhysics();
+        //EnablePhysics();
     }
 
     public void EnablePhysics()

@@ -147,10 +147,13 @@ public class ObjectGrab : MonoBehaviour
     }
     private void ToggleDrag()
     {
-        if(raycastHit.collider != null)
+        if(raycastHit.collider)
         {
             currentObject = raycastHit;//Sets the current object to the one clicked
             rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
+
+            ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
+            objRender.EnablePhysics(); //Enable grabbed object's physics
 
             target.transform.position = currentObject.transform.position;//sets the objects position
 
