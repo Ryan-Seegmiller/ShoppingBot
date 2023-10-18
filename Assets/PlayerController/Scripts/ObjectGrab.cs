@@ -57,7 +57,7 @@ public class ObjectGrab : MonoBehaviour
         
         
 
-        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance))
+        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance, layersToHit))
         {
             //print(raycastHit.collider.gameObject.name);
             Debug.DrawRay(rayLook.origin, rayLook.direction * 300, Color.red);
@@ -70,9 +70,7 @@ public class ObjectGrab : MonoBehaviour
         if (!ObjectDragActive && Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance))
         {
             //Arm look rotiation reset
-            if (!(raycastHit.collider.gameObject.name == "Rob Door"))
-                armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
-            print(raycastHit.collider.gameObject.name);
+            armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
 
         }
 
