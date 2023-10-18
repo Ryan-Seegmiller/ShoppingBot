@@ -106,6 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2444538207495085242}
+  - component: {fileID: 7424783052577547131}
   m_Layer: 10
   m_Name: WorldTile
   m_TagString: Untagged
@@ -129,3 +130,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7424783052577547131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2444538207495085243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61770cf48331e8449008bccccc39657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 0}
+  spawnCategory: 0
+  randomCategory: 0
+  spawns:
+  - {x: 0, y: 0, z: 0}
+  spawnLightChance: 0.3
+  lightFixturePrefab: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
