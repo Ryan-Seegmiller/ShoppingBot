@@ -7,7 +7,7 @@ namespace enemymanager
     public class EnemyManager : MonoBehaviour
     {
         public static EnemyManager instance;
-
+        public GameObject player;
         public Transform spawnObject;
         protected List<Transform> enemySpawns = new List<Transform>();
         public List<GameObject> enemyPrefabs = new List<GameObject>();
@@ -40,6 +40,7 @@ namespace enemymanager
         }
         public void FixedUpdate()
         {
+            time += Time.deltaTime;
             if (time > lastCheckTime + 1 && time > gracePeriodTime) // Combination of fixed update and 1 second timer to reduce how often this is called/checked
             {
                 lastCheckTime = time;

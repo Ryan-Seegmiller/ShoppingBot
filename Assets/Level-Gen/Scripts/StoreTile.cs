@@ -13,7 +13,7 @@ namespace LevelGen
         [SerializeField] protected ItemCategory spawnCategory;
         [SerializeField] protected bool randomCategory = false;
         public Vector3[] spawns = new Vector3[1] { Vector3.zero };
-        [SerializeField, Range(0f, 1f)] protected float spawnLightChance = 0.3f; //The chance of a light fixture spawning
+        [SerializeField, Range(0f, 1f)] protected float spawnLightChance = 0.9f; //The chance of a light fixture spawning
         [SerializeField] protected GameObject lightFixturePrefab;
 
         public void SpawnItems()
