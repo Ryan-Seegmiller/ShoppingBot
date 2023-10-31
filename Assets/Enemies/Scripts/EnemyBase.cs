@@ -71,7 +71,7 @@ public class EnemyBase : MonoBehaviour
         rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
         aS = GetComponentInChildren<AudioSource>();
         healthBar = GetComponentInChildren<TMP_Text>();
-        player = EnemyManager.instance.player;
+        //player = PlayerController.instance.transform;
     }
     private void Update()
     {
