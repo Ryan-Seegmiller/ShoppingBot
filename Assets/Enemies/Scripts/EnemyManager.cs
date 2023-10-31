@@ -17,6 +17,7 @@ namespace enemymanager
         public float spawnPositionOffset = 1;
         #region Timers
         public float time = 0; //TIME IS ONLY SET BY THE GAMEMANAGER SCRIPT.
+        public float gracePeriodTime = 30;
         protected float lastCheckTime = 0;
         protected float lastSpawnTime = 0;
         public float spawnDelay = 15;//Spawn delay is the time it takes for the spawner to produce a new enemy after its previous enemy was destroyed.
@@ -39,7 +40,7 @@ namespace enemymanager
         }
         public void FixedUpdate()
         {
-            if (time > lastCheckTime + 1) // Combination of fixed update and 1 second timer to reduce how often this is called/checked
+            if (time > lastCheckTime + 1 && time > gracePeriodTime) // Combination of fixed update and 1 second timer to reduce how often this is called/checked
             {
                 lastCheckTime = time;
                 enemiesSpawnQueue = enemySpawns.Count - currentEnemies.Count;//For how its currently setup, the amount of enemies it wants to spawn is the # of spawners minus the current amount of enemies.
