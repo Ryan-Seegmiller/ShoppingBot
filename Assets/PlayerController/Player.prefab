@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7358394063370738379}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11202,6 +11202,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5fe2231f337875746b6ff49355e9ce6e, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13bc9d50430622b48ba094fca5fcffba, type: 2}
     - target: {fileID: 919132149155446097, guid: 5fe2231f337875746b6ff49355e9ce6e, type: 3}
       propertyPath: m_Name
       value: R J5 Laser
@@ -11264,6 +11268,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5fe2231f337875746b6ff49355e9ce6e, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 13bc9d50430622b48ba094fca5fcffba, type: 2}
     - target: {fileID: 919132149155446097, guid: 5fe2231f337875746b6ff49355e9ce6e, type: 3}
       propertyPath: m_Name
       value: R J5 Laser
