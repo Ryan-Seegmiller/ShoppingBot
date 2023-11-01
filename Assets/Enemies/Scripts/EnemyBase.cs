@@ -44,15 +44,15 @@ public class EnemyBase : MonoBehaviour
     protected Vector2 stuckRotation = new Vector2(2, 3);
     protected bool lowChanceFlip = false;
     protected int lowChanceFlip2 = 1;
-    int sh=0;
-    public int startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
+    float sh =0;
+    public float startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
     public List<AudioClip> deathAudio = new List<AudioClip>();
     public List<AudioClip> detectedAudio = new List<AudioClip>();
     public List<AudioClip> attackAudio = new List<AudioClip>();
     TMP_Text healthBar;
     [SerializeField]
-    protected int _health;
-    public int health 
+    protected float _health;
+    public float health 
     { get { return _health; }
         set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
     }
@@ -194,15 +194,22 @@ public class EnemyBase : MonoBehaviour
             lastDamagingBumpTime = time;
         }
     }
-    public void Hit()
+    public void Hit(float mod)
     {
         if(meshBody.transform.childCount>0)
             PopBodyPart(meshBody.transform.GetChild(Random.Range(0,meshBody.transform.childCount)).transform);
-        health--;
+        health-=3f*mod;//base damage from player is determined here
         if (health <= 0)
             Die();
     }
-
+    public void Hit()
+    {
+        if (meshBody.transform.childCount > 0)
+            PopBodyPart(meshBody.transform.GetChild(Random.Range(0, meshBody.transform.childCount)).transform);
+        health -= 1f;
+        if (health <= 0)
+            Die();
+    }
     private void DoFlips()
     {
         if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}

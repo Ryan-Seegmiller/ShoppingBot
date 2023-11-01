@@ -479,14 +479,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 984f3f8b201f4cf448cb3adb58aa7a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnObject: {fileID: 4427314266818696722}
+  spawnObject: {fileID: 4427314266818696749}
   enemyPrefabs:
   - {fileID: 4871543811631930487, guid: 3fdc79b11a0aa8a49a4194c463883a89, type: 3}
   - {fileID: 4871543811631930487, guid: d68e9a9a5522b7f43932a2ef91c8cc07, type: 3}
   - {fileID: 3006431226239869898, guid: e87ea362e8ccd694ebd575b9e9f275ef, type: 3}
   currentEnemies: []
-  spawnDelay: 5
   maxEnemies: 15
+  spawnPositionOffset: 1
+  time: 0
+  gracePeriodTime: 30
+  spawnDelay: 5
 --- !u!1 &4427314266067846628
 GameObject:
   m_ObjectHideFlags: 0

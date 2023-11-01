@@ -146,5 +146,5 @@ MonoBehaviour:
   spawnCategory: 0
   randomCategory: 0
   spawns: []
-  spawnLightChance: 0.3
+  spawnLightChance: 0.7
   lightFixturePrefab: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
