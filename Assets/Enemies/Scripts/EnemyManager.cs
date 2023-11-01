@@ -34,7 +34,8 @@ namespace enemymanager
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
-                EnemyBase e = Instantiate(enemyPrefabs[index], enemySpawns[UnityEngine.Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-spawnPositionOffset, spawnPositionOffset), 0, Random.Range(-spawnPositionOffset, spawnPositionOffset)), Quaternion.identity).GetComponent<EnemyBase>();
+                Vector3 spawnPos = enemySpawns[UnityEngine.Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-spawnPositionOffset, spawnPositionOffset), player.transform.position.y* Random.Range(-spawnPositionOffset, spawnPositionOffset), Random.Range(-spawnPositionOffset, spawnPositionOffset));
+                EnemyBase e = Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>();
                 currentEnemies.Add(e);
             }
         }
