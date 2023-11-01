@@ -117,8 +117,8 @@ public class Laser : MonoBehaviour
         {
             eb.Hit(Time.deltaTime);//Because its a constant beam, pass in TDT as a modifier to the damage value.
                                    //This way, it does 1 damage per second rather than 1 damage per frame/hit.
-        }
-        if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
+        }                          //currently its actually 3 damage per second. Determined in the EnemyBase.Hit()
+        else if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
         {
             rigidbody.isKinematic = false;
             rigidbody.AddForce(armPivot.transform.forward * power/hit.distance, ForceMode.Force);            
