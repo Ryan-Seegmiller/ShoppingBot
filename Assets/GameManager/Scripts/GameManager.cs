@@ -6,7 +6,7 @@ using Items;
 using PlayerContoller;
 
 //bug when adding reference to level gen assembly
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, UIEvents
 {
     #region Singleton
     public static GameManager instance;
@@ -41,10 +41,18 @@ public class GameManager : MonoBehaviour
 
 
     #region UIEvents
-    //Call from main menu button
+    // Menu 
     public void StartGame()
     {
         GameStart();
+    }
+    public void StopGame()
+    {
+        GameEnd();
+    }
+    public void EndGame()
+    {
+        GameEnd();
     }
     public void QuitGame()
     {
@@ -102,6 +110,7 @@ public class GameManager : MonoBehaviour
     }
     private void GameEnd()
     {
+        Debug.Log("GameEnd()");
         LevelGen.LevelManager.instance.DeleteLevel(false);
         UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
@@ -124,7 +133,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            //EnemyManager.instance.time = gameTime;
+            EnemyManager.instance.time = gameRules.gameTime;
             TimeCalc.instance.timer = (int)(gameRules.gameTime * 100);
             yield return new WaitForSeconds(.01f);
         }

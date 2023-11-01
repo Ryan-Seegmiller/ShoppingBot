@@ -61,7 +61,7 @@ public class EnemyBase : MonoBehaviour
     protected GameObject player;
     void Awake()
     {
-        Debug.Log("start");
+        Debug.Log("Enemy Created");
         if (GenerateRandomValues)
             GetRandomAIValues();
         GetComponent<SphereCollider>().radius = detectionRadius;
@@ -183,7 +183,7 @@ public class EnemyBase : MonoBehaviour
         Rigidbody tRb = t.gameObject.AddComponent<Rigidbody>();
         t.gameObject.AddComponent<SphereCollider>().radius = 0.25f;
         tRb.AddTorque(transform.up * Random.Range(-360, 360));
-        tRb.AddForce(transform.forward * Random.Range(-25, 25));
+        tRb.AddForce(transform.forward * Random.Range(-25, 250));
         Destroy(t.gameObject, 3);
     }
     private void OnCollisionEnter(Collision collision)
