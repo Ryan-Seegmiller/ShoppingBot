@@ -48,6 +48,7 @@ namespace PlayerContoller
 
         Vector2 playerInput;
 
+        public Transform playerTransform => transform;
 
         Vector3 moveDirection;
 
@@ -67,7 +68,7 @@ namespace PlayerContoller
 
         private void Start()
         {
-            rb = GetComponent<Rigidbody>();
+            rb = gameObject.GetComponent<Rigidbody>();
             rb.freezeRotation = true;
 
             stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
@@ -105,7 +106,7 @@ namespace PlayerContoller
             }
 
             // State walking
-            else if (grounded)
+            else if (grounded || OnSlope())
             {
                 state = MovementState.walking;
                 desiredMoveSpeed = walkSpeed;
@@ -141,8 +142,10 @@ namespace PlayerContoller
                 rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 20f, ForceMode.Force);
                 if (rb.velocity.y > 0)
                 {
+                    //TODO: review
                     rb.AddForce(Vector3.down * 80f, ForceMode.Force);
                 }
+                transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
             }
             else
             {
@@ -264,7 +267,7 @@ namespace PlayerContoller
         void StepClimb()
         {
             RaycastHit hitLower;
-            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .1f))
+            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .1f) && !OnSlope())
             {
                 RaycastHit hitUpper;
                 if (!Physics.Raycast(stepRayUpper.transform.position, transform.forward, out hitUpper, .2f))

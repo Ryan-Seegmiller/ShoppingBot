@@ -1,4 +1,7 @@
+using Items;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +36,13 @@ public class ObjectGrab : MonoBehaviour
     //Mouse positions
     float mZCoord;
     Vector3 mousePos;
+
+    //Timer
+    private WaitForSeconds colReset = new WaitForSeconds(1f);
+
+    //Item Collection
+    [NonSerialized] public bool canCollect;
+    
 
     //Bools
     [Header("Toggle drag")]
@@ -97,9 +107,11 @@ public class ObjectGrab : MonoBehaviour
         else if (Input.GetMouseButton(1) && draggingActive) 
         {
             ObjectDrag();
+            ItemDisableCollison();
         }
         if(Input.GetMouseButtonUp(1) && ObjectDragActive && draggingActive)
-        {
+        { 
+            StartCoroutine(ItemEnableCollison());
             ResetObjectDrag();
         }
         if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
@@ -142,7 +154,7 @@ public class ObjectGrab : MonoBehaviour
         }
         else
         {
-            currentObject = EmptyRaycastHit;
+            //currentObject = EmptyRaycastHit;
         }
     }
     private void ToggleDrag()
@@ -169,4 +181,38 @@ public class ObjectGrab : MonoBehaviour
             rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
         }
     }
+    private void ItemDisableCollison()
+    {   //Disable collison with player of item grabbed
+        Transform[] objChildren = currentObject.collider.gameObject.GetComponentsInChildren<Transform>();
+        foreach (Transform tr in objChildren)
+        {
+            if(tr.gameObject.layer == 13)
+            {
+                tr.gameObject.GetComponent<Collider>().enabled = false;
+                break;
+            }
+        }
+    }
+   
+    IEnumerator ItemEnableCollison()
+    {   //Enable collison with player of item grabbed
+        RaycastHit raycastHit = currentObject;
+        canCollect = true;
+        yield return colReset;
+        canCollect = false;
+
+        if (raycastHit.collider.gameObject.GetComponentsInChildren<Transform>() != null)
+        {
+            Transform[] objChildren = raycastHit.collider.gameObject.GetComponentsInChildren<Transform>();
+            foreach (Transform tr in objChildren)
+            {
+                if (tr.gameObject.layer == 13)
+                {
+                    tr.gameObject.GetComponent<Collider>().enabled = true;
+                    break;
+                }
+            }
+        }
+    }
+    
 }
