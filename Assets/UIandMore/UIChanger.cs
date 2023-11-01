@@ -10,6 +10,10 @@ public class UIChanger : MonoBehaviour
     public GameObject main;
     public GameObject scoring;
 
+    //lazy workaround. fix after MVP
+    [SerializeField] GameObject mScreen;
+    [SerializeField] GameObject pMenu;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +34,7 @@ public class UIChanger : MonoBehaviour
     public void SetSceneMenu()
     {
         menu.SetActive(true);
+        ResetPauseMainOogaBooga();
         main.SetActive(false);
         scoring.SetActive(false);
     }
@@ -39,12 +44,18 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         scoring.SetActive(false);
 
-        //TimeCalc.instance.StartTimer();
+        //Tell game Manager to start
     }
     public void SetSceneScoring()
     {
         scoring.SetActive(true);
         menu.SetActive(false);
+        ResetPauseMainOogaBooga();
         main.SetActive(false);
+    }
+    public void ResetPauseMainOogaBooga()
+    {
+        mScreen.SetActive(true);
+        pMenu.SetActive(false);
     }
 }
