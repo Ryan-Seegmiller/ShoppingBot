@@ -58,4 +58,6 @@ public class UIChanger : MonoBehaviour
         mScreen.SetActive(true);
         pMenu.SetActive(false);
     }
+
+    //Add call to things and stuff
 }
