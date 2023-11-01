@@ -6,7 +6,7 @@ using Items;
 using PlayerContoller;
 
 //bug when adding reference to level gen assembly
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, UIEvents
 {
     #region Singleton
     public static GameManager instance;
@@ -41,10 +41,14 @@ public class GameManager : MonoBehaviour
 
 
     #region UIEvents
-    //Call from main menu button
+    // Menu 
     public void StartGame()
     {
         GameStart();
+    }
+    public void StopGame()
+    {
+        GameEnd();
     }
     public void EndGame()
     {
