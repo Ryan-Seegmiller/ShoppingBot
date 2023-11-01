@@ -46,6 +46,10 @@ public class GameManager : MonoBehaviour
     {
         GameStart();
     }
+    public void EndGame()
+    {
+        GameEnd();
+    }
     public void QuitGame()
     {
         if (Application.isEditor) { Debug.Break(); }
@@ -102,6 +106,7 @@ public class GameManager : MonoBehaviour
     }
     private void GameEnd()
     {
+        Debug.Log("GameEnd()");
         LevelGen.LevelManager.instance.DeleteLevel(false);
         UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
@@ -124,7 +129,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            //EnemyManager.instance.time = gameTime;
+            EnemyManager.instance.time = gameRules.gameTime;
             TimeCalc.instance.timer = (int)(gameRules.gameTime * 100);
             yield return new WaitForSeconds(.01f);
         }
