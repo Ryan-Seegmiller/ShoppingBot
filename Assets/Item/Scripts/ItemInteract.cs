@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Items
@@ -8,9 +6,12 @@ namespace Items
     {
         public int itemValue = -1;
 
+        private Rigidbody rb;
+
         void Start()
         {
-
+            //Get rigidbody
+            rb = GetComponent<Rigidbody>();
         }
 
         void Update()
@@ -25,16 +26,22 @@ namespace Items
         //Collect this item
         public void ItemCollect()
         {
-            if (ItemManager.instance.CheckInventorySpace()) // Make sure inventory has space
+            if (ItemManager.instance.CheckInventorySpace() && ItemManager.instance.ListNeedsItem(itemValue)) // Make sure inventory has space
             {
                 ItemManager.instance.AddItem(itemValue);
                 Destroy(gameObject);
             }
             else
             { //Inventory is full
-                Debug.LogWarning("ItemIteract.ItemCollect() :: Trying to add an item when inventory is full.");
+                ItemReject();
             }
+        }
 
+
+
+        public void ItemReject()
+        {
+            //rb.AddExplosionForce(10, player center, 3)
         }
     }
 }
