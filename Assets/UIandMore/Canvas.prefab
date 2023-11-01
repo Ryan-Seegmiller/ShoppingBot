@@ -304,7 +304,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2939279598593902453, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_Name
-      value: MainUIPrefab
+      value: HUDUIPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 2939279598593902453, guid: f1dfb6d3624cddb4dbb3b4740d9f15cf, type: 3}
       propertyPath: m_IsActive

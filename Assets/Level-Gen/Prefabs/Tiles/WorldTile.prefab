@@ -145,7 +145,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 0}
   spawnCategory: 0
   randomCategory: 0
-  spawns:
-  - {x: 0, y: 0, z: 0}
+  spawns: []
   spawnLightChance: 0.3
   lightFixturePrefab: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
