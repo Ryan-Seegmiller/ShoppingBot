@@ -57,8 +57,6 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         scoring.SetActive(false);
 
-        //Debug.Log("Set to main");
-
         if (!Started)
         {
             UIEvents.instance.StartGame();
