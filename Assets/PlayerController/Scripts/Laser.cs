@@ -115,7 +115,10 @@ public class Laser : MonoBehaviour
     {
         if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
         {
-            rigidbody.isKinematic = false;
+            if(hit.collider.gameObject.layer == 11)
+            {
+                rigidbody.isKinematic = false;
+            }
             rigidbody.AddForce(armPivot.transform.forward * power/hit.distance, ForceMode.Force);            
         }
     }

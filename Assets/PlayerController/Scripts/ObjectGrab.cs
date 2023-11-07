@@ -159,7 +159,7 @@ public class ObjectGrab : MonoBehaviour
     }
     private void ToggleDrag()
     {
-        if(raycastHit.collider)
+        if(raycastHit.collider != null)
         {
             currentObject = raycastHit;//Sets the current object to the one clicked
             rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
@@ -182,7 +182,8 @@ public class ObjectGrab : MonoBehaviour
         }
     }
     private void ItemDisableCollison()
-    {   //Disable collison with player of item grabbed
+    {   if(currentObject.collider == null) { return; }
+        //Disable collison with player of item grabbed
         Transform[] objChildren = currentObject.collider.gameObject.GetComponentsInChildren<Transform>();
         foreach (Transform tr in objChildren)
         {
@@ -201,7 +202,7 @@ public class ObjectGrab : MonoBehaviour
         yield return colReset;
         canCollect = false;
 
-        if (raycastHit.collider.gameObject.GetComponentsInChildren<Transform>() != null)
+        if (raycastHit.collider != null)
         {
             Transform[] objChildren = raycastHit.collider.gameObject.GetComponentsInChildren<Transform>();
             foreach (Transform tr in objChildren)
