@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
@@ -48,10 +49,27 @@ namespace PlayerContoller
 
         Vector2 playerInput;
 
+        public Transform playerTransform => transform;
 
         Vector3 moveDirection;
 
         Rigidbody rb;
+
+        Transform playerCollider;
+
+        bool OnSlope;
+        private bool onSlope
+        {
+            get { return OnSlope; }
+            set
+            {
+                if (OnSlope != value)
+                {
+                    
+                    OnSlope = value;
+                }
+            }
+        }
 
         //Sets states for the player to be in
         public MovementState state;
@@ -67,19 +85,24 @@ namespace PlayerContoller
 
         private void Start()
         {
-            rb = GetComponent<Rigidbody>();
+            rb = gameObject.GetComponent<Rigidbody>();
             rb.freezeRotation = true;
+
+            playerCollider = GetComponentInChildren<SphereCollider>().gameObject.transform;
 
             stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
         }
         private void Update()
         {
             MyInput();
-            SpeedControl();
+            //SpeedControl();
             StateHandler();
+            SurfaceLeveler();
+
         }
         private void FixedUpdate()
         {
+            onSlope = OnSlopeCheck(out RaycastHit slopeHit);
             GroundCheck();
             MovePlayer();
 
@@ -105,7 +128,7 @@ namespace PlayerContoller
             }
 
             // State walking
-            else if (grounded)
+            else if (grounded || onSlope)
             {
                 state = MovementState.walking;
                 desiredMoveSpeed = walkSpeed;
@@ -132,32 +155,69 @@ namespace PlayerContoller
         //Movesw the player based on player input
         private void MovePlayer()
         {
-
+            if (!grounded && !onSlope) { return; }
             // Calculate movement direction
-            moveDirection = playerInput.y * orientation.forward;
+            moveDirection = GetMoveDirection();
             //On slope
-            if (OnSlope() && !exitingSlope)
+            
+            //Moves the chartacter
+            rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
+            transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
+            camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+           
+
+            //Player animations
+            playerAnimatorController();
+        }
+        
+        //Checks the grpound
+        void GroundCheck()
+        {
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .5f + .2f, whatIsGround);
+        }
+        
+        public bool OnSlopeCheck(out RaycastHit slopeHit)
+        {
+            //Detects if there is a slope below the player
+            return (Physics.Raycast(playerCollider.position, Vector3.down, out slopeHit, playerHeight * 0.5f + .3f) && slopeHit.normal != Vector3.up);
+            
+        }
+        public Vector3 GetSlopeMoveDirection(Vector3 direction)
+        {
+            //sets a new direction to move based off the slope direction
+            return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
+        }
+        public Vector3 GetMoveDirection()
+        {
+            return OnSlopeCheck(out RaycastHit slopeHit) ? Vector3.ProjectOnPlane(orientation.forward * playerInput.y, slopeHit.normal) : orientation.forward * playerInput.y;
+        }
+        private IEnumerator SmoothlyLerpMoveSpeed()
+        {
+            // Smoothly lerp movement speed to desired value
+            float time = 0;
+            float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
+            float startValue = moveSpeed;
+
+            while (time < difference)
             {
-                rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 20f, ForceMode.Force);
-                if (rb.velocity.y > 0)
+                moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
+
+                if (onSlope)
                 {
-                    rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+                    //Accelerates more based on the angle of the slope
+                    float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                    float slopeAngleIncrease = 1 + (slopeAngle / 90f);
+
+                    time += Time.deltaTime * speedIncreaseMultiplier * slopeIncreaseMultiplier * slopeAngleIncrease;
                 }
+                else
+                {
+                    time += Time.deltaTime * speedIncreaseMultiplier;
+                }
+
+                yield return null;
             }
-            else
-            {
-                //Moves the chartacter
-                rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
-                transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
-                camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-
-                //Player animations
-                playerAnimatorController();
-
-                //Step Controller
-                StepClimb();
-
-            }
+            moveSpeed += desiredMoveSpeed;
         }
         void playerAnimatorController()
         {
@@ -190,88 +250,13 @@ namespace PlayerContoller
                 playerAnimator.SetFloat("LeftTreadBoost", -20);
             }
         }
-        //Checks the grpound
-        void GroundCheck()
+        void SurfaceLeveler()
         {
-            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .5f + .2f, whatIsGround);
-        }
-        void SpeedControl()
-        {
-            //Limiting speed on slope
-            if (OnSlope() && !exitingSlope)
+            /*RaycastHit hit;
+            if(Physics.Raycast(playerCollider.position, Vector3.down, out hit, playerHeight * 0.5f + .3f))
             {
-                if (rb.velocity.magnitude > moveSpeed)
-                {
-                    rb.velocity = rb.velocity.normalized * moveSpeed;
-                }
-            }
-            //Normal limiting
-            else
-            {
-                Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-                //Limit velocity if needed
-                if (flatVel.magnitude > moveSpeed)
-                {
-                    Vector3 limitedVel = flatVel.normalized * moveSpeed;
-                    rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-                }
-            }
-        }
-        public bool OnSlope()
-        {
-            //Detects if there is a slope below the player
-            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + .3f))
-            {
-                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                return angle < maxSlopeAngle && angle != 0;
-            }
-            return false;
-        }
-        public Vector3 GetSlopeMoveDirection(Vector3 direction)
-        {
-            //sets a new direction to move based off the slope direction
-            return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
-        }
-        private IEnumerator SmoothlyLerpMoveSpeed()
-        {
-            // Smoothly lerp movement speed to desired value
-            float time = 0;
-            float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
-            float startValue = moveSpeed;
-
-            while (time < difference)
-            {
-                moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
-
-                if (OnSlope())
-                {
-                    //Accelerates more based on the angle of the slope
-                    float slopeAngle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                    float slopeAngleIncrease = 1 + (slopeAngle / 90f);
-
-                    time += Time.deltaTime * speedIncreaseMultiplier * slopeIncreaseMultiplier * slopeAngleIncrease;
-                }
-                else
-                {
-                    time += Time.deltaTime * speedIncreaseMultiplier;
-                }
-
-                yield return null;
-            }
-            moveSpeed += desiredMoveSpeed;
-        }
-        void StepClimb()
-        {
-            RaycastHit hitLower;
-            if(Physics.Raycast(stepRayLower.transform.position, transform.forward, out hitLower, .1f))
-            {
-                RaycastHit hitUpper;
-                if (!Physics.Raycast(stepRayUpper.transform.position, transform.forward, out hitUpper, .2f))
-                {
-                    rb.position -= new Vector3(0f, -stepSmooth, 0f);
-                }
-            }
+                transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            }*/
         }
     }
 }

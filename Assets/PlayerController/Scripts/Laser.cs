@@ -120,7 +120,10 @@ public class Laser : MonoBehaviour
         }                          //currently its actually 3 damage per second. Determined in the EnemyBase.Hit()
         else if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
         {
-            rigidbody.isKinematic = false;
+            if(hit.collider.gameObject.layer == 11)
+            {
+                rigidbody.isKinematic = false;
+            }
             rigidbody.AddForce(armPivot.transform.forward * power/hit.distance, ForceMode.Force);            
         }
     }
