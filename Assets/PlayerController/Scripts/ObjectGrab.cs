@@ -1,9 +1,9 @@
-using Items;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerContoller;
 
 public class ObjectGrab : MonoBehaviour
 {
@@ -51,6 +51,7 @@ public class ObjectGrab : MonoBehaviour
 
 
 
+
     void Start()
     {
         rb = transform.GetComponent<Rigidbody>();
@@ -59,11 +60,12 @@ public class ObjectGrab : MonoBehaviour
     void Update()
     {
         PlayerInput();
+        mousePos = Input.mousePosition + PlayerMovement.MouseOffset;
 
         //crosshair placement
-        crosshair.transform.position = Input.mousePosition;
+        crosshair.transform.position = mousePos;
 
-        rayLook = mainCamera.ScreenPointToRay(Input.mousePosition);
+        rayLook = mainCamera.ScreenPointToRay(mousePos);
         
         
 
@@ -137,11 +139,10 @@ public class ObjectGrab : MonoBehaviour
 
         if(ObjectDragActive && currentObject.collider != null)
         {
-            worldPosition = new Vector3(Input.mousePosition.x + currentObject.transform.position.z, Input.mousePosition.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
+            worldPosition = new Vector3(mousePos.x + currentObject.transform.position.z, mousePos.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
             Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
 
             //Sets the mouse position
-            mousePos = Input.mousePosition;
             mousePos.z = mZCoord;
             //Translates the the object to be pulled to to the mouse position in the world
             target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition) + rb.velocity.normalized;
@@ -165,7 +166,10 @@ public class ObjectGrab : MonoBehaviour
             rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
 
             ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
-            objRender.EnablePhysics(); //Enable grabbed object's physics
+            if (objRender != null)
+            {
+                objRender.EnablePhysics(); //Enable grabbed object's physics
+            }
 
             target.transform.position = currentObject.transform.position;//sets the objects position
 

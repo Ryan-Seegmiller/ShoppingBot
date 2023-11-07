@@ -186,6 +186,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level
       objectReference: {fileID: 0}
+    - target: {fileID: 5478898790658750674, guid: c2749349f2722dd4facb946fde8ed600, type: 3}
+      propertyPath: doGenerate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5478898790658750675, guid: c2749349f2722dd4facb946fde8ed600, type: 3}
       propertyPath: m_RootOrder
       value: 0
