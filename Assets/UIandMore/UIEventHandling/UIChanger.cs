@@ -41,8 +41,15 @@ public class UIChanger : MonoBehaviour
         main.SetActive(false);
         scoring.SetActive(false);
         Started = false;
-
+    }
+    public void SetSceneMenuStop()
+    {
         UIEvents.instance.StopGame();
+        menu.SetActive(true);
+        //ResetPauseMainOogaBooga();
+        main.SetActive(false);
+        scoring.SetActive(false);
+        Started = false;
     }
     public void SetSceneMain()
     {

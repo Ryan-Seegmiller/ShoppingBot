@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour, UIEvents
     private void GameEnd()
     {
         // TODO: save score
-        //LevelGen.LevelManager.instance.DeleteLevel(false);
+        LevelGen.LevelManager.instance.DeleteLevel(false);
         UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
         ItemManager.instance.DestroyItems();
