@@ -192,10 +192,6 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 223077863361831966, guid: 9397c8b5a5d643b48ab29c9e5dc2b726, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 223077863361831966, guid: 9397c8b5a5d643b48ab29c9e5dc2b726, type: 3}
       propertyPath: elevatorAnim
       value: 
       objectReference: {fileID: 1521950857}
