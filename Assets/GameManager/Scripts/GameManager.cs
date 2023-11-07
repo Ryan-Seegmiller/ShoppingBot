@@ -46,8 +46,18 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         GameStart();
     }
+    // TODO: pause/unpause functionality
+    public void PauseGame()
+    {
+        
+    }
+    public void ContinueGame()
+    {
+
+    }
     public void StopGame()
     {
+        // TODO: Stop Game
         GameEnd();
     }
     public void EndGame()
@@ -108,8 +118,15 @@ public class GameManager : MonoBehaviour, UIEvents
             // spawn enemies
         }
     }
+    private void GameStop()
+    {
+        LevelGen.LevelManager.instance.DeleteLevel(false);
+        gameActive = true;
+        StartCoroutine(Clock());
+    }
     private void GameEnd()
     {
+        // TODO: save score
         Debug.Log("GameEnd()");
         LevelGen.LevelManager.instance.DeleteLevel(false);
         UIChanger.instance.SetSceneScoring();
