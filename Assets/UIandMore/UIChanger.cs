@@ -39,7 +39,7 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         scoring.SetActive(false);
 
-        TimeCalc.instance.StartTimer();
+        //TimeCalc.instance.StartTimer();
     }
     public void SetSceneScoring()
     {

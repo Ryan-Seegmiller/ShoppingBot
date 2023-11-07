@@ -113,7 +113,12 @@ public class Laser : MonoBehaviour
     //Adds force if theres an object in the path with a rigidbody
     private void HitDetection(bool cast, RaycastHit hit)
     {
-        if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
+        if (cast && hit.collider.TryGetComponent(out EnemyBase eb))//Enemy damage
+        {
+            eb.Hit(Time.deltaTime);//Because its a constant beam, pass in TDT as a modifier to the damage value.
+                                   //This way, it does 1 damage per second rather than 1 damage per frame/hit.
+        }                          //currently its actually 3 damage per second. Determined in the EnemyBase.Hit()
+        else if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
         {
             if(hit.collider.gameObject.layer == 11)
             {
