@@ -211,6 +211,8 @@ MonoBehaviour:
   - {x: 1.5, y: 0.6, z: -3.25}
   - {x: -1.5, y: 0.6, z: -3.25}
   - {x: -3, y: 0.6, z: -3.25}
+  spawnLightChance: 0.899
+  lightFixturePrefab: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
 --- !u!1001 &3488115683677248760
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -36,12 +36,13 @@ public class ScoreCalc : MonoBehaviour
         scoreVal = 0;
 
         //Time
-        int t = TimeCalc.instance.timer;
+        int t = TimeCalc.instance.timer; //TODO replace with Game Manager calling it
         int j = testValues1.Length;
         for(int i = 0; i < testValues1.Length; i++)
         {
             if(t < testValues1[i])
             {
+                //less time spent = more score per threshold
                 scoreVal += 60 * j / 2;
             }
             j--;
@@ -53,7 +54,8 @@ public class ScoreCalc : MonoBehaviour
             //check how many items were correct, +100 for each?
             if (ItemManager.instance.completionList[i])
             {
-                scoreVal += 100;
+                //bigger numer = more incentive
+                scoreVal += 500;
             }
         }
     }
