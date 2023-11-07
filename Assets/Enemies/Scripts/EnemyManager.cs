@@ -26,11 +26,17 @@ namespace enemymanager
         void Awake()
         {
             if (instance == null) { instance = this; } else { Destroy(this); }
+            UpdateSpawners();
+        }
+        public void UpdateSpawners()
+        {
             enemySpawns.Clear();
-            for(int i=0; i<spawnObject.transform.childCount; i++) { enemySpawns.Add(spawnObject.transform.GetChild(i)); }
+            GameObject[] spawners = GameObject.FindGameObjectsWithTag("Respawn");
+            for (int i = 0; i < spawners.Length; i++) { enemySpawns.Add(spawners[i].transform); }
         }
         public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
         {
+
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
@@ -41,7 +47,7 @@ namespace enemymanager
         }
         public void DestroyEnemies()
         {
-            for (int i = currentEnemies.Count; i > 0; i--)
+            for (int i = 0;i< currentEnemies.Count; i++)
             {
                 Destroy(currentEnemies[i].gameObject);
             }

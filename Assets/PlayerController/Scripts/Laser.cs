@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayerContoller;
 
 public class Laser : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Laser : MonoBehaviour
 
     [SerializeField] private ParticleSystem hitParticleStystem;
     [SerializeField] private ParticleSystem muzzelParticleStystem;
+
+
+    Vector3 mousePos;
 
     //Establishes if an object has been grabbed
     private ObjectGrab grab;
@@ -45,6 +49,7 @@ public class Laser : MonoBehaviour
     }
     private void Update()
     {
+        mousePos = Input.mousePosition + PlayerMovement.MouseOffset;
         if (Input.GetMouseButton(0)) 
         {
             Activate();
@@ -85,7 +90,7 @@ public class Laser : MonoBehaviour
     private void ArmLook()
     {
         //Points the arm to the crosshair placement
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
         bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
         
 
@@ -101,7 +106,7 @@ public class Laser : MonoBehaviour
         }
         else if (!objectGrabbed)
         {
-            armPivot.transform.forward = Camera.main.ScreenPointToRay(Input.mousePosition).direction;
+            armPivot.transform.forward = Camera.main.ScreenPointToRay(mousePos).direction;
         }
         else
         {

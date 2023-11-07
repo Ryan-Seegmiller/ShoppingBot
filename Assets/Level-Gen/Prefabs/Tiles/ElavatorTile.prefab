@@ -354,6 +354,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9208566225419152404}
     m_Modifications:
+    - target: {fileID: 961789684829616440, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 961789684829616440, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 961789684829616440, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858185830043619286, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858185830043619286, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4858185830043619286, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
       propertyPath: m_Name
       value: LightFixture (1)
