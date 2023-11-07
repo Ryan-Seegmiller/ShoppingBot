@@ -10,6 +10,8 @@ public class UIChanger : MonoBehaviour
     public GameObject main;
     public GameObject scoring;
 
+    bool Started = false;
+
     //lazy workaround. fix after MVP
     [SerializeField] GameObject mScreen;
     [SerializeField] GameObject pMenu;
@@ -29,14 +31,18 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(true);
         main.SetActive(false);
         scoring.SetActive(false);
+        Started = false;
     }
 
     public void SetSceneMenu()
     {
         menu.SetActive(true);
-        ResetPauseMainOogaBooga();
+        //ResetPauseMainOogaBooga();
         main.SetActive(false);
         scoring.SetActive(false);
+        Started = false;
+
+        UIEvents.instance.StopGame();
     }
     public void SetSceneMain()
     {
@@ -44,19 +50,43 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         scoring.SetActive(false);
 
-        //Tell game Manager to start
+        if (!Started)
+        {
+            UIEvents.instance.StartGame();
+            Started = true;
+        }
+        else
+        {
+            UIEvents.instance.ContinueGame();
+        }
     }
     public void SetSceneScoring()
     {
         scoring.SetActive(true);
         menu.SetActive(false);
-        ResetPauseMainOogaBooga();
+        //ResetPauseMainOogaBooga();
         main.SetActive(false);
+
+        UIEvents.instance.EndGame();
     }
     public void ResetPauseMainOogaBooga()
     {
         mScreen.SetActive(true);
         pMenu.SetActive(false);
+        UIEvents.instance.PauseGame();
+    }
+
+    public void QuitTheGame()
+    {
+        UIEvents.instance.QuitGame();
+    }
+
+    public void SetPause()
+    {
+        pMenu.SetActive(true);
+        mScreen.SetActive(false);
+
+        UIEvents.instance.PauseGame();
     }
 
     //Add call to things and stuff

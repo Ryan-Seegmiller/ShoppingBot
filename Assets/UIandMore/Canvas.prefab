@@ -148,8 +148,8 @@ MonoBehaviour:
   menu: {fileID: 1554207337241904566}
   main: {fileID: 3002579731966070558}
   scoring: {fileID: 548267187432041033}
-  mScreen: {fileID: 0}
-  pMenu: {fileID: 0}
+  mScreen: {fileID: 262078759076391584}
+  pMenu: {fileID: 262078759058260871}
 --- !u!1 &193189938069311831
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,13 +446,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 223077863361831964, guid: 9397c8b5a5d643b48ab29c9e5dc2b726, type: 3}
-        m_TargetAssemblyTypeName: prefabSceneFinder, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: SetSceneMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2462,21 +2462,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 262078759076391584}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 5360743029849095053}
-        m_TargetAssemblyTypeName: prefabSceneFinder, Assembly-CSharp
-        m_MethodName: UnPauseGame
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: SetSceneMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2485,18 +2473,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 262078759058260871}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &262078759533546217
 GameObject:
@@ -2889,34 +2865,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 262078759058260871}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 5360743029849095053}
-        m_TargetAssemblyTypeName: prefabSceneFinder, Assembly-CSharp
-        m_MethodName: PauseGame
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: SetPause
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 262078759076391584}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4029,7 +3981,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 548267187432041034}
-  - component: {fileID: 8331035772988847636}
   m_Layer: 5
   m_Name: ScoreP
   m_TagString: Untagged
@@ -4059,18 +4010,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8331035772988847636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 548267187432041033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7f4b27756f52c40a53f8fe931852e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &548267187555486739
 GameObject:
   m_ObjectHideFlags: 0
@@ -4733,9 +4672,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8331035772988847636}
-        m_TargetAssemblyTypeName: prefabSceneFinder, Assembly-CSharp
-        m_MethodName: GoMenu
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: SetSceneMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4830,7 +4769,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8005653496405853141}
-  - component: {fileID: 5739984202525044092}
   m_Layer: 0
   m_Name: MenuP
   m_TagString: Untagged
@@ -4857,18 +4795,6 @@ Transform:
   m_Father: {fileID: 99401776010598106}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5739984202525044092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1554207337241904566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7f4b27756f52c40a53f8fe931852e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3002579731966070558
 GameObject:
   m_ObjectHideFlags: 0
@@ -4878,7 +4804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7009991589994359924}
-  - component: {fileID: 5360743029849095053}
+  - component: {fileID: 7681088122564994887}
   m_Layer: 5
   m_Name: HUDUIP
   m_TagString: Untagged
@@ -4910,7 +4836,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5360743029849095053
+--- !u!114 &7681088122564994887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4919,9 +4845,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3002579731966070558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7f4b27756f52c40a53f8fe931852e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e567c542641223409d59d2ac49496b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mScreen: {fileID: 262078759076391584}
+  pMenu: {fileID: 262078759058260871}
 --- !u!1 &3088047918714636948
 GameObject:
   m_ObjectHideFlags: 0
@@ -5465,9 +5393,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8216617853599121236}
-        m_TargetAssemblyTypeName: Quit, Assembly-CSharp
-        m_MethodName: QuitGame
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: QuitTheGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5835,9 +5763,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5739984202525044092}
-        m_TargetAssemblyTypeName: prefabSceneFinder, Assembly-CSharp
-        m_MethodName: GoMain
+      - m_Target: {fileID: 99401776010598107}
+        m_TargetAssemblyTypeName: UIChanger, UI
+        m_MethodName: SetSceneMain
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
