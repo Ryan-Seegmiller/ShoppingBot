@@ -124,12 +124,15 @@ public class GameManager : MonoBehaviour, UIEvents
         gameRules = new GameRules(Time.time);
         StartCoroutine(Clock());
         gameActive = true;
+        gameRules.wavePeriod = 10;
     }
     private void GameUpdate()
     {
         if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
         {
             // spawn enemies
+            gameRules.waveCount++;
+            EnemyManager.instance.SpawnEnemies(gameRules.waveCount, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
         }
     }
     private void GameStop()
@@ -137,6 +140,7 @@ public class GameManager : MonoBehaviour, UIEvents
         StartCoroutine(Clock());
         player.backupCameraCanvas.SetActive(false);
         ItemManager.instance.DestroyItems();
+        EnemyManager.instance.DestroyEnemies();
         LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     private void GameEnd()
@@ -146,6 +150,7 @@ public class GameManager : MonoBehaviour, UIEvents
         player.backupCameraCanvas.SetActive(false);
         UIChanger.instance.SetSceneScoring();
         ItemManager.instance.DestroyItems();
+        EnemyManager.instance.DestroyEnemies();
         LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     #endregion
