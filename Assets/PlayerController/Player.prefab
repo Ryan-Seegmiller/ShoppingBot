@@ -1397,14 +1397,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   grounded: 0
-  maxSlopeAngle: 40
   orientation: {fileID: 6706234559976414594}
   camHolder: {fileID: 6706234559598760859}
   stepRayLower: {fileID: 6706234560032583487}
   stepRayUpper: {fileID: 6706234560711536732}
   stepHeight: 0.4
   stepSmooth: 0.1
-  state: 0
 --- !u!114 &6706234560711536730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6385,12 +6383,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6706234561016556100}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 6706234561016556103}
+  volumeTrigger: {fileID: 6706234560476346256}
   volumeLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -6445,7 +6443,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6706234561016556100}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 

@@ -473,6 +473,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6706234560711536732, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
   m_PrefabInstance: {fileID: 6706234559813694388}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1379560033 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6706234560476346256, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+  m_PrefabInstance: {fileID: 6706234559813694388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1438736729
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +712,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6706234559603927428, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6706234560133117540, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -755,9 +764,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6706234560308056344, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706234560476346261, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6706234560711536730, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 219812274}
+    - target: {fileID: 6706234561016556097, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706234561016556098, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706234561016556098, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: volumeTrigger
+      value: 
+      objectReference: {fileID: 1379560033}
+    - target: {fileID: 6706234561016556100, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90a64a10d0b7ca64aac8798012446f7b, type: 3}
