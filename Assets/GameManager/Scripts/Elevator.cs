@@ -7,14 +7,14 @@ public class Elevator : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.root.GetComponent<PlayerMovement>())
+        if (other.transform.root.GetComponentInChildren<PlayerMovement>())
         {
             GameManager.instance.OnPlayerEnterElevator();
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.root.GetComponent<PlayerMovement>())
+        if (other.transform.root.GetComponentInChildren<PlayerMovement>())
         {
             GameManager.instance.OnPlayerExitElevator();
         }

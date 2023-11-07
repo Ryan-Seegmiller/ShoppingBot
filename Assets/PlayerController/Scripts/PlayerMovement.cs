@@ -15,8 +15,7 @@ namespace PlayerContoller
 
         public Animator playerAnimator;
 
-        private float desiredMoveSpeed;
-        private float lastDesiredMoveSpeed;
+        public GameObject backupCameraCanvas; 
 
         public float speedIncreaseMultiplier;
         public float slopeIncreaseMultiplier;

@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour, UIEvents
     public void StopGame()
     {
         // TODO: Stop Game
-        GameEnd();
+        GameStop();
     }
     public void EndGame()
     {
@@ -108,12 +108,22 @@ public class GameManager : MonoBehaviour, UIEvents
     private GameRules gameRules;
     private void GameStart()
     {
+        // init
         Debug.Log("GameManager :: Game is staring", this);
-        LevelGen.LevelManager.instance.InstanceMall();
-        gameActive = true;
+        LevelGen.LevelManager.instance.InstanceMall(); // level
+        ItemManager.instance.RandomiseList(); // shopping list
+
+        // player
+        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
+        player.backupCameraCanvas.SetActive(true);
+        player.transform.position = new Vector3(-2.5f, 2, -2.5f);
+        player.transform.rotation = Quaternion.identity;
+        EnemyManager.instance.player = player.gameObject;
+
+        // clock
         gameRules = new GameRules(Time.time);
-        ItemManager.instance.RandomiseList();
         StartCoroutine(Clock());
+        gameActive = true;
     }
     private void GameUpdate()
     {
@@ -124,25 +134,28 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     private void GameStop()
     {
-        LevelGen.LevelManager.instance.DeleteLevel(false);
         StartCoroutine(Clock());
+        player.backupCameraCanvas.SetActive(false);
         ItemManager.instance.DestroyItems();
+        LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     private void GameEnd()
     {
         // TODO: save score
-        LevelGen.LevelManager.instance.DeleteLevel(false);
-        UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
+        player.backupCameraCanvas.SetActive(false);
+        UIChanger.instance.SetSceneScoring();
         ItemManager.instance.DestroyItems();
+        LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     #endregion
 
     private void Start()
     {
         EnemyManager.instance.maxEnemies = 20;
-        player.gameObject.SetActive(true);
         LevelGen.LevelManager.instance.InstanceElevatorShaft();
+        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
+        player.backupCameraCanvas.SetActive(false);
     }
     private void Update()
     {

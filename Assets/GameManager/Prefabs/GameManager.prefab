@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameActive: 0
   player: {fileID: 0}
+  spawn: {fileID: 0}
   elevatorAnim: {fileID: 0}
-  elevatorViewCamera: {fileID: 0}
