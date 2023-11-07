@@ -29,7 +29,6 @@ public class ObjectGrab : MonoBehaviour
     //Raycast varibles
     [NonSerialized]public RaycastHit currentObject;
     private RaycastHit raycastHit;
-    private RaycastHit EmptyRaycastHit;
 
     Ray rayLook;
 
@@ -79,7 +78,7 @@ public class ObjectGrab : MonoBehaviour
         {
             ObjectDrag();
         }
-        if (!ObjectDragActive && Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance))
+        if (!ObjectDragActive && Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance, layersToHit))
         {
             //Arm look rotiation reset
             armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
@@ -136,11 +135,15 @@ public class ObjectGrab : MonoBehaviour
 
     private void ObjectDrag()
     {
-
+        print(currentObject.collider.gameObject.name);
         if(ObjectDragActive && currentObject.collider != null)
         {
             worldPosition = new Vector3(mousePos.x + currentObject.transform.position.z, mousePos.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
             Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
+
+            ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
+
+            objRender.EnablePhysics(); //Enable grabbed object's physics
 
             //Sets the mouse position
             mousePos.z = mZCoord;
@@ -160,16 +163,16 @@ public class ObjectGrab : MonoBehaviour
     }
     private void ToggleDrag()
     {
+        print(raycastHit.collider);
         if(raycastHit.collider != null)
         {
             currentObject = raycastHit;//Sets the current object to the one clicked
             rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
 
             ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
-            if (objRender != null)
-            {
-                objRender.EnablePhysics(); //Enable grabbed object's physics
-            }
+            
+            objRender.EnablePhysics(); //Enable grabbed object's physics
+            
 
             target.transform.position = currentObject.transform.position;//sets the objects position
 

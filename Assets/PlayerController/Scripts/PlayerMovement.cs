@@ -33,13 +33,6 @@ namespace PlayerContoller
         public Transform orientation;
         public Transform camHolder;
 
-        [Header("Step handiling")]
-        public GameObject stepRayLower;
-        public GameObject stepRayUpper;
-
-        public float stepHeight = .4f;
-        public float stepSmooth = .1f;
-
         Vector2 playerInput;
         private bool isSprinting;
 
@@ -69,12 +62,12 @@ namespace PlayerContoller
         }
         private void Start()
         {
-            rb = gameObject.GetComponent<Rigidbody>();
+            rb = GetComponent<Rigidbody>();
+            rb.isKinematic = true;
             rb.freezeRotation = true;
 
             playerCollider = GetComponentInChildren<SphereCollider>().gameObject.transform;
 
-            stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.x);
         }
         private void Update()
         {
@@ -113,7 +106,7 @@ namespace PlayerContoller
             rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
             transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
             camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-           
+
 
             //Player animations
             playerAnimatorController();

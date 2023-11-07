@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2938125884030017766, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: draggingActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2938125884524816088, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_Name
       value: Player
