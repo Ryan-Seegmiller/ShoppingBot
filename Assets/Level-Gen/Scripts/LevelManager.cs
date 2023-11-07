@@ -35,11 +35,18 @@ namespace LevelGen
 
         public void DeleteLevel(bool includeShaft = false)
         {
-            if (!includeShaft && transform.childCount <= MapData.maxFloors) { return; }
+            if (!includeShaft && transform.childCount <= MapData.maxFloors)
+            {
+                Debug.LogWarning("LevelManager :: Delete mall attempted; there is no existing mall.", this); 
+                return;
+            }
             int lastIndex = (!includeShaft) ? MapData.maxFloors : 0;
+            if (includeShaft) { Debug.Log("LevelManager :: Deleting mall and shaft.", this); }
+            else { Debug.Log("LevelManager :: Deleting mall", this); }
             for (int i = transform.childCount - 1; i >= lastIndex; i--)
             {
-                DestroyImmediate(transform.GetChild(i).gameObject);
+                if (Application.isPlaying) { Destroy(transform.GetChild(i).gameObject); }
+                else { DestroyImmediate(transform.GetChild(i).gameObject); }
             }
         }
         private void SelectSpecialTiles()
@@ -66,6 +73,7 @@ namespace LevelGen
 
         public void InstanceElevatorShaft()
         {
+            Debug.Log("LevelManager :: Instancing the elevator shaft", this);
             for (int i = 0; i < MapData.maxFloors; i++)
             {
                 if (i == 0)
@@ -79,6 +87,7 @@ namespace LevelGen
         }
         public void InstanceMall()
         {
+            Debug.Log("LevelManager :: Instancing the mall", this);
             SelectSpecialTiles();
             int floorRamp = (mapData.floorNum > 1) ? Random.Range(1, mapData.mapSize-1) : 0;
             for (int i = 0; i < mapData.floorNum + 1; i++) // loops through the floors

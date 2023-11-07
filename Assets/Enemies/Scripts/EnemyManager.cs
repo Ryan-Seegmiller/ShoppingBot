@@ -26,11 +26,17 @@ namespace enemymanager
         void Awake()
         {
             if (instance == null) { instance = this; } else { Destroy(this); }
+            UpdateSpawners();
+        }
+        public void UpdateSpawners()
+        {
             enemySpawns.Clear();
-            for(int i=0; i<spawnObject.transform.childCount; i++) { enemySpawns.Add(spawnObject.transform.GetChild(i)); }
+            GameObject[] spawners = GameObject.FindGameObjectsWithTag("Respawn");
+            for (int i = 0; i < spawners.Length; i++) { enemySpawns.Add(spawners[i].transform); }
         }
         public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
         {
+
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
@@ -39,20 +45,13 @@ namespace enemymanager
                 currentEnemies.Add(e);
             }
         }
-        public void FixedUpdate()
+        public void DestroyEnemies()
         {
-            time += Time.deltaTime;
-            if (time > lastCheckTime + 1 && time > gracePeriodTime) // Combination of fixed update and 1 second timer to reduce how often this is called/checked
+            for (int i = currentEnemies.Count; i > 0; i--)
             {
-                lastCheckTime = time;
-                enemiesSpawnQueue = enemySpawns.Count - currentEnemies.Count;//For how its currently setup, the amount of enemies it wants to spawn is the # of spawners minus the current amount of enemies.
-                                                                             //IE 10 spawners - 5 current players means spawn 5 more enemies over time
-                if (enemiesSpawnQueue > 0 && time > lastSpawnTime + spawnDelay && currentEnemies.Count<maxEnemies)//make sure the delay has passed, and that there is space for another enemy
-                {
-                    lastSpawnTime = time;
-                    SpawnEnemies(1, Random.Range(0, enemyPrefabs.Count)); //spawn a singular random enemy
-                }
+                Destroy(currentEnemies[i].gameObject);
             }
+            currentEnemies.Clear();
         }
     }
 }
