@@ -1,11 +1,7 @@
 {
-    "name": "UI",
-    "rootNamespace": "",
-    "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:250b2ea047c69c74d97a0b7b2f5e628f",
-        "GUID:bd0ca4ea30cdc9448bfa7b13d9feab3a"
-    ],
+    "name": "Audio",
+    "rootNamespace": "audio",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
