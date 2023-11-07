@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour, UIEvents
         if (instance == null)
         {
             instance = this;
+            UIEvents.instance = this;
         }
         else
         {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour, UIEvents
     public void StartGame()
     {
         GameStart();
+        Debug.Log("UIEvents :: Start game", this);
     }
     // TODO: pause/unpause functionality
     public void PauseGame()
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour, UIEvents
     public void StopGame()
     {
         // TODO: Stop Game
-        GameEnd();
+        GameStop();
     }
     public void EndGame()
     {
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour, UIEvents
     #region Elevator
     public void OnPlayerEnterElevator()
     {
-        if (gameRules.gameTime > 60)
+        if (gameRules.gameTime > 10)
         {
             GameEnd();
         }
@@ -106,39 +108,59 @@ public class GameManager : MonoBehaviour, UIEvents
     private GameRules gameRules;
     private void GameStart()
     {
-        LevelGen.LevelManager.instance.InstanceMall();
-        gameActive = true;
+        // init
+        Debug.Log("GameManager :: Game is staring", this);
+        LevelGen.LevelManager.instance.InstanceMall(); // level
+        ItemManager.instance.RandomiseList(); // shopping list
+
+        // player
+        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
+        player.backupCameraCanvas.SetActive(true);
+        player.transform.position = new Vector3(-2.5f, 2, -2.5f);
+        player.transform.rotation = Quaternion.identity;
+        EnemyManager.instance.player = player.gameObject;
+
+        // clock
         gameRules = new GameRules(Time.time);
         StartCoroutine(Clock());
+        gameActive = true;
+        gameRules.wavePeriod = 10;
     }
     private void GameUpdate()
     {
         if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
         {
             // spawn enemies
+            gameRules.waveCount++;
+            EnemyManager.instance.SpawnEnemies(gameRules.waveCount, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
         }
     }
     private void GameStop()
     {
-        LevelGen.LevelManager.instance.DeleteLevel(false);
-        gameActive = true;
         StartCoroutine(Clock());
+        player.backupCameraCanvas.SetActive(false);
+        ItemManager.instance.DestroyItems();
+        EnemyManager.instance.DestroyEnemies();
+        LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     private void GameEnd()
     {
         // TODO: save score
-        Debug.Log("GameEnd()");
-        LevelGen.LevelManager.instance.DeleteLevel(false);
-        UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
+        player.backupCameraCanvas.SetActive(false);
+        UIChanger.instance.SetSceneScoring();
+        ItemManager.instance.DestroyItems();
+        EnemyManager.instance.DestroyEnemies();
+        LevelGen.LevelManager.instance.DeleteLevel(false);
     }
     #endregion
 
     private void Start()
     {
         EnemyManager.instance.maxEnemies = 20;
-        player.gameObject.SetActive(true);
         LevelGen.LevelManager.instance.InstanceElevatorShaft();
+        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
+        player.backupCameraCanvas.SetActive(false);
     }
     private void Update()
     {

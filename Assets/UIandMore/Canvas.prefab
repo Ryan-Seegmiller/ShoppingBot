@@ -448,7 +448,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 99401776010598107}
         m_TargetAssemblyTypeName: UIChanger, UI
-        m_MethodName: SetSceneMenu
+        m_MethodName: SetSceneMenuStop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

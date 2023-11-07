@@ -39,20 +39,13 @@ namespace enemymanager
                 currentEnemies.Add(e);
             }
         }
-        public void FixedUpdate()
+        public void DestroyEnemies()
         {
-            time += Time.deltaTime;
-            if (time > lastCheckTime + 1 && time > gracePeriodTime) // Combination of fixed update and 1 second timer to reduce how often this is called/checked
+            for (int i = currentEnemies.Count; i > 0; i--)
             {
-                lastCheckTime = time;
-                enemiesSpawnQueue = enemySpawns.Count - currentEnemies.Count;//For how its currently setup, the amount of enemies it wants to spawn is the # of spawners minus the current amount of enemies.
-                                                                             //IE 10 spawners - 5 current players means spawn 5 more enemies over time
-                if (enemiesSpawnQueue > 0 && time > lastSpawnTime + spawnDelay && currentEnemies.Count<maxEnemies)//make sure the delay has passed, and that there is space for another enemy
-                {
-                    lastSpawnTime = time;
-                    SpawnEnemies(1, Random.Range(0, enemyPrefabs.Count)); //spawn a singular random enemy
-                }
+                Destroy(currentEnemies[i].gameObject);
             }
+            currentEnemies.Clear();
         }
     }
 }

@@ -143,7 +143,16 @@ namespace Items
             return result;
         }
 
+        public void DestroyItems()
+        {
+            //Get all items in scene
+            ItemInteract[] items = FindObjectsOfType<ItemInteract>();
 
+            for (int i = items.Length - 1; i > 0; i--)
+            {
+                Destroy(items[i].gameObject);
+            }
+        }
 
 
 

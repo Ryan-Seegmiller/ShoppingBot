@@ -61,7 +61,7 @@ public class EnemyBase : MonoBehaviour
     protected GameObject player;
     void Awake()
     {
-        Debug.Log("Enemy Created");
+        Debug.Log("Enemy Created", this);
         if (GenerateRandomValues)
             GetRandomAIValues();
         GetComponent<SphereCollider>().radius = detectionRadius;
