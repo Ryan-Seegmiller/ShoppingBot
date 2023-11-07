@@ -12,9 +12,10 @@ namespace LevelGen
         [SerializeField] protected GameObject itemPrefab;
         [SerializeField] protected ItemCategory spawnCategory;
         [SerializeField] protected bool randomCategory = false;
-        public Vector3[] spawns = new Vector3[1] { Vector3.zero };
         [SerializeField, Range(0f, 1f)] protected float spawnLightChance = 0.3f; //The chance of a light fixture spawning
         [SerializeField] protected GameObject lightFixturePrefab;
+        [SerializeField, Range(0f, 1f)] protected float spawnerChance = .01f;
+        public Vector3[] spawns = new Vector3[1] { Vector3.zero };
 
         public void SpawnItems()
         {
@@ -54,14 +55,23 @@ namespace LevelGen
                 newLight.transform.position = transform.position + lightFixturePos; //Set light's position
             }
         }
-
-        private void OnEnable()
+        public void SpawnSpawner()
         {
-            if (itemParent == null)
+            float num = Random.Range(0f, 1f);
+            if (num < spawnerChance)
             {
-                SpawnItems();
+                GameObject spawner = new GameObject("Spawner");
+                spawner.transform.SetParent(transform);
+                spawner.transform.localPosition = new Vector3(0, 1, 0);
+                spawner.tag = "Respawn";
             }
+        }
+
+        private void Start()
+        {
+            SpawnItems();
             SpawnLighting();
+            SpawnSpawner();
         }
     }
 }
