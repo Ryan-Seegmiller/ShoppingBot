@@ -54,6 +54,10 @@ namespace audio
         {
             musicAS.volume = newVolume;
         }
+        public void AdjustSoundFXVolume(float newVolume)
+        {
+            aS.volume = newVolume;
+        }
     }
 }
 

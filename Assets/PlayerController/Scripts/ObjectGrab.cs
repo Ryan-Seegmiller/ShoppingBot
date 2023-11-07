@@ -62,7 +62,7 @@ public class ObjectGrab : MonoBehaviour
         mousePos = Input.mousePosition + PlayerMovement.MouseOffset;
 
         //crosshair placement
-        crosshair.transform.position = mousePos;
+        //crosshair.transform.position = mousePos;
 
         rayLook = mainCamera.ScreenPointToRay(mousePos);
         
