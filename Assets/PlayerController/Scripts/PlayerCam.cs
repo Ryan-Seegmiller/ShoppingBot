@@ -18,7 +18,7 @@ namespace PlayerContoller
         {
             //Locks the cursor in the center of the window
             Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = false;
+            //Cursor.visible = false;
         }
 
         public void Update()

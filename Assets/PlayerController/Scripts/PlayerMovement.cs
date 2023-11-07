@@ -51,6 +51,9 @@ namespace PlayerContoller
 
         Transform playerCollider;
 
+        //Reference varieble
+        public static Vector3 MouseOffset = new Vector3(15, -17, 0);
+
         bool OnSlope;
         private bool onSlope
         {
