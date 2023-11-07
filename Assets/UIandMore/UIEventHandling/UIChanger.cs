@@ -10,7 +10,7 @@ public class UIChanger : MonoBehaviour
     public GameObject main;
     public GameObject scoring;
 
-    bool Started = false;
+    [SerializeField] bool Started = false;
 
     //lazy workaround. fix after MVP
     [SerializeField] GameObject mScreen;
@@ -57,6 +57,8 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         scoring.SetActive(false);
 
+        //Debug.Log("Set to main");
+
         if (!Started)
         {
             UIEvents.instance.StartGame();
@@ -64,6 +66,7 @@ public class UIChanger : MonoBehaviour
         }
         else
         {
+            ResetPauseMainOogaBooga();
             UIEvents.instance.ContinueGame();
         }
     }
@@ -78,7 +81,7 @@ public class UIChanger : MonoBehaviour
     {
         mScreen.SetActive(true);
         pMenu.SetActive(false);
-        UIEvents.instance.PauseGame();
+        //UIEvents.instance.PauseGame();
     }
 
     public void QuitTheGame()
