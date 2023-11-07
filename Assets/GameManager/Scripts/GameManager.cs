@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour, UIEvents
         if (instance == null)
         {
             instance = this;
+            UIEvents.instance = this;
         }
         else
         {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour, UIEvents
     public void StartGame()
     {
         GameStart();
+        Debug.Log("UIEvents :: Start game", this);
     }
     // TODO: pause/unpause functionality
     public void PauseGame()
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour, UIEvents
     #region Elevator
     public void OnPlayerEnterElevator()
     {
-        if (gameRules.gameTime > 60)
+        if (gameRules.gameTime > 10)
         {
             GameEnd();
         }
@@ -106,9 +108,11 @@ public class GameManager : MonoBehaviour, UIEvents
     private GameRules gameRules;
     private void GameStart()
     {
+        Debug.Log("GameManager :: Game is staring", this);
         LevelGen.LevelManager.instance.InstanceMall();
         gameActive = true;
         gameRules = new GameRules(Time.time);
+        ItemManager.instance.RandomiseList();
         StartCoroutine(Clock());
     }
     private void GameUpdate()
@@ -121,16 +125,16 @@ public class GameManager : MonoBehaviour, UIEvents
     private void GameStop()
     {
         LevelGen.LevelManager.instance.DeleteLevel(false);
-        gameActive = true;
         StartCoroutine(Clock());
+        ItemManager.instance.DestroyItems();
     }
     private void GameEnd()
     {
         // TODO: save score
-        Debug.Log("GameEnd()");
-        LevelGen.LevelManager.instance.DeleteLevel(false);
+        //LevelGen.LevelManager.instance.DeleteLevel(false);
         UIChanger.instance.SetSceneScoring();
         StopCoroutine(Clock());
+        ItemManager.instance.DestroyItems();
     }
     #endregion
 

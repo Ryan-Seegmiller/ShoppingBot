@@ -148,9 +148,9 @@ namespace Items
             //Get all items in scene
             ItemInteract[] items = FindObjectsOfType<ItemInteract>();
 
-            for (int i = items.Length - 1; i > items.Length; i--)
+            for (int i = items.Length - 1; i > 0; i--)
             {
-                Destroy(items[i]);
+                Destroy(items[i].gameObject);
             }
         }
 

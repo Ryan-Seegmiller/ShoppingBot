@@ -66,8 +66,6 @@ public class UIChanger : MonoBehaviour
         menu.SetActive(false);
         //ResetPauseMainOogaBooga();
         main.SetActive(false);
-
-        UIEvents.instance.EndGame();
     }
     public void ResetPauseMainOogaBooga()
     {

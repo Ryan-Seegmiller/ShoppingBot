@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface UIEvents
 {
-    public static UIEvents instance { get; }
+    public static UIEvents instance { get; set; }
     public void StartGame(); // starts a new game
     public void PauseGame(); // pauses the game
     public void ContinueGame(); // continues game from a paused state
