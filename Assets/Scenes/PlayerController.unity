@@ -636,9 +636,21 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2938125884030017767, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: LayersCanHit.m_Bits
+      value: 3073
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125884030017767, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: layersCanHit.m_Bits
+      value: 3073
+      objectReference: {fileID: 0}
     - target: {fileID: 2938125884030017784, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_IsKinematic
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125884197316394, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_CollideAgainst.m_Bits
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2938125884197316396, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_LocalPosition.x
@@ -659,6 +671,10 @@ PrefabInstance:
     - target: {fileID: 2938125884197316396, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.012481467
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125884500253359, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2938125884524816088, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_Name
@@ -707,6 +723,14 @@ PrefabInstance:
     - target: {fileID: 2938125884524816089, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125885069736230, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125885094195898, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 803e55632095a6548a288507f4cc1389, type: 3}

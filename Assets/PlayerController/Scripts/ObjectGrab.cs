@@ -29,6 +29,7 @@ public class ObjectGrab : MonoBehaviour
     //Raycast varibles
     [NonSerialized]public RaycastHit currentObject;
     private RaycastHit raycastHit;
+    private RaycastHit emptyRaycastHit;
 
     Ray rayLook;
 
@@ -112,6 +113,7 @@ public class ObjectGrab : MonoBehaviour
         { 
             StartCoroutine(ItemEnableCollison());
             ResetObjectDrag();
+            currentObject = emptyRaycastHit;
         }
         if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
         {

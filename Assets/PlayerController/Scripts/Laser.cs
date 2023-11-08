@@ -11,6 +11,7 @@ public class Laser : MonoBehaviour
     [SerializeField] private float power;
 
     [Header("Laser settings")]
+    [SerializeField] private LayerMask layersCanHit;
     [SerializeField] private LineRenderer beam;
     [SerializeField] private Transform muzzelPoint;
     [SerializeField] private GameObject armPivot;
@@ -48,22 +49,6 @@ public class Laser : MonoBehaviour
             () => { Deactivate(); SetLaserPosition(muzzelPoint.position);};
         Shoot();
     }
-    private void ShootLaser()
-    {
-        //Creates the ray cast and gets the position of the point hit
-        Ray ray = new Ray(muzzelPoint.position, muzzelPoint.forward);
-        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
-        Vector3 hitPosition = cast ? hit.point : muzzelPoint.position + muzzelPoint.forward * maxLaserLength;
-
-        SetLaserPosition(hitPosition);
-
-        if (objectGrabbed)
-        {
-            grab.ResetObjectDrag();
-        }
-        HitDetection(cast, hit);
-        hitParticleStystem.transform.position = hitPosition;
-    }
     private void Activate()
     {
         //Plays particle system when shooting is active
@@ -85,33 +70,42 @@ public class Laser : MonoBehaviour
         hitParticleStystem.Stop();
         muzzelParticleStystem.Stop();
     }
+    private void ShootLaser()
+    {
+        //Creates the ray cast and gets the position of the point hit
+        Ray ray = new Ray(muzzelPoint.position, muzzelPoint.forward);
+        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
+        Vector3 hitPosition = cast ? hit.point : muzzelPoint.position + muzzelPoint.forward * maxLaserLength;
+
+        SetLaserPosition(hitPosition);
+
+        if (objectGrabbed)
+        {
+            grab.ResetObjectDrag();
+        }
+        if(hit.collider == null) {return; }
+        HitDetection(cast, hit);
+        hitParticleStystem.transform.position = hitPosition;
+    }
+    private void SetLaserPosition(Vector3 endPos)
+    {
+        beam.SetPosition(0, muzzelPoint.position);
+        beam.SetPosition(1, endPos);
+    }
     //Moves the arm twoards the mouse placement
     private void ArmLook()
     {
         //Points the arm to the crosshair placement
         Ray ray = Camera.main.ScreenPointToRay(PlayerMovement.mousePos);
-        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
+        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength, layersCanHit);
         
 
         //Gets if an object has been grabbed
         bool objectGrabbed = grab.ObjectDragActive;
-
         //Makes sure the arm is pointing as accuratley as possible
-        if (cast && !objectGrabbed)
-        {
-            if (!(hit.collider.gameObject.name == "Rob Door"))
 
-                armPivot.transform.LookAt(hit.point);
-        }
-        else if (!objectGrabbed)
-        {
-            armPivot.transform.forward = Camera.main.ScreenPointToRay(PlayerMovement.mousePos).direction;
-        }
-        else
-        {
-            armPivot.transform.LookAt(grab.currentObject.transform);
-        }
-
+        Vector3 armLookAtPos = (cast && !objectGrabbed) ? hit.point : grab.currentObject.transform.position;
+        armPivot.transform.LookAt(armLookAtPos);
 
     }
     //Adds force if theres an object in the path with a rigidbody
@@ -122,18 +116,16 @@ public class Laser : MonoBehaviour
             eb.Hit(Time.deltaTime);//Because its a constant beam, pass in TDT as a modifier to the damage value.
                                    //This way, it does 1 damage per second rather than 1 damage per frame/hit.
         }                          //currently its actually 3 damage per second. Determined in the EnemyBase.Hit()
-        else if (cast && hit.collider.TryGetComponent(out Rigidbody rigidbody))
+        else if (cast && hit.transform.gameObject.TryGetComponent(out Rigidbody rigidbody))
         {
-            if(hit.collider.gameObject.layer == 11)
-            {
-                rigidbody.isKinematic = false;
-            }
+
+            ItemRender objRender = (hit.transform.GetComponent<ItemRender>()) ? hit.transform.GetComponent<ItemRender>() : null; //Get the grabbed object's ItemRender script
+
+            if(objRender != null) objRender.EnablePhysics(); //Enable grabbed object's physics
+            
+            
             rigidbody.AddForce(armPivot.transform.forward * power/hit.distance, ForceMode.Force);            
         }
     }
-    private void SetLaserPosition(Vector3 endPos)
-    {
-        beam.SetPosition(0, muzzelPoint.position);
-        beam.SetPosition(1, endPos);
-    }
+   
 }
