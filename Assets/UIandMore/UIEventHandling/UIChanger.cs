@@ -113,6 +113,10 @@ public class UIChanger : MonoBehaviour
 
     public void VolumeSet(float f)
     {
-        //TODO: adjust audio through sliders
+        AudioManager.instance.AdjustMusicVolume(f);
+    }
+    public void VolumeSetSFX(float f)
+    {
+        AudioManager.instance.AdjustSoundFXVolume(f);
     }
 }
