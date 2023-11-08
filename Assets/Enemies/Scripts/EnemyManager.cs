@@ -15,9 +15,6 @@ namespace enemymanager
         protected int enemiesSpawnQueue = 0;
         public int maxEnemies = 15;
         public float spawnPositionOffset = 1;
-
-        public bool PauseEnemies;
-
         #region Timers
         public float time = 0; //TIME IS ONLY SET BY THE GAMEMANAGER SCRIPT.
         public float gracePeriodTime = 30;
@@ -39,6 +36,7 @@ namespace enemymanager
         }
         public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
         {
+
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
@@ -51,7 +49,7 @@ namespace enemymanager
         {
             for (int i = 0;i< currentEnemies.Count; i++)
             {
-                Destroy(currentEnemies[0].gameObject);
+                Destroy(currentEnemies[i].gameObject);
             }
             currentEnemies.Clear();
         }

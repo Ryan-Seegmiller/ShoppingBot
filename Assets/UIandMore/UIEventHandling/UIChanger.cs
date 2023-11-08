@@ -1,3 +1,4 @@
+using audio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,12 +45,15 @@ public class UIChanger : MonoBehaviour
     }
     public void SetSceneMenuStop()
     {
-        UIEvents.instance.StopGame();
+        ClickedSound(0);
+
         menu.SetActive(true);
         //ResetPauseMainOogaBooga();
         main.SetActive(false);
         scoring.SetActive(false);
         Started = false;
+
+        UIEvents.instance.StopGame();
     }
     public void SetSceneMain()
     {
@@ -59,11 +63,13 @@ public class UIChanger : MonoBehaviour
 
         if (!Started)
         {
+            ClickedSound(0);
             UIEvents.instance.StartGame();
             Started = true;
         }
         else
         {
+            ClickedSound(1);
             ResetPauseMainOogaBooga();
             UIEvents.instance.ContinueGame();
         }
@@ -84,16 +90,29 @@ public class UIChanger : MonoBehaviour
 
     public void QuitTheGame()
     {
+        ClickedSound(1);
+
         UIEvents.instance.QuitGame();
     }
 
     public void SetPause()
     {
+        ClickedSound(0);
+
         pMenu.SetActive(true);
         mScreen.SetActive(false);
 
         UIEvents.instance.PauseGame();
     }
 
-    //Add call to things and stuff
+    //Simplifying method call to audio
+    public void ClickedSound(int index)
+    {
+        AudioManager.instance.PlaySound2D(index);
+    }
+
+    public void VolumeSet(float f)
+    {
+        //TODO: adjust audio through sliders
+    }
 }

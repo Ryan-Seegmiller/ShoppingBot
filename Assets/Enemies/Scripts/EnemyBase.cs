@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
 using TMPro;
-using audio;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -47,6 +46,9 @@ public class EnemyBase : MonoBehaviour
     protected int lowChanceFlip2 = 1;
     float sh =0;
     public float startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
+    public List<AudioClip> deathAudio = new List<AudioClip>();
+    public List<AudioClip> detectedAudio = new List<AudioClip>();
+    public List<AudioClip> attackAudio = new List<AudioClip>();
     TMP_Text healthBar;
     [SerializeField]
     protected float _health;
@@ -101,6 +103,7 @@ public class EnemyBase : MonoBehaviour
         }
         if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
         {
+            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
             hasFoundPlayer = true;
         }
     }
@@ -162,7 +165,7 @@ public class EnemyBase : MonoBehaviour
     public void Die()
     {
         aS.transform.parent = null;
-        AudioManager.instance.PlaySound3D(4, transform.position);
+        aS.PlayOneShot(deathAudio[Random.Range(0, deathAudio.Count)]);
         Destroy(aS.gameObject, 3);
         Debug.Log(gameObject.name + " enemy has died");
         //iterate through body parts and make parent null and rotate for death effect

@@ -116,7 +116,7 @@ Transform:
   m_Children:
   - {fileID: 630161949336230432}
   - {fileID: 3579972522031490384}
-  - {fileID: 2832081784552938084}
+  - {fileID: 6911396838345413340}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemValue: -1
---- !u!1 &7671870238854335122
+--- !u!1 &3654155081862061766
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,8 +170,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2832081784552938084}
-  - component: {fileID: 1344679116735222549}
+  - component: {fileID: 6911396838345413340}
+  - component: {fileID: 4101653293728439545}
   m_Layer: 13
   m_Name: ColliderForPlayer
   m_TagString: Untagged
@@ -179,34 +179,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2832081784552938084
+--- !u!4 &6911396838345413340
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7671870238854335122}
+  m_GameObject: {fileID: 3654155081862061766}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.09, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 691535508308607955}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1344679116735222549
-SphereCollider:
+--- !u!65 &4101653293728439545
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7671870238854335122}
+  m_GameObject: {fileID: 3654155081862061766}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.01
-  m_Center: {x: 0, y: 0.092, z: 0}
+  m_Size: {x: 0.7, y: 0.05, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8435329749514296451
 PrefabInstance:
   m_ObjectHideFlags: 0

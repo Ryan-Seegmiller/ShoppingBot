@@ -277,6 +277,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3138bc04383e61e4c948b27cfa62edee, type: 3}
   - {fileID: 8300000, guid: 11dd630816256f04d88a717fb85d4f4f, type: 3}
   - {fileID: 8300000, guid: 64aa374151e5f4d4e949d311431ac7b8, type: 3}
-  - {fileID: 8300000, guid: 8b9c5b9dac046314999c319e1e0308c9, type: 3}
   musicAS: {fileID: 807978630}
   clipQueue: []
