@@ -5313,7 +5313,7 @@ MonoBehaviour:
   descString:
   - Shoot Laser
   - Grab Item
-  - Item to you
+  - Push/Pull
   - View List
   - Pause Menu
   desc: {fileID: 1691695237218613108}
