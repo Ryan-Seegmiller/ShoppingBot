@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour, UIEvents
         GameStart();
         Debug.Log("UIEvents :: Start game", this);
     }
-    // TODO: pause/unpause functionality
     public void PauseGame()
     {
         ClockStop();
@@ -54,7 +53,6 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     public void StopGame()
     {
-        // TODO: Stop Game
         GameStop();
     }
     public void EndGame()
