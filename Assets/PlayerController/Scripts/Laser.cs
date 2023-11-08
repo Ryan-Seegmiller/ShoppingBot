@@ -103,7 +103,7 @@ public class Laser : MonoBehaviour
         //Gets if an object has been grabbed
         bool objectGrabbed = grab.ObjectDragActive;
         //Makes sure the arm is pointing as accuratley as possible
-
+        print(hit.collider.gameObject.name);
         Vector3 armLookAtPos = (cast && !objectGrabbed) ? hit.point : grab.currentHeldObject.transform.position;
         armPivot.transform.LookAt(armLookAtPos);
 
