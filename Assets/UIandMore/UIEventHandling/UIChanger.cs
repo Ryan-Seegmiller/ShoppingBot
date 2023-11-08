@@ -110,4 +110,9 @@ public class UIChanger : MonoBehaviour
     {
         AudioManager.instance.PlaySound2D(index);
     }
+
+    public void VolumeSet(float f)
+    {
+        //TODO: adjust audio through sliders
+    }
 }
