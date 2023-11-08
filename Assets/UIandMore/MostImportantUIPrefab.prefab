@@ -5321,13 +5321,13 @@ MonoBehaviour:
   theObject: {fileID: 193189938069311831}
   HotKeySymbol: {fileID: 7842060521665037214}
   MotKeySymbol: {fileID: 3638638154449836007}
-  blank: {fileID: 0}
+  blank: {fileID: 21300000, guid: 5772194003a1d034aba4e92bf4729cdb, type: 3}
   motivation:
-  - You can do it
-  - I believe in you
-  - Keep going
-  - You're amazing
-  - Super-shopper
+  - You can do it!
+  - I believe in you!
+  - Keep going!
+  - You're amazing!
+  - Super-shopper!
 --- !u!1 &3638638154449836007
 GameObject:
   m_ObjectHideFlags: 0
@@ -5574,8 +5574,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -10, y: -10}
-  m_SizeDelta: {x: 250, y: 50}
+  m_AnchoredPosition: {x: 50, y: -10}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6019235740872917849
 CanvasRenderer:
@@ -6587,8 +6587,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 420.00012, y: 19.999958}
-  m_SizeDelta: {x: -900, y: 50}
+  m_AnchoredPosition: {x: 420.00006, y: 19.999958}
+  m_SizeDelta: {x: -900.0001, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7337548882237268005
 CanvasRenderer:
