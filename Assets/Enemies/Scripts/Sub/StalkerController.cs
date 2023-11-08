@@ -21,38 +21,35 @@ public class StalkerController : EnemyBase
     }
     new void FixedUpdate()
     {
-        if (!EnemyManager.instance.PauseEnemies)
+        base.FixedUpdate();
+
+        DropAndClampTargetYRot();
+
+        //if found player, create attack curve
+        if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime+3<time)
+            BeginAttackCurve();
+        //if there is an attack curve, run it
+        if (currentAttackCurve.Count > 0)
+            RunAttackCurvePhysics();
+        else
         {
-            base.FixedUpdate();
-
-            DropAndClampTargetYRot();
-
-            //if found player, create attack curve
-            if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time)
-                BeginAttackCurve();
-            //if there is an attack curve, run it
-            if (currentAttackCurve.Count > 0)
-                RunAttackCurvePhysics();
-            else
+            DoAerialAI();
+        }
+        if (hasFoundPlayer)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
             {
-                DoAerialAI();
-            }
-            if (hasFoundPlayer)
-            {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
+                if (hit.collider.gameObject == player.gameObject)
                 {
-                    if (hit.collider.gameObject == player.gameObject)
-                    {
-                        //take items from player
-                        Debug.Log("Player contact");
-                        anim.SetTrigger("Action");
-                        if (ItemManager.instance != null)
-                            ItemManager.instance.RemoveRandomItem();
-                    }
+                    //take items from player
+                    Debug.Log("Player contact");
+                    anim.SetTrigger("Action");
+                    if(ItemManager.instance!=null)
+                        ItemManager.instance.RemoveRandomItem();
                 }
             }
-        }   
+        }
     }
     void DropAndClampTargetYRot()
     {

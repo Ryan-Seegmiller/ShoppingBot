@@ -10,7 +10,8 @@ public class ScoreCalc : MonoBehaviour
     public int scoreVal;
 
     //Time intervals
-    int[] testValues1 = new int[] {6000, 12000, 24000};
+    int[] testValues1 = new int[] {18000, 30000, 42000, 90000};
+    //currently 3, 5, 7 minutes
 
     void Start()
     {
