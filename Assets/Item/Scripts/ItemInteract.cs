@@ -32,7 +32,7 @@ namespace Items
                 //Add item to inventory
                 ItemManager.instance.AddItem(itemValue);
                 //Play sound
-                AudioManager.instance.PlaySound2D(3);
+                AudioManager.instance.PlaySound2D(5);
                 //Destroy item
                 Destroy(gameObject);
             }
@@ -46,6 +46,7 @@ namespace Items
 
         public void ItemReject()
         {
+            AudioManager.instance.PlaySound2D(3);
             Destroy(gameObject);
         }
     }
