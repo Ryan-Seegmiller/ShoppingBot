@@ -10178,17 +10178,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 6
-  sprintMoveMultiplier: 2
-  sprintTurnMultiplier: 2
+  sprintSpeed: 12
   playerRotationSpeed: 2
   playerAnimator: {fileID: 2938125883317839961}
   backupCameraCanvas: {fileID: 2938125884728928153}
+  speedIncreaseMultiplier: 1.5
+  slopeIncreaseMultiplier: 2.5
   groundDrag: 6
   sprintKey: 304
-  groundLayer:
+  playerHeight: 2
+  whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
+  grounded: 0
   orientation: {fileID: 2938125884760149310}
+  camHolder: {fileID: 2938125885053649703}
+  stepRayLower: {fileID: 2938125884959588227}
+  stepRayUpper: {fileID: 2938125884030017760}
+  stepHeight: 0.4
+  stepSmooth: 0.1
 --- !u!114 &2938125884030017766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10201,6 +10209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5430f4230cdb0e4f9a0bd120d50e45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  crosshair: {fileID: 0}
   mainCamera: {fileID: 2938125883652913914}
   target: {fileID: 2938125885094195898}
   armPivot: {fileID: 2938125885082077293}
@@ -10221,14 +10230,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345386c5a97cf97448742c26321d20ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLaserLength: 200
-  power: 200
-  layersCanHit:
-    serializedVersion: 2
-    m_Bits: 3073
   beam: {fileID: 2938125884826728331}
   muzzelPoint: {fileID: 2938125883496880622}
   armPivot: {fileID: 2938125883169780199}
+  maxLaserLength: 200
+  power: 200
   hitParticleStystem: {fileID: 2938125883778030600}
   muzzelParticleStystem: {fileID: 2938125883184584491}
 --- !u!54 &2938125884030017784

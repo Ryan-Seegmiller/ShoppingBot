@@ -5,6 +5,7 @@ using PlayerContoller;
 
 public class Elevator : MonoBehaviour
 {
+    public Collider lockCollider;
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.root.GetComponentInChildren<PlayerMovement>())
@@ -18,5 +19,14 @@ public class Elevator : MonoBehaviour
         {
             GameManager.instance.OnPlayerExitElevator();
         }
+    }
+
+    internal void LockElevator()
+    {
+        lockCollider.enabled = true;
+    }
+    internal void UnlockElevator()
+    {
+        lockCollider.enabled = false;
     }
 }

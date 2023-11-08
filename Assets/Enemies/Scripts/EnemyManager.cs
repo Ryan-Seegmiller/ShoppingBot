@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,14 +16,7 @@ namespace enemymanager
         public float spawnPositionOffset = 1;
 
         public bool PauseEnemies;
-
-        #region Timers
-        public float time = 0; //TIME IS ONLY SET BY THE GAMEMANAGER SCRIPT.
-        public float gracePeriodTime = 30;
-        protected float lastCheckTime = 0;
-        protected float lastSpawnTime = 0;
-        public float spawnDelay = 15;//Spawn delay is the time it takes for the spawner to produce a new enemy after its previous enemy was destroyed.
-        #endregion
+        public float time = 0;
 
         void Awake()
         {
@@ -42,9 +34,8 @@ namespace enemymanager
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
-                Vector3 spawnPos = enemySpawns[UnityEngine.Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-spawnPositionOffset, spawnPositionOffset), player.transform.position.y* Random.Range(-spawnPositionOffset, spawnPositionOffset), Random.Range(-spawnPositionOffset, spawnPositionOffset));
-                EnemyBase e = Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>();
-                currentEnemies.Add(e);
+                Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-spawnPositionOffset, spawnPositionOffset), player.transform.position.y* Random.Range(-spawnPositionOffset, spawnPositionOffset), Random.Range(-spawnPositionOffset, spawnPositionOffset));
+                currentEnemies.Add(Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
             }
         }
         public void DestroyEnemies()
