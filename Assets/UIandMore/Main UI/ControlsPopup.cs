@@ -39,7 +39,7 @@ public class ControlsPopup : MonoBehaviour
     {
         for(int i = 0; i < sprites.Length; i++)
         {
-            yield return new WaitForSeconds(2);
+            //yield return new WaitForSeconds(2);
             img.sprite = sprites[i];
             text.text = displayText[i];
             desc.text = descString[i];
@@ -47,10 +47,7 @@ public class ControlsPopup : MonoBehaviour
             {
                 theObject.SetActive(true);
             }
-            if (i == sprites.Length - 1)
-            {
-                panel.SetActive(false);
-            }
+            yield return new WaitForSeconds(2);
         }
         theObject.SetActive(false);
         HotKeySymbol.SetActive(true);

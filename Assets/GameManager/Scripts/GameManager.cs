@@ -107,10 +107,10 @@ public class GameManager : MonoBehaviour, UIEvents
     private void GameStart()
     {
         // init
-        Debug.Log("GameManager :: Game is staring", this);
+        Debug.Log("GameManager :: Game is starting", this);
         LevelGen.LevelManager.instance.InstanceMall(); // level
         ItemManager.instance.RandomiseList(); // shopping list
-
+        EnemyManager.instance.UpdateSpawners();
         // player
         if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
         player.backupCameraCanvas.SetActive(true);

@@ -439,6 +439,7 @@ MonoBehaviour:
   menu: {fileID: 1554207337241904566}
   main: {fileID: 3002579731966070558}
   scoring: {fileID: 548267187432041033}
+  Started: 0
   mScreen: {fileID: 262078759076391584}
   pMenu: {fileID: 262078759058260871}
 --- !u!1 &193189938069311831
@@ -745,6 +746,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: audio.AudioManager, Audio
+        m_MethodName: PlaySound2D
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2763,6 +2776,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: audio.AudioManager, Audio
+        m_MethodName: PlaySound2D
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -5273,23 +5298,23 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: c93d89262e5707a4a9f952874d25b6ed, type: 3}
   - {fileID: 21300000, guid: d6e4a04feb0084e4a973809b00f999ac, type: 3}
+  - {fileID: 21300000, guid: 429246dc36d521a4fb45cc8d5d7b0dbd, type: 3}
   - {fileID: 21300000, guid: 614ba0961d7072b4d81260dc5c680de3, type: 3}
   - {fileID: 21300000, guid: 614ba0961d7072b4d81260dc5c680de3, type: 3}
-  - {fileID: 0}
   img: {fileID: 2470458813801891426}
   displayText:
   - 
   - 
+  - 
   - Tab
   - Esc
-  - 
   text: {fileID: 3358998055919162829}
   descString:
   - Shoot Laser
   - Grab Item
+  - Item scroller
   - View List
   - Pause Menu
-  - 
   desc: {fileID: 1691695237218613108}
   panel: {fileID: 7324775178278588540}
   theObject: {fileID: 193189938069311831}
