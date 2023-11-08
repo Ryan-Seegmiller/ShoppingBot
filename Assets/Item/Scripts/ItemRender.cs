@@ -31,7 +31,6 @@ public class ItemRender : MonoBehaviour
     public void EnablePhysics()
     {
         rb.isKinematic = false;
-        print(gameObject.name);
     }
 
 

@@ -36,6 +36,7 @@ namespace enemymanager
         }
         public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
         {
+
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
@@ -47,7 +48,7 @@ namespace enemymanager
         {
             for (int i = 0;i< currentEnemies.Count; i++)
             {
-                Destroy(currentEnemies[0].gameObject);
+                Destroy(currentEnemies[i].gameObject);
             }
             currentEnemies.Clear();
         }

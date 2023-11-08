@@ -4,7 +4,6 @@ using UnityEngine;
 using enemymanager;
 using Items;
 using PlayerContoller;
-using audio;
 
 //bug when adding reference to level gen assembly
 public class GameManager : MonoBehaviour, UIEvents
@@ -27,11 +26,20 @@ public class GameManager : MonoBehaviour, UIEvents
 
     public bool gameActive = false;
     public PlayerMovement player;
-    [Range(1, 50)] public int enemyMultiplyer = 5;
+    [Range(1, 5)] public int enemyMultiplyer = 1;
 
-    // TODO: elevator animation
     //public Transform elevatorPoint;
     public Animator elevatorAnim;
+    /*
+    public Vector3 starRatingsPerTime = new Vector3(180, 300, 500);//Time in seconds less than x for 3 star, between x and y for 2, more than y for 1, more than z for 0.
+    public int TimePenaltyPerMissedItemPerDollar = 15;
+    public float finalCalculatedTime = 0;
+    */
+    //GAME SCORING : 
+    // time<180=3star
+    // time>180 time < 500=2star
+    // time>500=1star
+    //EACH MISSED ITEM = X SECOND PENALTY. Possibly scale by price?
 
 
     #region UIEvents
@@ -41,19 +49,18 @@ public class GameManager : MonoBehaviour, UIEvents
         GameStart();
         Debug.Log("UIEvents :: Start game", this);
     }
+    // TODO: pause/unpause functionality
     public void PauseGame()
     {
-        ClockStop();
-        AudioManager.instance.PlaySound2D(0);
-        player.backupCameraCanvas.SetActive(false);
+        
     }
     public void ContinueGame()
     {
-        ClockContinue();
-        player.backupCameraCanvas.SetActive(true);
+
     }
     public void StopGame()
     {
+        // TODO: Stop Game
         GameStop();
     }
     public void EndGame()
@@ -85,20 +92,18 @@ public class GameManager : MonoBehaviour, UIEvents
     public struct GameRules
     {
         public int waveCount;
-        public float wavePeriod; // how often enemies will spawn
-        public float gameStartTime; // time the game started (may change if paused)
-        [HideInInspector] public float holdTime; // time saved when we pause
+        public float wavePeriod;
+        public float gameStartTime; 
         public float gameTime
         {
             get { return Time.time - gameStartTime; }
             private set { }
         }
-        public GameRules(float holdTime)
+        public GameRules(float time)
         {
-            this.waveCount = 0;
-            this.wavePeriod = 0;
-            this.holdTime = holdTime;
-            this.gameStartTime = 0;
+            waveCount = 0;
+            wavePeriod = 0;
+            gameStartTime = time;
         }
     }
     private GameRules gameRules;
@@ -113,8 +118,8 @@ public class GameManager : MonoBehaviour, UIEvents
         EnemyManager.instance.player = player.gameObject;
         player.GetComponentInChildren<Rigidbody>().isKinematic = false;
         // clock
-        gameRules = new GameRules(0);
-        ClockStart();
+        gameRules = new GameRules(Time.time);
+        StartCoroutine(Clock());
         gameActive = true;
         gameRules.wavePeriod = 10;
     }
@@ -142,7 +147,7 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         Debug.Log("GameManager :: Game is ending", this);
         // TODO: save score
-        ClockStop();
+        StopCoroutine(Clock());
         player.backupCameraCanvas.SetActive(false);
         UIChanger.instance.SetSceneScoring();
         ItemManager.instance.DestroyItems();
