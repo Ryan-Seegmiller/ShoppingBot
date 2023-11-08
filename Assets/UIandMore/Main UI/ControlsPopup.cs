@@ -23,6 +23,8 @@ public class ControlsPopup : MonoBehaviour
     [SerializeField] Sprite blank;
     [SerializeField] string[] motivation = new string[5];
 
+    bool going = false;
+
     void Start()
     {
         theObject.SetActive(false);
@@ -32,17 +34,20 @@ public class ControlsPopup : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.H))
+        if (!going)
         {
-            HotKeySymbol.SetActive(false);
-            MotKeySymbol.SetActive(false);
-            StartCoroutine(ShowControls());
-        }
-        if (Input.GetKeyUp(KeyCode.M))
-        {
-            HotKeySymbol.SetActive(false);
-            MotKeySymbol.SetActive(false);
-            StartCoroutine(ShowMotivation());
+            if (Input.GetKeyUp(KeyCode.H))
+            {
+                HotKeySymbol.SetActive(false);
+                MotKeySymbol.SetActive(false);
+                StartCoroutine(ShowControls());
+            }
+            if (Input.GetKeyUp(KeyCode.M))
+            {
+                HotKeySymbol.SetActive(false);
+                MotKeySymbol.SetActive(false);
+                StartCoroutine(ShowMotivation());
+            }
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -52,6 +57,7 @@ public class ControlsPopup : MonoBehaviour
 
     public IEnumerator ShowControls()
     {
+        going = true;
         for(int i = 0; i < sprites.Length; i++)
         {
             img.sprite = sprites[i];
@@ -66,13 +72,16 @@ public class ControlsPopup : MonoBehaviour
         theObject.SetActive(false);
         HotKeySymbol.SetActive(true);
         MotKeySymbol.SetActive(true);
+        going = false;
     }
 
     public IEnumerator ShowMotivation()
     {
+        going = true;
         for (int i = 0; i < motivation.Length; i++)
         {
             img.sprite = blank;
+            text.text = "";
             desc.text = motivation[i];
             if (!theObject.activeSelf)
             {
@@ -83,5 +92,6 @@ public class ControlsPopup : MonoBehaviour
         theObject.SetActive(false);
         HotKeySymbol.SetActive(true);
         MotKeySymbol.SetActive(true);
+        going = false;
     }
 }
