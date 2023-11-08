@@ -4,6 +4,7 @@ using UnityEngine;
 using enemymanager;
 using Items;
 using PlayerContoller;
+using audio;
 
 //bug when adding reference to level gen assembly
 public class GameManager : MonoBehaviour, UIEvents
@@ -30,16 +31,6 @@ public class GameManager : MonoBehaviour, UIEvents
 
     //public Transform elevatorPoint;
     public Animator elevatorAnim;
-    /*
-    public Vector3 starRatingsPerTime = new Vector3(180, 300, 500);//Time in seconds less than x for 3 star, between x and y for 2, more than y for 1, more than z for 0.
-    public int TimePenaltyPerMissedItemPerDollar = 15;
-    public float finalCalculatedTime = 0;
-    */
-    //GAME SCORING : 
-    // time<180=3star
-    // time>180 time < 500=2star
-    // time>500=1star
-    //EACH MISSED ITEM = X SECOND PENALTY. Possibly scale by price?
 
 
     #region UIEvents
@@ -52,11 +43,16 @@ public class GameManager : MonoBehaviour, UIEvents
     // TODO: pause/unpause functionality
     public void PauseGame()
     {
-        
+        ClockStop();
+        AudioManager.instance.PlaySound2D(0);
+        EnemyManager.instance.PauseEnemies = true;
+        player.backupCameraCanvas.SetActive(false);
     }
     public void ContinueGame()
     {
-
+        ClockContinue();
+        EnemyManager.instance.PauseEnemies = false;
+        player.backupCameraCanvas.SetActive(true);
     }
     public void StopGame()
     {
@@ -80,11 +76,25 @@ public class GameManager : MonoBehaviour, UIEvents
         if (gameRules.gameTime > 10)
         {
             GameEnd();
+            LockElevator();
         }
     }
     public void OnPlayerExitElevator() 
     {
-
+        if (gameRules.gameTime < 10)
+        {
+            LockElevator();
+        }
+    }
+    private void LockElevator()
+    {
+        Elevator elevator = FindObjectOfType<Elevator>();
+        elevator.LockElevator();
+    }
+    private void UnlockElevator()
+    {
+        Elevator elevator = FindObjectOfType<Elevator>();
+        elevator.UnlockElevator();
     }
     #endregion
 
@@ -115,6 +125,8 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("GameManager :: Game is starting", this);
         LevelGen.LevelManager.instance.InstanceMall(); // level
         ItemManager.instance.RandomiseList(); // shopping list
+        EnemyManager.instance.PauseEnemies = true;
+        UnlockElevator();
         // player
         ResetPlayer();
         EnemyManager.instance.player = player.gameObject;
@@ -135,6 +147,7 @@ public class GameManager : MonoBehaviour, UIEvents
             EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplyer, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
             Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
         }
+        if (gameRules.gameTime > 10) { UnlockElevator(); }
     }
     private void GameStop()
     {

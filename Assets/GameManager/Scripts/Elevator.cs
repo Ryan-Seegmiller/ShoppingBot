@@ -8,6 +8,7 @@ public class Elevator : MonoBehaviour
     public Collider lockCollider;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.root.GetComponentInChildren<PlayerMovement>())
