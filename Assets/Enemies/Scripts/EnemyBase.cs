@@ -142,7 +142,7 @@ public class EnemyBase : MonoBehaviour
         aS.transform.parent = null;
         AudioManager.instance.PlaySound3D(4, transform.position);
         Destroy(aS.gameObject, 3);
-        Debug.Log(gameObject.name + " enemy has died");
+        Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
         //iterate through body parts and make parent null and rotate for death effect
         for(int i = 0; i < meshBody.transform.childCount;i++)
         {

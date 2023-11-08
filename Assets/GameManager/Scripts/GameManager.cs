@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour, UIEvents
 
     public bool gameActive = false;
     public PlayerMovement player;
+    [Range(1, 50)] public int enemyMultiplyer = 5;
 
     // TODO: elevator animation
     //public Transform elevatorPoint;
@@ -107,12 +108,8 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("GameManager :: Game is starting", this);
         LevelGen.LevelManager.instance.InstanceMall(); // level
         ItemManager.instance.RandomiseList(); // shopping list
-        EnemyManager.instance.UpdateSpawners();
         // player
-        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
-        player.backupCameraCanvas.SetActive(true);
-        player.transform.position = new Vector3(-2.5f, 2, -2.5f);
-        player.transform.rotation = Quaternion.identity;
+        ResetPlayer();
         EnemyManager.instance.player = player.gameObject;
 
         // clock
@@ -125,14 +122,16 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
         {
+            EnemyManager.instance.UpdateSpawners();
             // spawn enemies
             gameRules.waveCount++;
-            EnemyManager.instance.SpawnEnemies(gameRules.waveCount, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
-            Debug.Log($"Enemy Spawned at {gameRules.gameTime}");
+            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplyer, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
         }
     }
     private void GameStop()
     {
+        Debug.Log("GameManager :: Game is stopping (no points recevied)", this);
         ClockStop();
         player.backupCameraCanvas.SetActive(false);
         ItemManager.instance.DestroyItems();
@@ -141,6 +140,7 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     private void GameEnd()
     {
+        Debug.Log("GameManager :: Game is ending", this);
         // TODO: save score
         ClockStop();
         player.backupCameraCanvas.SetActive(false);
@@ -157,17 +157,20 @@ public class GameManager : MonoBehaviour, UIEvents
         gameRules.gameStartTime = Time.time;
         gameRules.holdTime = 0;
         StartCoroutine(Clock());
+        Debug.Log("GameManager :: Clock started", this);
     }
     protected void ClockContinue()
     {
         gameRules.gameStartTime = Time.time - gameRules.holdTime;
         gameRules.holdTime = 0;
         StartCoroutine(Clock());
+        Debug.Log("GameManager :: Clock continued", this);
     }
     protected void ClockStop()
     {
         gameRules.holdTime = gameRules.gameTime;
         StopCoroutine(Clock());
+        Debug.Log("GameManager :: Clock stopped", this);
     }
     IEnumerator Clock()
     {
@@ -179,6 +182,14 @@ public class GameManager : MonoBehaviour, UIEvents
         }
     }
     #endregion
+
+    private void ResetPlayer()
+    {
+        if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
+        player.backupCameraCanvas.SetActive(true);
+        player.transform.position = new Vector3(-2.5f, 2, -2.5f);
+        player.transform.rotation = Quaternion.identity;
+    }
 
     private void Start()
     {
