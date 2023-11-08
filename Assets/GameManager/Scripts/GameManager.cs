@@ -92,18 +92,20 @@ public class GameManager : MonoBehaviour, UIEvents
     public struct GameRules
     {
         public int waveCount;
-        public float wavePeriod;
-        public float gameStartTime; 
+        public float wavePeriod; // how often enemies will spawn
+        public float gameStartTime;  // time the game started (may change if paused)
+        [HideInInspector] public float holdTime; // time saved when we pause
         public float gameTime
         {
             get { return Time.time - gameStartTime; }
             private set { }
         }
-        public GameRules(float time)
+        public GameRules(float holdTime)
         {
-            waveCount = 0;
-            wavePeriod = 0;
-            gameStartTime = time;
+            this.waveCount = 0;
+            this.wavePeriod = 0;
+            this.holdTime = holdTime;
+            this.gameStartTime = 0;
         }
     }
     private GameRules gameRules;
