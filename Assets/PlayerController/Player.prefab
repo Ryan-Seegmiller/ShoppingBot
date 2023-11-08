@@ -10201,7 +10201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5430f4230cdb0e4f9a0bd120d50e45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshair: {fileID: 0}
   mainCamera: {fileID: 2938125883652913914}
   target: {fileID: 2938125885094195898}
   armPivot: {fileID: 2938125885082077293}
@@ -10224,6 +10223,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLaserLength: 200
   power: 200
+  layersCanHit:
+    serializedVersion: 2
+    m_Bits: 3073
   beam: {fileID: 2938125884826728331}
   muzzelPoint: {fileID: 2938125883496880622}
   armPivot: {fileID: 2938125883169780199}
