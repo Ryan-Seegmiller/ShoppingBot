@@ -65,12 +65,6 @@ public class ShoppingList : MonoBehaviour
         {
             ToggleList();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pMenu.SetActive(true);
-            prefabSceneFinder.PauseGame();
-            mScreen.SetActive(false);
-        }
     }
     public void ToggleList()
     {
