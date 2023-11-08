@@ -4,7 +4,6 @@ using UnityEngine;
 using enemymanager;
 using Items;
 using PlayerContoller;
-using static GameManager;
 using audio;
 
 //bug when adding reference to level gen assembly
@@ -131,6 +130,7 @@ public class GameManager : MonoBehaviour, UIEvents
             // spawn enemies
             gameRules.waveCount++;
             EnemyManager.instance.SpawnEnemies(gameRules.waveCount, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            Debug.Log($"Enemy Spawned at {gameRules.gameTime}");
         }
     }
     private void GameStop()
