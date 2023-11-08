@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour, UIEvents
         // player
         ResetPlayer();
         EnemyManager.instance.player = player.gameObject;
-
+        player.GetComponentInChildren<Rigidbody>().isKinematic = false;
         // clock
         gameRules = new GameRules(0);
         ClockStart();

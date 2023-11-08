@@ -183,9 +183,9 @@ public class EnemyBase : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (rb.velocity.magnitude > 3 && time > lastDamagingBumpTime + 0.5f)
+        if (rb.velocity.magnitude > 8 && time > lastDamagingBumpTime + 2f)
         {
-            health--;
+            health-= rb.velocity.magnitude/10;
             lastDamagingBumpTime = time;
         }
     }

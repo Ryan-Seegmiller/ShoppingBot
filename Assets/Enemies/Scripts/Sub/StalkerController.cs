@@ -18,6 +18,7 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
+        transform.Translate(0, 2.8f, 0);
     }
     new void FixedUpdate()
     {
@@ -45,7 +46,6 @@ public class StalkerController : EnemyBase
                     if (hit.collider.gameObject == player.gameObject)
                     {
                         //take items from player
-                        Debug.Log("Player contact");
                         anim.SetTrigger("Action");
                         if (ItemManager.instance != null)
                             ItemManager.instance.RemoveRandomItem();

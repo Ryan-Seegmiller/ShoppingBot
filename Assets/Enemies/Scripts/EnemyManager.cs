@@ -7,7 +7,6 @@ namespace enemymanager
     {
         public static EnemyManager instance;
         public GameObject player;
-        public Transform spawnObject;
         protected List<Transform> enemySpawns = new List<Transform>();
         public List<GameObject> enemyPrefabs = new List<GameObject>();
         public List<EnemyBase> currentEnemies = new List<EnemyBase>();
@@ -15,8 +14,14 @@ namespace enemymanager
         public int maxEnemies = 15;
         public float spawnPositionOffset = 1;
 
-        public bool PauseEnemies;
+        public bool PauseEnemies=false;
         public float time = 0;
+
+        public void Update()
+        {
+            for (int i = 0; i < enemySpawns.Count; i++)
+                Debug.DrawLine(enemySpawns[i].position, enemySpawns[i].position + enemySpawns[i].transform.up * 250f, Color.red);
+        }
 
         void Awake()
         {
