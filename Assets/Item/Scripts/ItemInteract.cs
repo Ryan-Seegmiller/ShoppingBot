@@ -29,6 +29,9 @@ namespace Items
             if (ItemManager.instance.CheckInventorySpace() && ItemManager.instance.ListNeedsItem(itemValue)) // Make sure inventory has space
             {
                 ItemManager.instance.AddItem(itemValue);
+                //Play sound
+                AudioManager.instance.PlaySound2D(5);
+                //Destroy item
                 Destroy(gameObject);
             }
             else
@@ -42,6 +45,8 @@ namespace Items
         public void ItemReject()
         {
             //rb.AddExplosionForce(10, player center, 3)
+            AudioManager.instance.PlaySound2D(3);
+            Destroy(gameObject);
         }
     }
 }
