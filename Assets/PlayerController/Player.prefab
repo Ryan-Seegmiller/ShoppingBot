@@ -10204,6 +10204,7 @@ MonoBehaviour:
   mainCamera: {fileID: 2938125883652913914}
   target: {fileID: 2938125885094195898}
   armPivot: {fileID: 2938125885082077293}
+  cartColliderTR: {fileID: 2938125885069736231}
   layersToHit:
     serializedVersion: 2
     m_Bits: 2048

@@ -12,6 +12,7 @@ public class ObjectGrab : MonoBehaviour
     [SerializeField] private Camera mainCamera;//main camera
     public GameObject target;//Object in place for the item to move to
     public GameObject armPivot;
+    public Transform cartColliderTR;
 
     [Header("Item layer")]
     public LayerMask layersToHit;
@@ -47,9 +48,7 @@ public class ObjectGrab : MonoBehaviour
     [Header("Toggle drag")]
     public bool draggingActive = false;
     [NonSerialized] public bool ObjectDragActive = false;
-
-
-
+    bool snapped;
 
     void Start()
     {
@@ -80,23 +79,21 @@ public class ObjectGrab : MonoBehaviour
             armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
 
         }
-
+        print(snapped);
+        ObjectSnapping();
 
     }
     
     private void PlayerInput()
     {
-        if (Input.GetMouseButtonDown(1))
+        bool initialMouseButtonDown = Input.GetMouseButtonDown(1) && !ObjectDragActive;
+        if (initialMouseButtonDown)
         {
-            if (!ObjectDragActive)
-            {
-                ToggleDrag();
-            }
-            
-            //Sets the object drag mode
+            ToggleDrag();
             ResetObjectDrag();
         }
-        else if (Input.GetMouseButton(1) && draggingActive) 
+      
+        if (Input.GetMouseButton(1) && draggingActive) 
         {
             ObjectDrag();
             ItemDisableCollison();
@@ -107,7 +104,7 @@ public class ObjectGrab : MonoBehaviour
             ResetObjectDrag();
             currentHeldObject = emptyRaycastHit;
         }
-        if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
+        if (Input.mouseScrollDelta != new Vector2(0,0))
         {
             ObjectPull();
         }
@@ -118,9 +115,11 @@ public class ObjectGrab : MonoBehaviour
         ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentHeldObject.collider)) ? true : false;
     }
     private void ObjectPull()
-    {        
+    {
+        if (!ObjectDragActive) { return; }
+
         //Move sthe object to and from the camera using a raycaster as a guide
-        pullPosition = Vector3.ClampMagnitude(pullPosition, objectToGrabDistance);
+       
         pullPosition += new Vector3(Mathf.Abs(rayLook.direction.x), Mathf.Abs(rayLook.direction.y), Mathf.Abs(rayLook.direction.z)) * Input.mouseScrollDelta.y;
         
     }
@@ -136,7 +135,7 @@ public class ObjectGrab : MonoBehaviour
         PlayerMovement.mousePos.z = mZCoord;//Sets the mouse position on the z
 
         //Translates the the object to be pulled to to the mouse position in the world
-        target.transform.position = mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized;
+        target.transform.position = (!snapped)? mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized : target.transform.position;
 
         //Move object towards the object that the camera creates
         rbItem.velocity = (target.transform.position - currentHeldObject.transform.position) * objectPosition.magnitude;
@@ -200,13 +199,15 @@ public class ObjectGrab : MonoBehaviour
 
         objRender.EnablePhysics(); //Enable grabbed object's physics
     }
-    private void ThrowObject()
+    private void ObjectSnapping()
     {
-        //throws the item
-        if(rbItem != null)
+        if(Vector3.Distance(cartColliderTR.position, currentHeldObject.transform.position) < 2f && ObjectDragActive)
         {
-            rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
+            target.transform.position = cartColliderTR.position + Vector3.up;
+            snapped = true;
+            return;
         }
+        snapped = false;
+        
     }
-    
 }
