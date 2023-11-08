@@ -147,8 +147,8 @@ public class ObjectGrab : MonoBehaviour
             //Translates the the object to be pulled to to the mouse position in the world
             target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition) + rb.velocity.normalized;
 
-        //Translates the the object to be pulled to to the mouse position in the world
-        target.transform.position = mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized;
+            //Move object towards the object that the camera creates
+            rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
 
             //Arm look rotiation
             armPivot.transform.LookAt(currentObject.transform);
@@ -217,20 +217,6 @@ public class ObjectGrab : MonoBehaviour
                     break;
                 }
             }
-        }
-    }
-    private void EnableItemPhysics()
-    {
-        ItemRender objRender = currentHeldObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
-
-        objRender.EnablePhysics(); //Enable grabbed object's physics
-    }
-    private void ThrowObject()
-    {
-        //throws the item
-        if(rbItem != null)
-        {
-            rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
         }
     }
     

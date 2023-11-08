@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 2593907474990130126}
   - {fileID: 4910858292233138723}
-  - {fileID: 8662486527137838218}
+  - {fileID: 6845215503146105838}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -178,7 +178,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8037894143413667205
+--- !u!1 &7284861077194283442
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,8 +186,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8662486527137838218}
-  - component: {fileID: 5519196330918615721}
+  - component: {fileID: 6845215503146105838}
+  - component: {fileID: 5900563820838829672}
   m_Layer: 13
   m_Name: ColliderForPlayer
   m_TagString: Untagged
@@ -195,13 +195,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8662486527137838218
+--- !u!4 &6845215503146105838
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8037894143413667205}
+  m_GameObject: {fileID: 7284861077194283442}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -210,19 +210,20 @@ Transform:
   m_Father: {fileID: 4200250391531359302}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5519196330918615721
-SphereCollider:
+--- !u!136 &5900563820838829672
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8037894143413667205}
+  m_GameObject: {fileID: 7284861077194283442}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.01
-  m_Center: {x: 0, y: 0.092, z: 0}
+  m_Radius: 0.1
+  m_Height: 0.3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.147, z: 0}
 --- !u!1001 &6796475381872764269
 PrefabInstance:
   m_ObjectHideFlags: 0
