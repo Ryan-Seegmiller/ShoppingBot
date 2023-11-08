@@ -12,7 +12,6 @@ public class ObjectGrab : MonoBehaviour
     [SerializeField] private Camera mainCamera;//main camera
     public GameObject target;//Object in place for the item to move to
     public GameObject armPivot;
-    public Transform cartColliderTR;
 
     [Header("Item layer")]
     public LayerMask layersToHit;
@@ -49,7 +48,9 @@ public class ObjectGrab : MonoBehaviour
     [Header("Toggle drag")]
     public bool draggingActive = false;
     [NonSerialized] public bool ObjectDragActive = false;
-    bool snapped;
+
+
+
 
     void Start()
     {
@@ -84,21 +85,28 @@ public class ObjectGrab : MonoBehaviour
             armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
 
         }
-        print(snapped);
-        ObjectSnapping();
+
 
     }
     
     private void PlayerInput()
     {
-        bool initialMouseButtonDown = Input.GetMouseButtonDown(1) && !ObjectDragActive;
-        if (initialMouseButtonDown)
+        if (Input.GetMouseButtonDown(1))
         {
-            ToggleDrag();
+            if (!ObjectDragActive)
+            {
+                ToggleDrag();
+            }
+            ;
+           if(ObjectDragActive)
+            {
+                //throws the item
+                //ThrowObject();
+            }
+            //Sets the object drag mode
             ResetObjectDrag();
         }
-      
-        if (Input.GetMouseButton(1) && draggingActive) 
+        else if (Input.GetMouseButton(1) && draggingActive) 
         {
             ObjectDrag();
             ItemDisableCollison();
@@ -108,7 +116,7 @@ public class ObjectGrab : MonoBehaviour
             StartCoroutine(ItemEnableCollison());
             ResetObjectDrag();
         }
-        if (Input.mouseScrollDelta != new Vector2(0,0))
+        if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
         {
             ObjectPull();
         }
@@ -119,11 +127,9 @@ public class ObjectGrab : MonoBehaviour
         ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
     }
     private void ObjectPull()
-    {
-        if (!ObjectDragActive) { return; }
-
+    {        
         //Move sthe object to and from the camera using a raycaster as a guide
-       
+        pullPosition = Vector3.ClampMagnitude(pullPosition, objectToGrabDistance);
         pullPosition += new Vector3(Mathf.Abs(rayLook.direction.x), Mathf.Abs(rayLook.direction.y), Mathf.Abs(rayLook.direction.z)) * Input.mouseScrollDelta.y;
         
     }
@@ -141,8 +147,8 @@ public class ObjectGrab : MonoBehaviour
             //Translates the the object to be pulled to to the mouse position in the world
             target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition) + rb.velocity.normalized;
 
-        //Translates the the object to be pulled to to the mouse position in the world
-        target.transform.position = (!snapped)? mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized : target.transform.position;
+            //Move object towards the object that the camera creates
+            rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
 
             //Arm look rotiation
             armPivot.transform.LookAt(currentObject.transform);
@@ -213,21 +219,5 @@ public class ObjectGrab : MonoBehaviour
             }
         }
     }
-    private void EnableItemPhysics()
-    {
-        ItemRender objRender = currentHeldObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
-
-        objRender.EnablePhysics(); //Enable grabbed object's physics
-    }
-    private void ObjectSnapping()
-    {
-        if(Vector3.Distance(cartColliderTR.position, currentHeldObject.transform.position) < 2f && ObjectDragActive)
-        {
-            target.transform.position = cartColliderTR.position + Vector3.up;
-            snapped = true;
-            return;
-        }
-        snapped = false;
-        
-    }
+    
 }
