@@ -48,7 +48,6 @@ public class EnemyBase : MonoBehaviour
     float sh =0;
     public float startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
     TMP_Text healthBar;
-    [SerializeField]
     protected float _health;
     public float health 
     { get { return _health; }
@@ -57,9 +56,22 @@ public class EnemyBase : MonoBehaviour
     float lastDamagingBumpTime = 0;
     public AudioSource aS;
     protected GameObject player;
+    protected float PointAtPlayerOffset
+    {
+        set
+        {
+            pointAtPlayerOffset = value;
+            pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
+        }
+        get
+        {
+            return pointAtPlayerOffset;
+        }
+    }
+
     void Awake()
     {
-        Debug.Log("Enemy Created", this);
+        //Debug.Log("Enemy Created", this);
         if (GenerateRandomValues)
             GetRandomAIValues();
         GetComponent<SphereCollider>().radius = detectionRadius;
@@ -76,6 +88,19 @@ public class EnemyBase : MonoBehaviour
         time += Time.deltaTime;
         healthBar.transform.LookAt(Camera.main.transform);
     }
+    protected void FixedUpdate()
+    {
+        DoFlips();
+
+        if (transform.position.y < -10)
+        {
+            Die();
+        }
+        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
+        {
+            hasFoundPlayer = true;
+        }
+    }
     public void SetHealthbar()
     {
         string s="";
@@ -90,53 +115,6 @@ public class EnemyBase : MonoBehaviour
             c = Color.red;
         healthBar.color = c;
         healthBar.text = s;
-    }
-    protected void FixedUpdate()
-    {
-        DoFlips();
-
-        if (transform.position.y < -10)
-        {
-            Die();
-        }
-        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
-        {
-            hasFoundPlayer = true;
-        }
-    }
-    protected float PointAtPlayerOffset{
-        set
-        {
-            pointAtPlayerOffset = value;
-            pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
-        }
-        get
-        {
-            return pointAtPlayerOffset;
-        }
-    }
-
-    //Trigger sphere collider on all enemies for detection of player
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == player && !hasFoundPlayer && !hasDetectedPlayer)
-        {
-            hasDetectedPlayer = true;
-            firstDetectedTime = time;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player)
-        {
-            firstDetectedTime = 0;
-            hasFoundPlayer = false;
-            hasDetectedPlayer = false;
-        }
-    }
-    public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
-    {
-        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
     }
     public void GetRandomAIValues()
     {
@@ -173,7 +151,6 @@ public class EnemyBase : MonoBehaviour
         EnemyManager.instance.currentEnemies.Remove(this);
         Destroy(this.gameObject);
     }
-
     private void PopBodyPart(Transform t)
     {
         t.transform.parent = null;
@@ -182,14 +159,6 @@ public class EnemyBase : MonoBehaviour
         tRb.AddTorque(transform.up * Random.Range(-360, 360));
         tRb.AddForce(transform.forward * Random.Range(-25, 250));
         Destroy(t.gameObject, 3);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (rb.velocity.magnitude > 3 && time > lastDamagingBumpTime + 0.5f)
-        {
-            health--;
-            lastDamagingBumpTime = time;
-        }
     }
     public void Hit(float mod)
     {
@@ -211,5 +180,34 @@ public class EnemyBase : MonoBehaviour
     {
         if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
         if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (rb.velocity.magnitude > 3 && time > lastDamagingBumpTime + 0.5f)
+        {
+            health--;
+            lastDamagingBumpTime = time;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == player && !hasFoundPlayer && !hasDetectedPlayer)
+        {
+            hasDetectedPlayer = true;
+            firstDetectedTime = time;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == player)
+        {
+            firstDetectedTime = 0;
+            hasFoundPlayer = false;
+            hasDetectedPlayer = false;
+        }
+    }
+    public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
+    {
+        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
     }
 }
