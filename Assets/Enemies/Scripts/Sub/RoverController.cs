@@ -20,7 +20,6 @@ public class RoverController : EnemyBase
     float fleeBeginTime = 0;
     public void Start()
     {
-
         anim = GetComponentInChildren<Animator>();
         roamMode = Random.Range(0, 2);
         health = Random.Range(3, 6);
@@ -29,21 +28,23 @@ public class RoverController : EnemyBase
     // Update is called once per frame
     void Update()
     {
-        if (time > fleeBeginTime + 5)
-            fleeing = false;
-        if (time>attackStartTime+3 && !canAttack)
-            canAttack = true;
-        if (!hasFoundPlayer && anim.GetBool("Action"))
-            anim.SetBool("Action", false);
-        if (fleeing)
-            Debug.DrawLine(transform.position, fleeVector);
+        if (!EnemyManager.instance.PauseEnemies)
+        {
+            if (time > fleeBeginTime + 5)
+                fleeing = false;
+            if (time > attackStartTime + 3 && !canAttack)
+                canAttack = true;
+            if (!hasFoundPlayer && anim.GetBool("Action"))
+                anim.SetBool("Action", false);
+            if (fleeing)
+                Debug.DrawLine(transform.position, fleeVector);
+        }         
     }
     private void OnCollisionEnter(Collision collision)
     {
         //take money from player
         if (collision.transform.gameObject.tag == "Player")
         {
-            aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
             Flee();
             int cashToTake = Random.Range(5, 10);
             if (ItemManager.instance != null)
@@ -53,35 +54,38 @@ public class RoverController : EnemyBase
     }
     private new void FixedUpdate()
     {
-        base.FixedUpdate();
-        if (Random.Range(0, 100f) > 99.9f && !fleeing){ roamMode = Random.Range(0, 2); }
+        if (!EnemyManager.instance.PauseEnemies)
+        {
+            base.FixedUpdate();
+            if (Random.Range(0, 100f) > 99.9f && !fleeing) { roamMode = Random.Range(0, 2); }
 
-        //run away to random spot until close enough
-        if (fleeing)
-        {
-            transform.Translate(transform.forward * acceleration);
-            if (transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)
-                fleeing = false;
-        }//main attack at player
-        if (hasFoundPlayer && !fleeing)
-        {
-            //give it time to rotate
-            if(anim.GetBool("Action"))
-            anim.SetBool("Action", true);
-            if (canAttack)
+            //run away to random spot until close enough
+            if (fleeing)
             {
-                dustEffect.Play();
-                transform.LookAt(new Vector3(player.transform.position.x,transform.position.y,player.transform.position.z));
-                //pounce player
-                canAttack = false;
-                attackStartTime = time;
-                rb.AddForce(transform.forward * pounceForwardForce * (Mathf.Abs(Vector3.Distance(transform.position, player.transform.position))*8));
-                rb.AddForce(Vector3.up * pounceUpForce);
+                transform.Translate(transform.forward * acceleration);
+                if (transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)
+                    fleeing = false;
+            }//main attack at player
+            if (hasFoundPlayer && !fleeing)
+            {
+                //give it time to rotate
+                if (anim.GetBool("Action"))
+                    anim.SetBool("Action", true);
+                if (canAttack)
+                {
+                    dustEffect.Play();
+                    transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
+                    //pounce player
+                    canAttack = false;
+                    attackStartTime = time;
+                    rb.AddForce(transform.forward * pounceForwardForce * (Mathf.Abs(Vector3.Distance(transform.position, player.transform.position)) * 8));
+                    rb.AddForce(Vector3.up * pounceUpForce);
+                }
             }
-        }      
-        DoRoamAI();
-        DropAndClampTargetYRot();
-        transform.Rotate(0, targetRotationY, 0);
+            DoRoamAI();
+            DropAndClampTargetYRot();
+            transform.Rotate(0, targetRotationY, 0);
+        }        
     }
     void DropAndClampTargetYRot()
     {

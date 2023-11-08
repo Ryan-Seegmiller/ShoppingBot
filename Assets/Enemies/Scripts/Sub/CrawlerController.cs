@@ -16,31 +16,34 @@ public class CrawlerController : EnemyBase
 
     private new void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (!EnemyManager.instance.PauseEnemies)
+        {
+            base.FixedUpdate();
 
-        if (Random.Range(0, 100f) > 99.9f) {roamMode = Random.Range(0, 2); }
+            if (Random.Range(0, 100f) > 99.9f) { roamMode = Random.Range(0, 2); }
 
-        if (hasFoundPlayer)
-        {
-            rb.AddForce(transform.forward * ramForce);
-            if (Random.Range(0, 100f) > 90f)
-                transform.LookAt(player.transform.position);
-        }
-        else
-        {
-            DoRoamAI();
-        }
-        RaycastHit h;
-        if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, sArmRange+0.1f))
-        {
-            if (h.transform == player.transform)
+            if (hasFoundPlayer)
             {
-                explode();
-                Die();
+                rb.AddForce(transform.forward * ramForce);
+                if (Random.Range(0, 100f) > 90f)
+                    transform.LookAt(player.transform.position);
             }
-        }
-        DropAndClampTargetYRot();
-        transform.Rotate(0, targetRotationY, 0);
+            else
+            {
+                DoRoamAI();
+            }
+            RaycastHit h;
+            if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, sArmRange + 0.1f))
+            {
+                if (h.transform == player.transform)
+                {
+                    explode();
+                    Die();
+                }
+            }
+            DropAndClampTargetYRot();
+            transform.Rotate(0, targetRotationY, 0);
+        }        
     }
     private void DropAndClampTargetYRot()
     {
@@ -103,7 +106,6 @@ public class CrawlerController : EnemyBase
     }
     private void explode()
     {
-        aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {

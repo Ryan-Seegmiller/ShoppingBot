@@ -4,6 +4,7 @@ using UnityEngine;
 using enemymanager;
 using Items;
 using PlayerContoller;
+using audio;
 
 //bug when adding reference to level gen assembly
 public class GameManager : MonoBehaviour, UIEvents
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour, UIEvents
     // TODO: pause/unpause functionality
     public void PauseGame()
     {
-        
+        AudioManager.instance.PlaySound2D(0);
     }
     public void ContinueGame()
     {
@@ -133,6 +134,7 @@ public class GameManager : MonoBehaviour, UIEvents
             // spawn enemies
             gameRules.waveCount++;
             EnemyManager.instance.SpawnEnemies(gameRules.waveCount, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            Debug.Log($"Enemy Spawned at {gameRules.gameTime}");
         }
     }
     private void GameStop()
