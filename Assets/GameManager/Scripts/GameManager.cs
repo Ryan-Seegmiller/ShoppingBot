@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour, UIEvents
 
     public bool gameActive = false;
     public PlayerMovement player;
-    [Range(1, 50)] public int enemyMultiplyer = 5;
+    [Range(1, 5)] public int enemyMultiplyer = 1;
 
     // TODO: elevator animation
     //public Transform elevatorPoint;
