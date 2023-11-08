@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayerContoller;
+using UnityEngine.UIElements;
 
 public class ObjectGrab : MonoBehaviour
 {
     [Header("Object References")]
-    public Image crosshair;
     [SerializeField] private Camera mainCamera;//main camera
     public GameObject target;//Object in place for the item to move to
     public GameObject armPivot;
@@ -27,7 +27,7 @@ public class ObjectGrab : MonoBehaviour
     Rigidbody rb;
 
     //Raycast varibles
-    [NonSerialized]public RaycastHit currentObject;
+    [NonSerialized]public RaycastHit currentHeldObject;
     private RaycastHit raycastHit;
     private RaycastHit emptyRaycastHit;
 
@@ -59,9 +59,6 @@ public class ObjectGrab : MonoBehaviour
     void Update()
     {
         PlayerInput();
-
-        //crosshair placement
-        //crosshair.transform.position = PlayerMovement.mousePos;
 
         rayLook = mainCamera.ScreenPointToRay(PlayerMovement.mousePos);
         
@@ -95,12 +92,7 @@ public class ObjectGrab : MonoBehaviour
             {
                 ToggleDrag();
             }
-            ;
-           if(ObjectDragActive)
-            {
-                //throws the item
-                //ThrowObject();
-            }
+            
             //Sets the object drag mode
             ResetObjectDrag();
         }
@@ -113,7 +105,7 @@ public class ObjectGrab : MonoBehaviour
         { 
             StartCoroutine(ItemEnableCollison());
             ResetObjectDrag();
-            currentObject = emptyRaycastHit;
+            currentHeldObject = emptyRaycastHit;
         }
         if (Input.mouseScrollDelta != new Vector2(0,0) && ObjectDragActive)
         {
@@ -123,7 +115,7 @@ public class ObjectGrab : MonoBehaviour
     public void ResetObjectDrag()
     {
         //ThrowObject();
-        ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentObject.collider)) ? true : false;
+        ObjectDragActive = (!ObjectDragActive && (raycastHit.collider != null || raycastHit.collider != currentHeldObject.collider)) ? true : false;
     }
     private void ObjectPull()
     {        
@@ -134,64 +126,44 @@ public class ObjectGrab : MonoBehaviour
     }
 
     private void ObjectDrag()
-    {
-        print(currentObject.collider.gameObject.name);
-        if(ObjectDragActive && currentObject.collider != null)
-        {
-            worldPosition = new Vector3(PlayerMovement.mousePos.x + currentObject.transform.position.z, PlayerMovement.mousePos.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
-            Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
+    {   //Returns if object drag is not active or if there is no collider 
+        if(!ObjectDragActive && currentHeldObject.collider == null) {return;}
 
-            ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
+        //Sets the object postition
+        worldPosition = new Vector3(PlayerMovement.mousePos.x + currentHeldObject.transform.position.z, PlayerMovement.mousePos.y+currentHeldObject.transform.position.z, -mainCamera.transform.position.z + currentHeldObject.transform.position.z);
+        Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentHeldObject.transform.position);
 
-            objRender.EnablePhysics(); //Enable grabbed object's physics
+        PlayerMovement.mousePos.z = mZCoord;//Sets the mouse position on the z
 
-            //Sets the mouse position
-            PlayerMovement.mousePos.z = mZCoord;
-            //Translates the the object to be pulled to to the mouse position in the world
-            target.transform.position = mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized;
+        //Translates the the object to be pulled to to the mouse position in the world
+        target.transform.position = mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized;
 
-            //Move object towards the object that the camera creates
-            rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;
+        //Move object towards the object that the camera creates
+        rbItem.velocity = (target.transform.position - currentHeldObject.transform.position) * objectPosition.magnitude;
 
-            //Arm look rotiation
-            armPivot.transform.LookAt(currentObject.transform);
-        }
-        else
-        {
-            //currentObject = EmptyRaycastHit;
-        }
+        armPivot.transform.LookAt(currentHeldObject.transform);//Targets the arm onto the object
+        
     }
     private void ToggleDrag()
-    {
-        print(raycastHit.collider);
-        if(raycastHit.collider != null)
-        {
-            currentObject = raycastHit;//Sets the current object to the one clicked
-            rbItem = currentObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
+    {   //Returns if no object is being grabbed
+        if(raycastHit.collider == null) {return;}
+        
+        currentHeldObject = raycastHit;//Sets the current object to the one clicked
+        rbItem = currentHeldObject.transform.GetComponent<Rigidbody>();//Gets the rigidbody of the object grabbed
+        
+        //Enables item physics
+        EnableItemPhysics();
 
-            ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
-            
-            objRender.EnablePhysics(); //Enable grabbed object's physics
-            
+        target.transform.position = currentHeldObject.transform.position;//sets the objects position
 
-            target.transform.position = currentObject.transform.position;//sets the objects position
-
-            mZCoord = mainCamera.WorldToScreenPoint(target.transform.position).z;//Sets the z axis for the object
-            pullPosition = Vector3.zero;
-        }
-    }
-    private void ThrowObject()
-    {
-        //throws the item
-        if(rbItem != null)
-        {
-            rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
-        }
+        mZCoord = mainCamera.WorldToScreenPoint(target.transform.position).z;//Sets the z axis for the object
+        pullPosition = Vector3.zero;
+        
     }
     private void ItemDisableCollison()
-    {   if(currentObject.collider == null) { return; }
+    {   if(currentHeldObject.collider == null) { return; }
         //Disable collison with player of item grabbed
-        Transform[] objChildren = currentObject.collider.gameObject.GetComponentsInChildren<Transform>();
+        Transform[] objChildren = currentHeldObject.collider.gameObject.GetComponentsInChildren<Transform>();
         foreach (Transform tr in objChildren)
         {
             if(tr.gameObject.layer == 13)
@@ -204,7 +176,7 @@ public class ObjectGrab : MonoBehaviour
    
     IEnumerator ItemEnableCollison()
     {   //Enable collison with player of item grabbed
-        RaycastHit raycastHit = currentObject;
+        RaycastHit raycastHit = currentHeldObject;
         canCollect = true;
         yield return colReset;
         canCollect = false;
@@ -220,6 +192,20 @@ public class ObjectGrab : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+    private void EnableItemPhysics()
+    {
+        ItemRender objRender = currentHeldObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
+
+        objRender.EnablePhysics(); //Enable grabbed object's physics
+    }
+    private void ThrowObject()
+    {
+        //throws the item
+        if(rbItem != null)
+        {
+            rbItem.AddForce(mainCamera.transform.forward + rayLook.direction * 50f, ForceMode.Impulse);
         }
     }
     
