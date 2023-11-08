@@ -34,7 +34,6 @@ public class ObjectGrab : MonoBehaviour
 
     //Mouse positions
     float mZCoord;
-    Vector3 mousePos;
 
     //Timer
     private WaitForSeconds colReset = new WaitForSeconds(1f);
@@ -59,12 +58,11 @@ public class ObjectGrab : MonoBehaviour
     void Update()
     {
         PlayerInput();
-        mousePos = Input.mousePosition + PlayerMovement.MouseOffset;
 
         //crosshair placement
-        //crosshair.transform.position = mousePos;
+        //crosshair.transform.position = PlayerMovement.mousePos;
 
-        rayLook = mainCamera.ScreenPointToRay(mousePos);
+        rayLook = mainCamera.ScreenPointToRay(PlayerMovement.mousePos);
         
         
 
@@ -138,7 +136,7 @@ public class ObjectGrab : MonoBehaviour
         print(currentObject.collider.gameObject.name);
         if(ObjectDragActive && currentObject.collider != null)
         {
-            worldPosition = new Vector3(mousePos.x + currentObject.transform.position.z, mousePos.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
+            worldPosition = new Vector3(PlayerMovement.mousePos.x + currentObject.transform.position.z, PlayerMovement.mousePos.y+currentObject.transform.position.z, -mainCamera.transform.position.z + currentObject.transform.position.z);
             Vector3 objectPosition = (mainCamera.ScreenToWorldPoint(worldPosition) - currentObject.transform.position);
 
             ItemRender objRender = currentObject.transform.GetComponent<ItemRender>(); //Get the grabbed object's ItemRender script
@@ -146,9 +144,9 @@ public class ObjectGrab : MonoBehaviour
             objRender.EnablePhysics(); //Enable grabbed object's physics
 
             //Sets the mouse position
-            mousePos.z = mZCoord;
+            PlayerMovement.mousePos.z = mZCoord;
             //Translates the the object to be pulled to to the mouse position in the world
-            target.transform.position = mainCamera.ScreenToWorldPoint(mousePos + pullPosition) + rb.velocity.normalized;
+            target.transform.position = mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized;
 
             //Move object towards the object that the camera creates
             rbItem.velocity = (target.transform.position - currentObject.transform.position) * objectPosition.magnitude;

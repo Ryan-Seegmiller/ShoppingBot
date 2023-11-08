@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayerContoller;
+using System;
 
 public class Laser : MonoBehaviour
 {
+    [Header("Laser stats")]
+    [SerializeField] private float maxLaserLength;
+    [SerializeField] private float power;
+
+    [Header("Laser settings")]
     [SerializeField] private LineRenderer beam;
     [SerializeField] private Transform muzzelPoint;
     [SerializeField] private GameObject armPivot;
 
-    [SerializeField] private float maxLaserLength;
-    [SerializeField] private float power;
-
+    [Header("Laser particles")]
     [SerializeField] private ParticleSystem hitParticleStystem;
     [SerializeField] private ParticleSystem muzzelParticleStystem;
 
-
-    Vector3 mousePos;
+    private ObjectGrab grab;
 
     //Establishes if an object has been grabbed
-    private ObjectGrab grab;
     private bool objectGrabbed;
 
     private void Awake()
@@ -27,8 +29,44 @@ public class Laser : MonoBehaviour
         beam.enabled = false;
         grab = GetComponent<ObjectGrab>();
     }
+    private void Update()
+    {   //Gets input
+        InputCheck();
+    }
+    
+    private void FixedUpdate()
+    {
+        ArmLook();
+        if (!beam.enabled) return;
+        objectGrabbed = grab.ObjectDragActive;
+        ShootLaser();
+    }
+    private void InputCheck()
+    {   //Gets if the player is holing down the mouse 0 button
+        Action Shoot = (Input.GetMouseButton(0)) ? 
+            () => { Activate(); } :
+            () => { Deactivate(); SetLaserPosition(muzzelPoint.position);};
+        Shoot();
+    }
+    private void ShootLaser()
+    {
+        //Creates the ray cast and gets the position of the point hit
+        Ray ray = new Ray(muzzelPoint.position, muzzelPoint.forward);
+        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
+        Vector3 hitPosition = cast ? hit.point : muzzelPoint.position + muzzelPoint.forward * maxLaserLength;
+
+        SetLaserPosition(hitPosition);
+
+        if (objectGrabbed)
+        {
+            grab.ResetObjectDrag();
+        }
+        HitDetection(cast, hit);
+        hitParticleStystem.transform.position = hitPosition;
+    }
     private void Activate()
     {
+        //Plays particle system when shooting is active
         beam.enabled = true;
         if (!hitParticleStystem.isPlaying)
         {
@@ -38,59 +76,20 @@ public class Laser : MonoBehaviour
         {
             muzzelParticleStystem.Play();
         }
-        
+
     }
     private void Deactivate()
     {
+        //Stops particle system when shooting is not active
         beam.enabled = false;
-
         hitParticleStystem.Stop();
         muzzelParticleStystem.Stop();
-    }
-    private void Update()
-    {
-        mousePos = Input.mousePosition + PlayerMovement.MouseOffset;
-        if (Input.GetMouseButton(0)) 
-        {
-            Activate();
-        }
-        else
-        {
-            Deactivate();
-
-            beam.SetPosition(0, muzzelPoint.position);
-            beam.SetPosition(1, muzzelPoint.position);
-        }
-    }
-    private void FixedUpdate()
-    {
-        ArmLook();
-        if (!beam.enabled) return;
-        objectGrabbed = grab.ObjectDragActive;
-        ShootLaser();
-    }
-    private void ShootLaser()
-    {
-        //Creates the ray cast and gets the position of the point hit
-        Ray ray = new Ray(muzzelPoint.position, muzzelPoint.forward);
-        bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
-        Vector3 hitPosition = cast ? hit.point : muzzelPoint.position + muzzelPoint.forward * maxLaserLength;
-
-        beam.SetPosition(0, muzzelPoint.position);
-        beam.SetPosition(1, hitPosition);
-
-        if (objectGrabbed)
-        {
-            grab.ResetObjectDrag();
-        }
-        HitDetection(cast, hit);
-        hitParticleStystem.transform.position = hitPosition;
     }
     //Moves the arm twoards the mouse placement
     private void ArmLook()
     {
         //Points the arm to the crosshair placement
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Ray ray = Camera.main.ScreenPointToRay(PlayerMovement.mousePos);
         bool cast = Physics.Raycast(ray, out RaycastHit hit, maxLaserLength);
         
 
@@ -106,7 +105,7 @@ public class Laser : MonoBehaviour
         }
         else if (!objectGrabbed)
         {
-            armPivot.transform.forward = Camera.main.ScreenPointToRay(mousePos).direction;
+            armPivot.transform.forward = Camera.main.ScreenPointToRay(PlayerMovement.mousePos).direction;
         }
         else
         {
@@ -131,5 +130,10 @@ public class Laser : MonoBehaviour
             }
             rigidbody.AddForce(armPivot.transform.forward * power/hit.distance, ForceMode.Force);            
         }
+    }
+    private void SetLaserPosition(Vector3 endPos)
+    {
+        beam.SetPosition(0, muzzelPoint.position);
+        beam.SetPosition(1, endPos);
     }
 }

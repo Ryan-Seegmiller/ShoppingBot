@@ -8,46 +8,61 @@ namespace PlayerContoller
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Movement")]
-        private float moveSpeed;
         public float walkSpeed;
-        public float sprintSpeed;
+        [Range(1, 2)]public float sprintMoveMultiplier;
+        [Range(1, 2)] public float sprintTurnMultiplier;
         public float playerRotationSpeed;
+        private float moveSpeed;
+        private float turnSpeed;
 
+        [Header("Animator")]
         public Animator playerAnimator;
 
-        public GameObject backupCameraCanvas; 
+        [Header("BackupCamera")]
+        public GameObject backupCameraCanvas;
 
-        public float speedIncreaseMultiplier;
-        public float slopeIncreaseMultiplier;
-
+        [Header("Drag")]
         public float groundDrag;
 
         [Header("keybinds")]
         public KeyCode sprintKey = KeyCode.LeftShift;
 
         [Header("Ground Check")]
-        public float playerHeight;
-        public LayerMask whatIsGround;
-        public bool grounded;
+        public LayerMask groundLayer;
 
+        [Header("References")]
         public Transform orientation;
-        public Transform camHolder;
 
+        //Input and direction holders
         Vector2 playerInput;
-        private bool isSprinting;
-
-        public Transform playerTransform => transform;
-
         Vector3 moveDirection;
 
+        //Rigidbody
         Rigidbody rb;
 
-        Transform playerCollider;
+        //Transform for the collider
+        Transform playerColliderTR;
 
-        //Reference varieble
-        public static Vector3 MouseOffset = new Vector3(15, -17, 0);
+        //Reference variables
+        private static Vector3 MouseOffset = new Vector3(15, -17, 0);
+        public static Vector3 mousePos;
+        public static bool isPaused;
+        public Transform playerTransform => transform;
 
-        bool OnSlope;
+        #region IsSprintingBool
+        private bool IsSprinting;
+        private bool isSprinting
+        {
+            get { return IsSprinting; }
+            set { 
+                    if(IsSprinting == value) { return; }
+                    IsSprinting = value; 
+                }
+        }
+        #endregion
+
+        #region OnSlopeBool
+        private bool OnSlope;
         private bool onSlope
         {
             get { return OnSlope; }
@@ -60,74 +75,98 @@ namespace PlayerContoller
                 }
             }
         }
-        private void Start()
+        #endregion
+
+        #region GroundedBool
+        private bool Grounded;
+        private bool grounded
+        {
+            get { return Grounded; }
+            set { 
+                if(Grounded == value) {return; }
+                rb.drag = (value) ? groundDrag : 0;
+                Grounded = value; 
+            }
+        }
+        #endregion
+
+        private void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            rb.isKinematic = true;
             rb.freezeRotation = true;
 
-            playerCollider = GetComponentInChildren<SphereCollider>().gameObject.transform;
-
+            playerColliderTR = GetComponentInChildren<SphereCollider>().gameObject.transform;
         }
         private void Update()
-        {
-            MyInput();
-
+        {   //Checks input and colliders
+            InputsAndChecks();
         }
         private void FixedUpdate()
         {
-            onSlope = OnSlopeCheck(out RaycastHit slopeHit);
-            GroundCheck();
             MovePlayer();
-
-
-            // Adds drag to the player if on the ground
-            rb.drag = grounded ? groundDrag : 0;
         }
         //Collects the player input
-        private void MyInput()
+        private void InputsAndChecks()
         {
+            //Sets the mouse position
+            SetMousePos();
+
             //Input
             playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
             isSprinting = Input.GetKey(sprintKey) && grounded;
 
+            //Checks if on ground
+            grounded = GroundCheck();
+            
+            onSlope = OnSlopeCheck(out RaycastHit slopeHit);
+
         }
-        //Movesw the player based on player input
+        //Moves the player based on player input
         private void MovePlayer()
         {
-            if (!grounded && !onSlope) { return; }
+            if ((!grounded && !onSlope) || isPaused) { return; }
             // Calculate movement direction
             moveDirection = GetMoveDirection();
 
-            moveSpeed = (isSprinting) ? sprintSpeed: walkSpeed;
+            //Speed calculators
+            moveSpeed = (isSprinting) ? walkSpeed * sprintMoveMultiplier : walkSpeed;
+            turnSpeed = (isSprinting) ? playerRotationSpeed * sprintTurnMultiplier : playerRotationSpeed;
             
             //Moves the chartacter
             rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
-            transform.Rotate(0, playerInput.normalized.x * playerRotationSpeed, 0);
-            camHolder.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+            //Rotates the player
+            transform.Rotate(0, playerInput.normalized.x * turnSpeed, 0);
 
 
             //Player animations
             playerAnimatorController();
         }
-        
-        //Checks the grpound
-        void GroundCheck()
+
+        private void SetMousePos()
         {
-            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * .5f + .2f, whatIsGround);
+            mousePos = Input.mousePosition + MouseOffset;
         }
-        
-        public bool OnSlopeCheck(out RaycastHit slopeHit)
+
+        #region Checks
+        //Checks if the player is on the ground ground
+        bool GroundCheck()
         {
-            //Detects if there is a slope below the player
-            return (Physics.Raycast(playerCollider.position, Vector3.down, out slopeHit, playerHeight * 0.5f + .3f) && slopeHit.normal != Vector3.up);
-            
+            return Physics.Raycast(transform.position, Vector3.down, 1.5f, groundLayer);
         }
         public Vector3 GetMoveDirection()
         {
             return OnSlopeCheck(out RaycastHit slopeHit) ? Vector3.ProjectOnPlane(orientation.forward * playerInput.y, slopeHit.normal) : orientation.forward * playerInput.y;
         }
+        
+        public bool OnSlopeCheck(out RaycastHit slopeHit)
+        {
+            //Detects if there is a slope below the player
+            return (Physics.Raycast(playerColliderTR.position, Vector3.down, out slopeHit, 1.5f) && slopeHit.normal != Vector3.up);
+        }
+        #endregion
+
+        #region Player Animation
         void playerAnimatorController()
         {
             if (playerInput.y * -1f == -playerInput.y && playerInput.y != 0)
@@ -159,5 +198,6 @@ namespace PlayerContoller
                 playerAnimator.SetFloat("LeftTreadBoost", -20);
             }
         }
+        #endregion
     }
 }
