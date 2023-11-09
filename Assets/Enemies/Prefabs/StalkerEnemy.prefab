@@ -67,6 +67,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee7d2efae5dc4e4ba6675f330b717c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rayPointArmRight: {fileID: 3006431227716682823}
+  rayPointArmLeft: {fileID: 3006431227018885201}
+  rayPointArmStraight: {fileID: 3006431226779584732}
   GenerateRandomValues: 1
   meshBody: {fileID: 2700352816046715615}
   currentAttackCurve: []

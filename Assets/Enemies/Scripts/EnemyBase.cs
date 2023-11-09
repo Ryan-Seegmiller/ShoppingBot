@@ -9,9 +9,9 @@ public class EnemyBase : MonoBehaviour
 {
     #region rays
     protected bool[] rayBools;
-    protected Transform rayPointArmRight;
-    protected Transform rayPointArmLeft;
-    protected Transform rayPointArmStraight;
+    public Transform rayPointArmRight;
+    public Transform rayPointArmLeft;
+    public Transform rayPointArmStraight;
     #endregion
     #region AI base controls
     public bool GenerateRandomValues = true;
