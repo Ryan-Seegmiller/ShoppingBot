@@ -10185,6 +10185,7 @@ MonoBehaviour:
   backupCameraCanvas: {fileID: 2938125884728928153}
   groundDrag: 6
   sprintKey: 304
+  boostKey: 98
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -10209,7 +10210,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   objectToGrabDistance: 10
-  draggingActive: 1
 --- !u!114 &2938125884030017767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10778,7 +10778,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2938125884762464469}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: -0.783, z: -2.965}
+  m_LocalPosition: {x: 0, y: -0.783, z: -0.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
