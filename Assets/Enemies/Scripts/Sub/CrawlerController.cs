@@ -30,13 +30,19 @@ public class CrawlerController : EnemyBase
         {
             DoRoamAI();
         }
-        RaycastHit h;
-        if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, sArmRange+0.1f))
+        if (hasFoundPlayer)
         {
-            if (h.transform == player.transform)
+            Collider[] cols = Physics.OverlapBox(transform.position + transform.up * 0.5f, Vector3.one, Quaternion.identity);
+            if(cols.Length > 0)
             {
-                explode();
-                Die();
+                for(int i=0; i<cols.Length; i++)
+                {
+                    if (cols[i].gameObject == player.gameObject)
+                    {
+                        Die();
+
+                    }
+                }
             }
         }
         DropAndClampTargetYRot();
@@ -58,27 +64,18 @@ public class CrawlerController : EnemyBase
     {
         //SENSORS
         //arms/sensor rays
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
-        bool r = Physics.Raycast(rr, lrArmRange);
-        bool l = Physics.Raycast(rl, lrArmRange);
-        bool s = Physics.Raycast(rs, sArmRange);
-
-        Debug.DrawRay(rr.origin, rr.direction * lrArmRange, Color.blue);
-        Debug.DrawRay(rl.origin, rl.direction * lrArmRange, Color.red);
-        Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
+        bool[] rayBools = DoRays();
         //rotate if arms have collided
-        if (r)
+        if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
-        if (l)
+        if (rayBools[0])
             targetRotationY -= yRotationPerArmDetection;
 
         //move forward / back up and rotate, depending on sensors
         else if (roamMode==0)
         {
             //use sensors in this mode
-            if (!s)
+            if (!rayBools[1])
             {
                 rb.AddForce(transform.forward * acceleration);
             }
@@ -93,17 +90,16 @@ public class CrawlerController : EnemyBase
                 targetRotationY = Random.Range(-3, 3);
         }
 
-        if (s)
+        if (rayBools[1])
         {
             //backup if stuck
-            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
-            targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
+            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
         }
 
     }
-    private void explode()
+    public void explode()
     {
-        aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -114,7 +110,6 @@ public class CrawlerController : EnemyBase
                 currentRb.isKinematic = false;
                 currentRb.AddExplosionForce(Random.Range(explosionForceRange.x, explosionForceRange.y), transform.position, explosionRadius);
                 currentRb.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * Random.Range(-explosionTorqueRange, explosionTorqueRange));
-
             }
         }
         explosion.gameObject.transform.parent = null;

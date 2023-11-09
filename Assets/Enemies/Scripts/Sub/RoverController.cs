@@ -43,12 +43,9 @@ public class RoverController : EnemyBase
         //take money from player
         if (collision.transform.gameObject.tag == "Player")
         {
-            aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
             Flee();
-            int cashToTake = Random.Range(5, 10);
             if (ItemManager.instance != null)
-                ItemManager.instance.RemoveCash(cashToTake);
-            Debug.Log(gameObject.name + " took " + cashToTake + " from player.");
+                ItemManager.instance.RemoveRandomItem();
         }
     }
     private new void FixedUpdate()
@@ -66,7 +63,6 @@ public class RoverController : EnemyBase
         if (hasFoundPlayer && !fleeing)
         {
             //give it time to rotate
-            if(anim.GetBool("Action"))
             anim.SetBool("Action", true);
             if (canAttack)
             {
@@ -106,27 +102,18 @@ public class RoverController : EnemyBase
     {
         //SENSORS
         //arms/sensor rays
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
-        bool r = Physics.Raycast(rr, lrArmRange);
-        bool l = Physics.Raycast(rl, lrArmRange);
-        bool s = Physics.Raycast(rs, sArmRange);
-
-        Debug.DrawRay(rr.origin, rr.direction * lrArmRange, Color.blue);
-        Debug.DrawRay(rl.origin, rl.direction * lrArmRange, Color.red);
-        Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
+        bool[] rayBools = DoRays();
         //rotate if arms have collided
-        if (r)
+        if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
-        if (l)
+        if (rayBools[0])
             targetRotationY -= yRotationPerArmDetection;
 
         //move forward / back up and rotate, depending on sensors
         else if (roamMode==0)
         {
             //use sensors in this mode mode
-            if (!s)
+            if (!rayBools[1])
             {
                 rb.AddForce(transform.forward * acceleration);
             }
@@ -143,11 +130,11 @@ public class RoverController : EnemyBase
                 rb.AddForce(transform.forward * acceleration);
         }
 
-        if (s)
+        if (rayBools[1])
         {
             //backup if stuck
-            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
-            targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
+            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
         }
     }
 }

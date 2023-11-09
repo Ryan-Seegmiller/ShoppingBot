@@ -69,31 +69,22 @@ public class StalkerController : EnemyBase
     void DoAerialAI()
     {
         //arms/sensor rays
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
-        bool r = Physics.Raycast(rr, lrArmRange);
-        bool l = Physics.Raycast(rl, lrArmRange);
-        bool s = Physics.Raycast(rs, sArmRange);
-
-        Debug.DrawRay(rr.origin, rr.direction * lrArmRange, Color.blue);
-        Debug.DrawRay(rl.origin, rl.direction * lrArmRange, Color.red);
-        Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
+        rayBools = DoRays();
         //WANDER
-        if (lowChanceFlip && !s)
+        if (lowChanceFlip && !rayBools[1])
             rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits));
         else
             rb.AddForce(transform.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
         //rotate if arms have collided
-        if (r)
+        if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
-        if (l)
+        if (rayBools[0])
             targetRotationY -= yRotationPerArmDetection;
-        if (s)
+        if (rayBools[1])
         {
             //backup if stuck
-            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
-            targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
+            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
         }
         //set final rotation
         transform.Rotate(0, targetRotationY, 0);
