@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour, UIEvents
 
     public bool gameActive = false;
     public PlayerMovement player;
-    [Range(1, 5)] public int enemyMultiplyer = 1;
+    [Range(1, 5)] public int enemyMultiplier = 1;
 
     //public Transform elevatorPoint;
     public Animator elevatorAnim;
@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour, UIEvents
             EnemyManager.instance.UpdateSpawners();
             // spawn enemies
             gameRules.waveCount++;
-            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplyer, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
             Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
         }
     }
