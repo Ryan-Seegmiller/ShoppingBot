@@ -14,6 +14,7 @@ namespace PlayerContoller
         public float playerRotationSpeed;
         private float moveSpeed;
         private float turnSpeed;
+        
 
         [Header("Animator")]
         public Animator playerAnimator;
@@ -26,6 +27,7 @@ namespace PlayerContoller
 
         [Header("keybinds")]
         public KeyCode sprintKey = KeyCode.LeftShift;
+        public KeyCode boostKey = KeyCode.B;
 
         [Header("Ground Check")]
         public LayerMask groundLayer;
@@ -44,7 +46,6 @@ namespace PlayerContoller
         Transform playerColliderTR;
 
         //Reference variables
-        private static Vector3 MouseOffset = new Vector3(15, -17, 0);
         public static Vector3 mousePos;
         public static bool isPaused;
         public Transform playerTransform => transform;
@@ -90,6 +91,8 @@ namespace PlayerContoller
         }
         #endregion
 
+       
+        
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -104,6 +107,8 @@ namespace PlayerContoller
         private void FixedUpdate()
         {
             MovePlayer();
+            RotatePlayer();
+            StuckCheck();
         }
         //Collects the player input
         private void InputsAndChecks()
@@ -121,6 +126,7 @@ namespace PlayerContoller
             
             onSlope = OnSlopeCheck(out RaycastHit slopeHit);
 
+
         }
         //Moves the player based on player input
         private void MovePlayer()
@@ -131,23 +137,31 @@ namespace PlayerContoller
 
             //Speed calculators
             moveSpeed = (isSprinting) ? walkSpeed * sprintMoveMultiplier : walkSpeed;
-            turnSpeed = (isSprinting) ? playerRotationSpeed * sprintTurnMultiplier : playerRotationSpeed;
-            
+
             //Moves the chartacter
             rb.AddForce(moveSpeed * 10f * moveDirection.normalized, ForceMode.Force);
-            //Rotates the player
-            transform.Rotate(0, playerInput.normalized.x * turnSpeed, 0);
-
 
             //Player animations
             playerAnimatorController();
         }
-
+        private void RotatePlayer()
+        {
+            if (isPaused) { return; }
+            turnSpeed = (isSprinting) ? playerRotationSpeed * sprintTurnMultiplier : playerRotationSpeed;
+            //Rotates the player
+            transform.Rotate(0, playerInput.normalized.x * turnSpeed, 0);
+        }
         private void SetMousePos()
         {
-            mousePos = Input.mousePosition + MouseOffset;
+            mousePos = Input.mousePosition;
         }
-
+        private void StuckCheck()
+        {
+            if (!grounded && rb.velocity.magnitude == 0)
+            {
+                rb.AddForce(orientation.forward * 10f, ForceMode.Impulse);
+            }
+        }
         #region Checks
         //Checks if the player is on the ground ground
         bool GroundCheck()

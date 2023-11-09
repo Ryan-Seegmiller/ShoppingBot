@@ -56,13 +56,13 @@ public class ObjectGrab : MonoBehaviour
 
     void Update()
     {
+        if (PlayerMovement.isPaused) { return; }
         PlayerInput();
 
         rayLook = mainCamera.ScreenPointToRay(PlayerMovement.mousePos);
         
-        
-        
-        
+        ObjectDrag();
+
         if (!ObjectDragActive && !Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance, layersToHit))
         {
             //Arm look rotiation reset
@@ -71,10 +71,6 @@ public class ObjectGrab : MonoBehaviour
        
         ObjectSnapping();
 
-    }
-    private void FixedUpdate()
-    {
-        ObjectDrag();
     }
     private void PlayerInput()
     {
@@ -193,6 +189,7 @@ public class ObjectGrab : MonoBehaviour
     }
     private void ObjectSnapping()
     {
+        if(currentHeldObject.collider == null) {return; }
         if(Vector3.Distance(cartColliderTR.position, currentHeldObject.transform.position) < 2f && ObjectDragActive)
         {
             target.transform.position = cartColliderTR.position + Vector3.up;

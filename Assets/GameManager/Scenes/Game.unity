@@ -238,10 +238,6 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
-    - target: {fileID: 2938125884762464470, guid: 803e55632095a6548a288507f4cc1389, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.965
-      objectReference: {fileID: 0}
     - target: {fileID: 2938125884762464488, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: field of view
       value: 51.4
