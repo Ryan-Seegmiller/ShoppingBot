@@ -8,6 +8,7 @@ public class Elevator : MonoBehaviour
     public Collider lockCollider;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;
+    [SerializeField, Range(0, 1f)] float openPercent = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,5 +32,20 @@ public class Elevator : MonoBehaviour
     internal void UnlockElevator()
     {
         lockCollider.enabled = false;
+    }
+    private void Update()
+    {
+        float direction = (lockCollider.enabled) ? -1 : 1;
+        openPercent = openPercent + (Time.deltaTime * direction);
+        openPercent = Mathf.Clamp01(openPercent);
+        leftDoor.localPosition = new Vector3(Mathf.Lerp(0, 1, openPercent), 0, 0);
+        rightDoor.localPosition = new Vector3(Mathf.Lerp(0, -1, openPercent), 0, 0);
+    }
+    private void OnValidate()
+    {
+        if (leftDoor == null || rightDoor == null) { Debug.LogWarning($"Elevator :: null reference to elevator doors.", this); return; }
+        openPercent = Mathf.Clamp01(openPercent);
+        leftDoor.localPosition = new Vector3(Mathf.Lerp(0, 1, openPercent), 0, 0);
+        rightDoor.localPosition = new Vector3(Mathf.Lerp(0, -1, openPercent), 0, 0);
     }
 }
