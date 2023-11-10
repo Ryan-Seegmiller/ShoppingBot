@@ -162,7 +162,7 @@ public class EnemyBase : MonoBehaviour
             CrawlerController c = (CrawlerController)this;//didnt want to work unless cached
             c.explode();
         }
-        Destroy(this.gameObject);
+        Destroy(this.gameObject); 
     }
     private void PopBodyPart(Transform t)
     {

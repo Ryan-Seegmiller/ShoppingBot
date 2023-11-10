@@ -24,7 +24,12 @@ public class CrawlerController : EnemyBase
         {
             rb.AddForce(transform.forward * ramForce);
             if (Random.Range(0, 100f) > 90f)
+            {
                 transform.LookAt(player.transform.position);
+                Vector3 loc = transform.localEulerAngles;
+                transform.localEulerAngles = new Vector3(0, loc.y,loc.z);
+            }
+
         }
         else
         {

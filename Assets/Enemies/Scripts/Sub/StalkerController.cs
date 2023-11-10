@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using enemymanager;
 using Items;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class StalkerController : EnemyBase
 {
