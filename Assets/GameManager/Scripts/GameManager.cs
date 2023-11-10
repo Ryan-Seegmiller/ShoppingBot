@@ -29,74 +29,7 @@ public class GameManager : MonoBehaviour, UIEvents
     public PlayerMovement player;
     [Range(1, 5)] public int enemyMultiplier = 1;
 
-    //public Transform elevatorPoint;
-    public Animator elevatorAnim;
-
-
-    #region UIEvents
-    // Menu 
-    public void StartGame()
-    {
-        GameStart();
-        Debug.Log("UIEvents :: Start game", this);
-    }
-    // TODO: pause/unpause functionality
-    public void PauseGame()
-    {
-        ClockStop();
-        AudioManager.instance.PlaySound2D(0);
-        EnemyManager.instance.PauseEnemies = true;
-        player.backupCameraCanvas.SetActive(false);
-    }
-    public void ContinueGame()
-    {
-        ClockContinue();
-        EnemyManager.instance.PauseEnemies = false;
-        player.backupCameraCanvas.SetActive(true);
-    }
-    public void StopGame()
-    {
-        // TODO: Stop Game
-        GameStop();
-    }
-    public void EndGame()
-    {
-        GameEnd();
-    }
-    public void QuitGame()
-    {
-        if (Application.isEditor) { Debug.Break(); }
-        else { Application.Quit(); }
-    }
-    #endregion
-
-    #region Elevator
-    public void OnPlayerEnterElevator()
-    {
-        if (gameRules.gameTime > 10)
-        {
-            GameEnd();
-            LockElevator();
-        }
-    }
-    public void OnPlayerExitElevator() 
-    {
-        if (gameRules.gameTime < 10)
-        {
-            LockElevator();
-        }
-    }
-    private void LockElevator()
-    {
-        Elevator elevator = FindObjectOfType<Elevator>();
-        elevator.LockElevator();
-    }
-    private void UnlockElevator()
-    {
-        Elevator elevator = FindObjectOfType<Elevator>();
-        elevator.UnlockElevator();
-    }
-    #endregion
+    private GameRules gameRules;
 
     #region GameRules
     public struct GameRules
@@ -118,9 +51,13 @@ public class GameManager : MonoBehaviour, UIEvents
             this.gameStartTime = 0;
         }
     }
-    private GameRules gameRules;
-    private void GameStart()
+    #endregion
+
+    #region UIEvents
+    // Menu 
+    public void StartGame()
     {
+        Debug.Log("UIEvents :: Start game", this);
         // init
         Debug.Log("GameManager :: Game is starting", this);
         LevelGen.LevelManager.instance.InstanceMall(); // level
@@ -132,25 +69,30 @@ public class GameManager : MonoBehaviour, UIEvents
         EnemyManager.instance.player = player.gameObject;
         player.GetComponentInChildren<Rigidbody>().isKinematic = false;
         // clock
-        gameRules = new GameRules(Time.time);
-        StartCoroutine(Clock());
+        gameRules = new GameRules(0);
+        ClockStart();
         gameActive = true;
         gameRules.wavePeriod = 10;
     }
-    private void GameUpdate()
+    // TODO: pause/unpause functionality
+    public void PauseGame()
     {
-        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
-        {
-            EnemyManager.instance.UpdateSpawners();
-            // spawn enemies
-            gameRules.waveCount++;
-            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
-            Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
-        }
-        if (gameRules.gameTime > 10) { UnlockElevator(); }
+        Debug.Log("UIEvents :: Pause game", this);
+        ClockStop();
+        AudioManager.instance.PlaySound2D(0);
+        EnemyManager.instance.PauseEnemies = true;
+        player.backupCameraCanvas.SetActive(false);
     }
-    private void GameStop()
+    public void ContinueGame()
     {
+        Debug.Log("UIEvents :: Continue game", this);
+        ClockContinue();
+        EnemyManager.instance.PauseEnemies = false;
+        player.backupCameraCanvas.SetActive(true);
+    }
+    public void StopGame()
+    {
+        Debug.Log("UIEvents :: Stop game", this);
         Debug.Log("GameManager :: Game is stopping (no points recevied)", this);
         ClockStop();
         player.backupCameraCanvas.SetActive(false);
@@ -158,16 +100,51 @@ public class GameManager : MonoBehaviour, UIEvents
         EnemyManager.instance.DestroyEnemies();
         LevelGen.LevelManager.instance.DeleteLevel(false);
     }
-    private void GameEnd()
+    public void EndGame()
     {
+        Debug.Log("UIEvents :: End game", this);
         Debug.Log("GameManager :: Game is ending", this);
         // TODO: save score
-        StopCoroutine(Clock());
+        ClockStop();
         player.backupCameraCanvas.SetActive(false);
         UIChanger.instance.SetSceneScoring();
         ItemManager.instance.DestroyItems();
         EnemyManager.instance.DestroyEnemies();
         LevelGen.LevelManager.instance.DeleteLevel(false);
+    }
+    public void QuitGame()
+    {
+        Debug.Log("UIEvents :: Quit game", this);
+        if (Application.isEditor) { Debug.Break(); }
+        else { Application.Quit(); }
+    }
+    #endregion
+
+    #region Elevator
+    public void OnPlayerEnterElevator()
+    {
+        if (gameRules.gameTime > 10)
+        {
+            LockElevator();
+            EndGame();
+        }
+    }
+    public void OnPlayerExitElevator() 
+    {
+        if (gameRules.gameTime < 10)
+        {
+            LockElevator();
+        }
+    }
+    private void LockElevator()
+    {
+        Elevator elevator = FindObjectOfType<Elevator>();
+        elevator.LockElevator();
+    }
+    private void UnlockElevator()
+    {
+        Elevator elevator = FindObjectOfType<Elevator>();
+        elevator.UnlockElevator();
     }
     #endregion
 
@@ -220,6 +197,14 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     private void Update()
     {
-        GameUpdate();
+        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
+        {
+            EnemyManager.instance.UpdateSpawners();
+            // spawn enemies
+            gameRules.waveCount++;
+            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
+        }
+        if (gameRules.gameTime > 10) { UnlockElevator(); }
     }
 }
