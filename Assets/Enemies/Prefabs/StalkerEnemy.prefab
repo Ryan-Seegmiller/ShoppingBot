@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3006431226239869905}
-  - component: {fileID: 3006431226239869902}
   - component: {fileID: 3006431226239869901}
   - component: {fileID: 4034201655623822611}
   - component: {fileID: 7932654607958799240}
@@ -43,19 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3006431226239869902
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3006431226239869898}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.00001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &3006431226239869901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -81,21 +67,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee7d2efae5dc4e4ba6675f330b717c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GenerateRandomValues: 1
-  hasFoundPlayer: 0
-  hasDetectedPlayer: 0
   rayPointArmRight: {fileID: 3006431227716682823}
   rayPointArmLeft: {fileID: 3006431227018885201}
   rayPointArmStraight: {fileID: 3006431226779584732}
+  GenerateRandomValues: 1
   meshBody: {fileID: 2700352816046715615}
-  deathAudio:
-  - {fileID: 8300000, guid: a893d4aa9fe832644ae55085fda37d71, type: 3}
-  detectedAudio:
-  - {fileID: 8300000, guid: ed8399fe80b0cfc4c90c928bd4ea8fca, type: 3}
-  attackAudio:
-  - {fileID: 8300000, guid: dcc1aa85f89d3594a8d890ccd1b36c06, type: 3}
-  _health: 0
-  aS: {fileID: 0}
   currentAttackCurve: []
   frame: 0
   anim: {fileID: 0}

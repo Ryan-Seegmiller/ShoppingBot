@@ -12,7 +12,6 @@ public class ItemCollect : MonoBehaviour
         canCollect = GetComponentInParent<ObjectGrab>().canCollect;
         if (!canCollect) { return; }
         if(other == null) { return; }
-        print(other);
         other.gameObject.GetComponentInParent<Transform>().GetComponent<ItemInteract>().ItemCollect();
         
     }

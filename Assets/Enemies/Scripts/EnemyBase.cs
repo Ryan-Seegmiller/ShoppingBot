@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
 using TMPro;
-
+using UnityEditor;
+using audio;
 public class EnemyBase : MonoBehaviour
 {
+    #region rays
+    protected bool[] rayBools;
+    public Transform rayPointArmRight;
+    public Transform rayPointArmLeft;
+    public Transform rayPointArmStraight;
+    #endregion
+    #region AI base controls
     public bool GenerateRandomValues = true;
-
-    [SerializeField]
-    protected bool hasFoundPlayer = false;
-    //alerted
-    [SerializeField]
-    protected bool hasDetectedPlayer = false;
-    [SerializeField]
-    [Header("Rays")]
-    protected Transform rayPointArmRight;
-    [SerializeField]
-    protected Transform rayPointArmLeft;
-    [SerializeField]
-    protected Transform rayPointArmStraight;
-    public GameObject meshBody;
-    protected Rigidbody rb;
-    //Ai controls
-    protected float time = 0;
-    protected float firstDetectedTime = 0;
-    protected bool isFlying;
-    protected float pointAtPlayerOffset;
+    protected bool hasFoundPlayer = false;//after multiple seconds of detection
+    protected bool hasDetectedPlayer = false;//player is close enough
+    #endregion
+    #region AI modifiable stats
     protected float detectionRadius = 15;
     protected float timeDetectionToFind = 2;
     protected float pointAtPlayerChance =30;
@@ -39,68 +31,85 @@ public class EnemyBase : MonoBehaviour
     protected float wanderRotationLimits =0.2f;
     protected float wanderForceLimits =5;
     protected float acceleration =15;
-    protected Vector3 pointAtPlayerOffsetVector;
-    protected Vector2 reverseModifier = new Vector2(2, 3);
-    protected Vector2 stuckRotation = new Vector2(2, 3);
+    protected Vector2 reverseModifierMinMax = new Vector2(2, 3);
+    protected Vector2 stuckRotationMinMax = new Vector2(2, 3);
+    #endregion
+    #region timers, flips
+    protected float time = 0;
+    protected float firstDetectedTime = 0;
     protected bool lowChanceFlip = false;
     protected int lowChanceFlip2 = 1;
-    float sh =0;
-    public float startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
-    public List<AudioClip> deathAudio = new List<AudioClip>();
-    public List<AudioClip> detectedAudio = new List<AudioClip>();
-    public List<AudioClip> attackAudio = new List<AudioClip>();
+    float lastDamagingBumpTime = 0;
+    float lastDetectionCheckTime = 0;
+    #endregion
+    #region health
     TMP_Text healthBar;
     protected float _health;
     public float health 
     { get { return _health; }
         set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
     }
-    float lastDamagingBumpTime = 0;
-    public AudioSource aS;
+    public float startHealth { get { return _startHealth; } set { _startHealth = value; SetHealthbar(); } }
+    float _startHealth = 0;
+    #endregion
+    #region components
     protected GameObject player;
-    protected float PointAtPlayerOffset
-    {
-        set
-        {
-            pointAtPlayerOffset = value;
-            pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
-        }
-        get
-        {
-            return pointAtPlayerOffset;
-        }
-    }
+    public GameObject meshBody;
+    protected Rigidbody rb;
+    float currentDistanceToPlayer;
+    #endregion
 
     void Awake()
     {
-        //Debug.Log("Enemy Created", this);
         if (GenerateRandomValues)
             GetRandomAIValues();
-        GetComponent<SphereCollider>().radius = detectionRadius;
-        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
         rb = GetComponent<Rigidbody>();
         rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
         rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
-        aS = GetComponentInChildren<AudioSource>();
         healthBar = GetComponentInChildren<TMP_Text>();
         player = EnemyManager.instance.player;
     }
     private void Update()
     {
         time += Time.deltaTime;
-        healthBar.transform.LookAt(Camera.main.transform);
     }
     protected void FixedUpdate()
     {
         DoFlips();
-
-        if (transform.position.y < -10)
+        //healthBar.transform.LookAt(Camera.main.transform);
+        if (time > lastDetectionCheckTime + 0.5f)//slow down the amount of times this is called
         {
-            Die();
-        }
-        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
-        {
-            hasFoundPlayer = true;
+            if (transform.position.y < -10)//may as well be in here for less frequent checking
+            {
+                Die();
+            }
+            //this code replaces the trigger colliders for detecting the player
+            lastDetectionCheckTime = time;
+            currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (currentDistanceToPlayer <= detectionRadius && !hasFoundPlayer && !hasDetectedPlayer)
+            {
+                bool isStalker = this is StalkerController;
+                if (isStalker && !Physics.Linecast(transform.position,player.transform.position))//make sure the flying drone has a clear shot before attacking
+                {
+                    hasDetectedPlayer = true;
+                    firstDetectedTime = time;
+                }
+                else if(!isStalker)
+                {
+                    hasDetectedPlayer = true;
+                    firstDetectedTime = time;
+                }
+            }
+            else if (currentDistanceToPlayer > detectionRadius)
+            {
+                firstDetectedTime = 0;
+                hasFoundPlayer = false;
+                hasDetectedPlayer = false;
+            }
+            if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)//if its seen the player for long enough, it has 'found' it
+            {
+                hasFoundPlayer = true;
+            }
         }
     }
     public void SetHealthbar()
@@ -133,25 +142,27 @@ public class EnemyBase : MonoBehaviour
 
         pointAtPlayerChance = Random.Range(1, 90f);
         timeDetectionToFind = Random.Range(0.5f, 2f);
-        pointAtPlayerOffset= Random.Range(-5, 5f);
         acceleration = Random.Range(5f,25f);
 
-        reverseModifier = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
-        stuckRotation = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
+        reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
+        stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
     }
     public void Die()
     {
-        aS.transform.parent = null;
-        aS.PlayOneShot(deathAudio[Random.Range(0, deathAudio.Count)]);
-        Destroy(aS.gameObject, 3);
         Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
+        AudioManager.instance.PlaySound3D(4, transform.position);
         //iterate through body parts and make parent null and rotate for death effect
         for(int i = 0; i < meshBody.transform.childCount;i++)
         {
             PopBodyPart(meshBody.transform.GetChild(i).transform);
         }
         EnemyManager.instance.currentEnemies.Remove(this);
-        Destroy(this.gameObject);
+        if(this is CrawlerController)//this way the crawler will always explode
+        {
+            CrawlerController c = (CrawlerController)this;//didnt want to work unless cached
+            c.explode();
+        }
+        Destroy(this.gameObject); 
     }
     private void PopBodyPart(Transform t)
     {
@@ -191,25 +202,19 @@ public class EnemyBase : MonoBehaviour
             lastDamagingBumpTime = time;
         }
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == player && !hasFoundPlayer && !hasDetectedPlayer)
-        {
-            hasDetectedPlayer = true;
-            firstDetectedTime = time;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player)
-        {
-            firstDetectedTime = 0;
-            hasFoundPlayer = false;
-            hasDetectedPlayer = false;
-        }
-    }
     public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
     {
         return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+    }
+
+    protected bool[] DoRays()
+    {
+        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
+        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
+        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
+        bool r = Physics.Raycast(rr, lrArmRange);
+        bool l = Physics.Raycast(rl, lrArmRange);
+        bool s = Physics.Raycast(rs, sArmRange);
+        return new bool[3] { l, s, r };
     }
 }

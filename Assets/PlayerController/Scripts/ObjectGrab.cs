@@ -46,7 +46,6 @@ public class ObjectGrab : MonoBehaviour
 
     //Bools
     [Header("Toggle drag")]
-    public bool draggingActive = false;
     [NonSerialized] public bool ObjectDragActive = false;
     bool snapped;
 
@@ -57,33 +56,22 @@ public class ObjectGrab : MonoBehaviour
 
     void Update()
     {
+        if (PlayerMovement.isPaused) { return; }
         PlayerInput();
 
         rayLook = mainCamera.ScreenPointToRay(PlayerMovement.mousePos);
         
-        
+        ObjectDrag();
 
-        if (Physics.Raycast(rayLook,out raycastHit, objectToGrabDistance, layersToHit))
-        {
-            //print(raycastHit.collider.gameObject.name);
-            Debug.DrawRay(rayLook.origin, rayLook.direction * 300, Color.red);
-            
-        }
-        if (!draggingActive)
-        {
-            ObjectDrag();
-        }
-        if (!ObjectDragActive && Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance, layersToHit))
+        if (!ObjectDragActive && !Physics.Raycast(rayLook, out raycastHit, objectToGrabDistance, layersToHit))
         {
             //Arm look rotiation reset
             armPivot.transform.rotation = Quaternion.Lerp(armPivot.transform.rotation, gameObject.transform.rotation, .1f);
-
         }
-        print(snapped);
+       
         ObjectSnapping();
 
     }
-    
     private void PlayerInput()
     {
         bool initialMouseButtonDown = Input.GetMouseButtonDown(1) && !ObjectDragActive;
@@ -93,12 +81,12 @@ public class ObjectGrab : MonoBehaviour
             ResetObjectDrag();
         }
       
-        if (Input.GetMouseButton(1) && draggingActive) 
+        if (Input.GetMouseButton(1)) 
         {
             ObjectDrag();
             ItemDisableCollison();
         }
-        if(Input.GetMouseButtonUp(1) && ObjectDragActive && draggingActive)
+        if(Input.GetMouseButtonUp(1) && ObjectDragActive)
         { 
             StartCoroutine(ItemEnableCollison());
             ResetObjectDrag();
@@ -201,6 +189,7 @@ public class ObjectGrab : MonoBehaviour
     }
     private void ObjectSnapping()
     {
+        if(currentHeldObject.collider == null) {return; }
         if(Vector3.Distance(cartColliderTR.position, currentHeldObject.transform.position) < 2f && ObjectDragActive)
         {
             target.transform.position = cartColliderTR.position + Vector3.up;

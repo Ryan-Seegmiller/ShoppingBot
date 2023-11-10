@@ -31,12 +31,15 @@ public class Laser : MonoBehaviour
         grab = GetComponent<ObjectGrab>();
     }
     private void Update()
-    {   //Gets input
+    { 
+        if (PlayerMovement.isPaused) { return; }
+       //Gets input
         InputCheck();
     }
     
     private void FixedUpdate()
     {
+        if (PlayerMovement.isPaused) { return; }
         ArmLook();
         if (!beam.enabled) return;
         objectGrabbed = grab.ObjectDragActive;
@@ -102,8 +105,8 @@ public class Laser : MonoBehaviour
 
         //Gets if an object has been grabbed
         bool objectGrabbed = grab.ObjectDragActive;
+        if(hit.collider == null) { return; }
         //Makes sure the arm is pointing as accuratley as possible
-
         Vector3 armLookAtPos = (cast && !objectGrabbed) ? hit.point : grab.currentHeldObject.transform.position;
         armPivot.transform.LookAt(armLookAtPos);
 

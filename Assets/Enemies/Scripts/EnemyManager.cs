@@ -17,12 +17,6 @@ namespace enemymanager
         public bool PauseEnemies=false;
         public float time = 0;
 
-        public void Update()
-        {
-            for (int i = 0; i < enemySpawns.Count; i++)
-                Debug.DrawLine(enemySpawns[i].position, enemySpawns[i].position + enemySpawns[i].transform.up * 250f, Color.red);
-        }
-
         void Awake()
         {
             if (instance == null) { instance = this; } else { Destroy(this); }
