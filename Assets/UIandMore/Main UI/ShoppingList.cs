@@ -12,8 +12,6 @@ public class ShoppingList : MonoBehaviour
     [SerializeField] TextMeshProUGUI listText;
     bool showingList = false;
 
-    //[SerializeField] GameManager gm;
-
     bool collected;
     public string[] displayItems;
     [SerializeField] bool[] striked;
@@ -41,10 +39,6 @@ public class ShoppingList : MonoBehaviour
         KeyCheck();
     }
 
-    //List Display toggle
-    //Text Gen from array
-    //strikethough
-
     void KeyCheck()
     {
         if(displayItems.Length < 1 || striked.Length < 1)
@@ -65,12 +59,6 @@ public class ShoppingList : MonoBehaviour
         {
             ToggleList();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pMenu.SetActive(true);
-            prefabSceneFinder.PauseGame();
-            mScreen.SetActive(false);
-        }
     }
     public void ToggleList()
     {
@@ -88,57 +76,8 @@ public class ShoppingList : MonoBehaviour
         
         for(int i = 0; i < displayItems.Length; i++)
         {
-            //Until further fixing, items will have to be collected in exact order
             collected = ItemManager.instance.shoppingList[i] == ItemManager.instance.inventory[i];
             string currentName = ItemManager.instance.ItemName(ItemManager.instance.shoppingList[i]);
-            /*
-            int ignorer = 0;
-            collected = false;
-
-            //Until further fixing, items will have to be collected in exact order
-            //collected = ItemManager.instance.shoppingList[i] == ItemManager.instance.inventory[i];
-
-            if (ItemManager.instance.ItemTotalCount(ItemManager.instance.inventory[i], ItemManager.instance.shoppingList) > 1)
-            {
-                ignorer = 0;
-                if (i > 0)
-                {
-                    for (int j = 0; j < i; j++)
-                    {
-                        if (ItemManager.instance.inventory[j] == ItemManager.instance.shoppingList[i])
-                        {
-                            ignorer++;
-                        }
-                    }
-                }
-                if(ignorer <= i)
-                {
-                    collected = false;
-                }
-                else
-                {
-                    for(int j = 0; j < ItemManager.instance.inventorySize; j++)
-                    {
-                        if (ItemManager.instance.ListHasItem(ItemManager.instance.inventory[i]))
-                        {
-                            if(ignorer > 0)
-                            {
-                                ignorer--;
-                            }
-                            else
-                            {
-                                striked[j] = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else if(ItemManager.instance.ListHasItem(ItemManager.instance.inventory[i]))
-            {
-                striked[i] = true;
-            }
-
-            */
 
             if (collected)
             {
@@ -155,14 +94,7 @@ public class ShoppingList : MonoBehaviour
             }
             else
             {
-                //replace 4 with get from game manager "i" in inventory
-                
                 displayItems[i] = "<b>"+ currentName + "</b>";
-
-                //if (ItemManager.instance.inventory[i] != -1)
-                //{
-                //    displayItems[i] += " <b>X</b>";
-                //}
             }
         }
         BuildList();
@@ -188,34 +120,6 @@ public class ShoppingList : MonoBehaviour
         {
             listText.text += displayItems[i] + "\n";
         }
-        /*
-        for(int i=0; i < ItemManager.instance.shoppingList.Length; i++)
-        {
-            if (!ItemManager.instance.inventory.Contains(ItemManager.instance.shoppingList[i]))
-            {
-                listText.text += ItemManager.instance.ItemName(ItemManager.instance.shoppingList[i]) + "\n";
-            }
-            else
-            {
-                currIng = 0;
-                theItem = ItemManager.instance.shoppingList[i];
-                int difference = ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.shoppingList) - ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.inventory);
-                //if more of item in list than in inv
-                if (difference > 0)
-                {
-                    currIng = 0;
-                    int theItem = ItemManager.instance.shoppingList[i];
-                    int difference = ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.shoppingList) - ItemManager.instance.ItemTotalCount(theItem, ItemManager.instance.inventory);
-                    //if more of item in list than in inv
-                    if (difference > 0)
-                    {
-                        ignores[theItem] = difference;
-                    }
-                    
-                }
-                
-            }
-        }*/
     }
     #endregion
 

@@ -1,9 +1,7 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using enemymanager;
 using Items;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class StalkerController : EnemyBase
 {
@@ -18,79 +16,63 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
+        RaycastHit heightAdjustmentHit;
+        if(Physics.Raycast(transform.position, Vector3.up * 10, out heightAdjustmentHit))
+        {
+            transform.Translate(0, Vector3.Distance(transform.position, heightAdjustmentHit.point)-1, 0);
+        }
     }
     new void FixedUpdate()
     {
-        base.FixedUpdate();
-
-        DropAndClampTargetYRot();
-
-        //if found player, create attack curve
-        if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime+3<time)
-            BeginAttackCurve();
-        //if there is an attack curve, run it
-        if (currentAttackCurve.Count > 0)
-            RunAttackCurvePhysics();
-        else
+        if (!EnemyManager.instance.PauseEnemies)
         {
-            DoAerialAI();
-        }
-        if (hasFoundPlayer)
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
+            base.FixedUpdate();
+            //if found player, create attack curve
+            if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time)
+                BeginAttackCurve();
+            //if there is an attack curve, run it
+            if (currentAttackCurve.Count > 0)
+                RunAttackCurvePhysics();
+            else
             {
-                if (hit.collider.gameObject == player.gameObject)
+                DoAerialAI();
+            }
+            if (hasFoundPlayer)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
                 {
-                    //take items from player
-                    Debug.Log("Player contact");
-                    anim.SetTrigger("Action");
-                    if(ItemManager.instance!=null)
-                        ItemManager.instance.RemoveRandomItem();
+                    if (hit.collider.gameObject == player.gameObject)
+                    {
+                        //take items from player
+                        anim.SetTrigger("Stalker has connected with player");
+                        if (ItemManager.instance != null)
+                            ItemManager.instance.RemoveRandomItem();
+                    }
                 }
             }
-        }
+        }   
     }
-    void DropAndClampTargetYRot()
-    {
-        //clamp values and lerp back to 0
-        if (targetRotationY > 0)
-            targetRotationY -= yRotationReturn;
-        if (targetRotationY < 0)
-            targetRotationY += yRotationReturn;
-        if (targetRotationY >= 360)
-            targetRotationY -= 360;
-        if (targetRotationY <= -360)
-            targetRotationY += 360;
-    }
+
     void DoAerialAI()
     {
         //arms/sensor rays
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
-        bool r = Physics.Raycast(rr, lrArmRange);
-        bool l = Physics.Raycast(rl, lrArmRange);
-        bool s = Physics.Raycast(rs, sArmRange);
-
-        Debug.DrawRay(rr.origin, rr.direction * lrArmRange, Color.blue);
-        Debug.DrawRay(rl.origin, rl.direction * lrArmRange, Color.red);
-        Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
+        rayBools = DoRays();
         //WANDER
-        if (lowChanceFlip && !s)
+        if (lowChanceFlip && !rayBools[1])
             rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits));
         else
             rb.AddForce(transform.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
         //rotate if arms have collided
-        if (r)
+        if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
-        if (l)
+        if (rayBools[0])
             targetRotationY -= yRotationPerArmDetection;
-        if (s)
+        if (rayBools[1])
         {
             //backup if stuck
-            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
-            targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
+            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
         }
         //set final rotation
         transform.Rotate(0, targetRotationY, 0);
@@ -105,7 +87,7 @@ public class StalkerController : EnemyBase
         frame = 0;
         currentAttackCurve = CalculateAttackCurve(BaseCurve, transform.position, (transform.position + transform.forward * (2 * Vector3.Distance(transform.position, v))), 30, player.transform.position);
     }
-    void RunAttackCurve()
+    void RunAttackCurveTranslate()
     {
         //call repeatedly until currentAttackCurve clear, which happens at ELSE
         if (frame < currentAttackCurve.Count)

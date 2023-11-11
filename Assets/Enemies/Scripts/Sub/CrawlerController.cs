@@ -24,61 +24,41 @@ public class CrawlerController : EnemyBase
         {
             rb.AddForce(transform.forward * ramForce);
             if (Random.Range(0, 100f) > 90f)
+            {
                 transform.LookAt(player.transform.position);
+                Vector3 loc = transform.localEulerAngles;
+                transform.localEulerAngles = new Vector3(0, loc.y,loc.z);
+            }
         }
         else
         {
             DoRoamAI();
         }
-        RaycastHit h;
-        if (hasFoundPlayer && Physics.Raycast(transform.position + transform.up * 0.5f, transform.forward, out h, sArmRange+0.1f))
+        if (hasFoundPlayer && currentDistanceToPlayer<1.3f)
         {
-            if (h.transform == player.transform)
-            {
-                explode();
-                Die();
-            }
+            Die();
+            player.GetComponent<Rigidbody>().AddForce(transform.forward * 100);
         }
-        DropAndClampTargetYRot();
         transform.Rotate(0, targetRotationY, 0);
     }
-    private void DropAndClampTargetYRot()
-    {
-        if (targetRotationY > 0)
-            targetRotationY -= yRotationReturn;
-        if (targetRotationY < 0)
-            targetRotationY += yRotationReturn;
-        if (targetRotationY >= 360)
-            targetRotationY -= 360;
-        if (targetRotationY <= -360)
-            targetRotationY += 360;
-    }
+
 
     private void DoRoamAI()
     {
         //SENSORS
         //arms/sensor rays
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
-        bool r = Physics.Raycast(rr, lrArmRange);
-        bool l = Physics.Raycast(rl, lrArmRange);
-        bool s = Physics.Raycast(rs, sArmRange);
-
-        Debug.DrawRay(rr.origin, rr.direction * lrArmRange, Color.blue);
-        Debug.DrawRay(rl.origin, rl.direction * lrArmRange, Color.red);
-        Debug.DrawRay(rs.origin, rs.direction * sArmRange, Color.green);
+        rayBools = DoRays();
         //rotate if arms have collided
-        if (r)
+        if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
-        if (l)
+        if (rayBools[0])
             targetRotationY -= yRotationPerArmDetection;
 
         //move forward / back up and rotate, depending on sensors
         else if (roamMode==0)
         {
             //use sensors in this mode
-            if (!s)
+            if (!rayBools[1])
             {
                 rb.AddForce(transform.forward * acceleration);
             }
@@ -93,17 +73,16 @@ public class CrawlerController : EnemyBase
                 targetRotationY = Random.Range(-3, 3);
         }
 
-        if (s)
+        if (rayBools[1])
         {
             //backup if stuck
-            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifier.x, reverseModifier.y));
-            targetRotationY += Random.Range(stuckRotation.x, stuckRotation.y) * Random.Range(-1, 2);
+            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
         }
 
     }
-    private void explode()
+    public void explode()
     {
-        aS.PlayOneShot(attackAudio[Random.Range(0, attackAudio.Count)]);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -114,7 +93,6 @@ public class CrawlerController : EnemyBase
                 currentRb.isKinematic = false;
                 currentRb.AddExplosionForce(Random.Range(explosionForceRange.x, explosionForceRange.y), transform.position, explosionRadius);
                 currentRb.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * Random.Range(-explosionTorqueRange, explosionTorqueRange));
-
             }
         }
         explosion.gameObject.transform.parent = null;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using audio;
 
 public class BotHover : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class BotHover : MonoBehaviour
         }
         else
         {
+            AudioManager.instance.PlaySound2D(6);
             img.sprite = highlightSprite;
             on = true;
         }

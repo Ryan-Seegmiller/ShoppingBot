@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
 using TMPro;
-
+using UnityEditor;
+using audio;
 public class EnemyBase : MonoBehaviour
 {
+    #region rays
+    protected bool[] rayBools;
+    Vector3 rp;
+    Vector3 lp;
+    Vector3 sp;
+    #endregion
+    #region AI base controls
     public bool GenerateRandomValues = true;
-
-    [SerializeField]
-    protected bool hasFoundPlayer = false;
-    //alerted
-    [SerializeField]
-    protected bool hasDetectedPlayer = false;
-    [SerializeField]
-    [Header("Rays")]
-    protected Transform rayPointArmRight;
-    [SerializeField]
-    protected Transform rayPointArmLeft;
-    [SerializeField]
-    protected Transform rayPointArmStraight;
-    public GameObject meshBody;
-    protected Rigidbody rb;
-    //Ai controls
-    protected float time = 0;
-    protected float firstDetectedTime = 0;
-    protected bool isFlying;
-    protected float pointAtPlayerOffset;
+    protected bool hasFoundPlayer = false;//after multiple seconds of detection
+    protected bool hasDetectedPlayer = false;//player is close enough
+    #endregion
+    #region AI modifiable stats
     protected float detectionRadius = 15;
     protected float timeDetectionToFind = 2;
     protected float pointAtPlayerChance =30;
@@ -34,118 +26,111 @@ public class EnemyBase : MonoBehaviour
     protected float yRotationReturn = 0.2f;
     protected float yRotationPerArmDetection = 0.5f;
     protected float lrArmRange = 1;
-    protected float lrRayAngle = 35;
     protected float sArmRange = 1;
     protected float wanderRotationLimits =0.2f;
     protected float wanderForceLimits =5;
     protected float acceleration =15;
-    protected Vector3 pointAtPlayerOffsetVector;
-    protected Vector2 reverseModifier = new Vector2(2, 3);
-    protected Vector2 stuckRotation = new Vector2(2, 3);
+    protected Vector2 reverseModifierMinMax = new Vector2(2, 3);
+    protected Vector2 stuckRotationMinMax = new Vector2(2, 3);
+    #endregion
+    #region timers, flips
+    protected float time = 0;
+    protected float firstDetectedTime = 0;
     protected bool lowChanceFlip = false;
     protected int lowChanceFlip2 = 1;
-    float sh =0;
-    public float startHealth { get { return sh; } set { sh = value; SetHealthbar(); } }
-    public List<AudioClip> deathAudio = new List<AudioClip>();
-    public List<AudioClip> detectedAudio = new List<AudioClip>();
-    public List<AudioClip> attackAudio = new List<AudioClip>();
+    float lastDamagingBumpTime = 0;
+    float lastDetectionCheckTime = 0;
+    #endregion
+    #region health
     TMP_Text healthBar;
-    [SerializeField]
     protected float _health;
     public float health 
     { get { return _health; }
         set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
     }
-    float lastDamagingBumpTime = 0;
-    public AudioSource aS;
+    public float startHealth { get { return _startHealth; } set { _startHealth = value; SetHealthbar(); } }
+    float _startHealth = 0;
+    #endregion
+    #region components
     protected GameObject player;
+    public GameObject meshBody;
+    protected Rigidbody rb;
+    [SerializeField]
+    [Header("Debug")]
+    protected float currentDistanceToPlayer;
+    #endregion
+
     void Awake()
     {
-        Debug.Log("Enemy Created", this);
+
         if (GenerateRandomValues)
             GetRandomAIValues();
-        GetComponent<SphereCollider>().radius = detectionRadius;
-        pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
         rb = GetComponent<Rigidbody>();
-        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
-        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
-        aS = GetComponentInChildren<AudioSource>();
         healthBar = GetComponentInChildren<TMP_Text>();
         player = EnemyManager.instance.player;
+        if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
+        {
+            Die();
+            EnemyManager.instance.SpawnEnemies(1, Random.Range(0, 3));
+            Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
+        }
     }
     private void Update()
     {
         time += Time.deltaTime;
-        healthBar.transform.LookAt(Camera.main.transform);
-    }
-    public void SetHealthbar()
-    {
-        string s="";
-        Color c;
-        for (int i = 0; i < health; i++)
-            s += "-";
-        if (health >= 3)
-            c = Color.green;
-        else if (health >= 2)
-            c = Color.yellow;
-        else
-            c = Color.red;
-        healthBar.color = c;
-        healthBar.text = s;
     }
     protected void FixedUpdate()
     {
         DoFlips();
+        DropAndClampTargetYRot();
 
-        if (transform.position.y < -10)
+        //healthBar.transform.LookAt(Camera.main.transform);
+        if (time > lastDetectionCheckTime + 0.5f)//slow down the amount of times this is called
         {
-            Die();
-        }
-        if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)
-        {
-            aS.PlayOneShot(detectedAudio[Random.Range(0, detectedAudio.Count)]);
-            hasFoundPlayer = true;
-        }
-    }
-    protected float PointAtPlayerOffset{
-        set
-        {
-            pointAtPlayerOffset = value;
-            pointAtPlayerOffsetVector = new Vector3(pointAtPlayerOffset, 0, pointAtPlayerOffset);
-        }
-        get
-        {
-            return pointAtPlayerOffset;
-        }
-    }
+            lastDetectionCheckTime = time;
 
-    //Trigger sphere collider on all enemies for detection of player
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == player && !hasFoundPlayer && !hasDetectedPlayer)
-        {
-            hasDetectedPlayer = true;
-            firstDetectedTime = time;
+            if (transform.position.y < -10)//may as well be in here for less frequent checking
+            {
+                Die();
+            }
+            //this code replaces the trigger colliders for detecting the player
+            currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (currentDistanceToPlayer <= detectionRadius && !hasFoundPlayer && !hasDetectedPlayer)
+            {
+                hasDetectedPlayer = true;
+                firstDetectedTime = time;
+            }
+            else if (currentDistanceToPlayer > detectionRadius)
+            {
+                firstDetectedTime = 0;
+                hasFoundPlayer = false;
+                hasDetectedPlayer = false;
+            }
+            if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)//if its seen the player for long enough, it has 'found' it
+            {
+                hasFoundPlayer = true;
+            }
         }
     }
-    private void OnTriggerExit(Collider other)
+    public void SetHealthbar()
     {
-        if (other.gameObject == player)
-        {
-            firstDetectedTime = 0;
-            hasFoundPlayer = false;
-            hasDetectedPlayer = false;
-        }
-    }
-    public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
-    {
-        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+        string healthText="";
+        Color healthColor;
+        for (int i = 0; i < health; i++)
+            healthText += "-";
+        if (health >= 3)
+            healthColor = Color.green;
+        else if (health >= 2)
+            healthColor = Color.yellow;
+        else
+            healthColor = Color.red;
+        healthBar.color = healthColor;
+        healthBar.text = healthText;
     }
     public void GetRandomAIValues()
     {
         lrArmRange = Random.Range(0.25f, 3f);
         sArmRange = Random.Range(0.25f, 3f);
-        lrRayAngle = Random.Range(1, 75f);
 
         detectionRadius = Random.Range(10f, 25f);
         wanderRotationLimits = Random.Range(0.01f, 0.01f);
@@ -156,43 +141,35 @@ public class EnemyBase : MonoBehaviour
 
         pointAtPlayerChance = Random.Range(1, 90f);
         timeDetectionToFind = Random.Range(0.5f, 2f);
-        pointAtPlayerOffset= Random.Range(-5, 5f);
         acceleration = Random.Range(5f,25f);
 
-        reverseModifier = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
-        stuckRotation = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
+        reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
+        stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
     }
     public void Die()
     {
-        aS.transform.parent = null;
-        aS.PlayOneShot(deathAudio[Random.Range(0, deathAudio.Count)]);
-        Destroy(aS.gameObject, 3);
-        Debug.Log(gameObject.name + " enemy has died");
+        Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
+        AudioManager.instance.PlaySound3D(4, transform.position);
         //iterate through body parts and make parent null and rotate for death effect
         for(int i = 0; i < meshBody.transform.childCount;i++)
         {
             PopBodyPart(meshBody.transform.GetChild(i).transform);
         }
         EnemyManager.instance.currentEnemies.Remove(this);
-        Destroy(this.gameObject);
+        if(this is CrawlerController)//this way the crawler will always explode
+        {
+            CrawlerController c = (CrawlerController)this;//didnt want to work unless cached
+            c.explode();
+        }
+        Destroy(this.gameObject); 
     }
-
     private void PopBodyPart(Transform t)
     {
         t.transform.parent = null;
         Rigidbody tRb = t.gameObject.AddComponent<Rigidbody>();
-        t.gameObject.AddComponent<SphereCollider>().radius = 0.25f;
         tRb.AddTorque(transform.up * Random.Range(-360, 360));
         tRb.AddForce(transform.forward * Random.Range(-25, 250));
         Destroy(t.gameObject, 3);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (rb.velocity.magnitude > 3 && time > lastDamagingBumpTime + 0.5f)
-        {
-            health--;
-            lastDamagingBumpTime = time;
-        }
     }
     public void Hit(float mod)
     {
@@ -214,5 +191,45 @@ public class EnemyBase : MonoBehaviour
     {
         if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
         if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (rb.velocity.magnitude > 8 && time > lastDamagingBumpTime + 2f)
+        {
+            health-= rb.velocity.magnitude/10;
+            lastDamagingBumpTime = time;
+        }
+    }
+    public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
+    {
+        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+    }
+
+    protected bool[] DoRays()
+    {
+        rp = transform.position + transform.forward + transform.right;
+        lp = transform.position + transform.forward - transform.right;
+        sp = transform.position + transform.forward;
+        Ray rr = new Ray(rp, transform.forward+(transform.right*0.5f)); // right
+        Ray rl = new Ray(lp, transform.forward - (transform.right * 0.5f)); // left
+        Ray rs = new Ray(sp, transform.forward); // straight
+        Debug.DrawRay(transform.position + transform.forward + transform.right, transform.forward + (transform.right * 0.5f), Color.red, 0.1f);
+        Debug.DrawRay(transform.position + transform.forward - transform.right, transform.forward - (transform.right * 0.5f), Color.blue, 0.1f);
+        bool r = Physics.Raycast(rr, lrArmRange);
+        bool l = Physics.Raycast(rl, lrArmRange);
+        bool s = Physics.Raycast(rs, sArmRange);
+        return new bool[3] { l, s, r };
+    }
+
+    protected void DropAndClampTargetYRot()
+    {
+        if (targetRotationY > 0)
+            targetRotationY -= yRotationReturn;
+        if (targetRotationY < 0)
+            targetRotationY += yRotationReturn;
+        if (targetRotationY >= 360)
+            targetRotationY -= 360;
+        if (targetRotationY <= -360)
+            targetRotationY += 360;
     }
 }
