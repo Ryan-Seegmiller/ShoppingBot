@@ -253,7 +253,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4871543811631930487}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0.5
   m_AngularDrag: 0.5
   m_UseGravity: 1
@@ -273,11 +273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b37ea31234aaa46ac82b3d4977ff98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayPointArmRight: {fileID: 4871543810828660534}
-  rayPointArmLeft: {fileID: 4871543812612922015}
-  rayPointArmStraight: {fileID: 4871543811401605495}
   GenerateRandomValues: 1
   meshBody: {fileID: 5931365859000709751}
+  currentDistanceToPlayer: 0
   roamMode: 0
   pounceForwardForce: 15
   pounceUpForce: 56.02
