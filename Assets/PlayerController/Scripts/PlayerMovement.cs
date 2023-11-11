@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Build.Reporting;
@@ -155,13 +156,6 @@ namespace PlayerContoller
         {
             mousePos = Input.mousePosition;
         }
-        private void StuckCheck()
-        {
-            if (!grounded && rb.velocity.magnitude == 0)
-            {
-                rb.AddForce(orientation.forward * 10f, ForceMode.Impulse);
-            }
-        }
         #region Checks
         //Checks if the player is on the ground ground
         bool GroundCheck()
@@ -172,7 +166,13 @@ namespace PlayerContoller
         {
             return OnSlopeCheck(out RaycastHit slopeHit) ? Vector3.ProjectOnPlane(orientation.forward * playerInput.y, slopeHit.normal) : orientation.forward * playerInput.y;
         }
-        
+        private void StuckCheck()
+        {
+            if((!grounded || !onSlope) && rb.velocity.magnitude == 0)
+            {
+                StartCoroutine(UnStuckPlayer());
+            }
+        }
         public bool OnSlopeCheck(out RaycastHit slopeHit)
         {
             //Detects if there is a slope below the player
@@ -213,5 +213,15 @@ namespace PlayerContoller
             }
         }
         #endregion
+        IEnumerator UnStuckPlayer()
+        {
+            yield return new WaitForFixedUpdate();
+            if (!grounded && rb.velocity.magnitude == 0)
+            {
+                rb.AddForce(orientation.forward * 10f, ForceMode.Impulse);
+            }
+        }
+
+       
     }
 }
