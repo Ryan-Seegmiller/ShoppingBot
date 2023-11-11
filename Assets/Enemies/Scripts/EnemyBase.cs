@@ -9,9 +9,9 @@ public class EnemyBase : MonoBehaviour
 {
     #region rays
     protected bool[] rayBools;
-    public Transform rayPointArmRight;
-    public Transform rayPointArmLeft;
-    public Transform rayPointArmStraight;
+    Vector3 rp;
+    Vector3 lp;
+    Vector3 sp;
     #endregion
     #region AI base controls
     public bool GenerateRandomValues = true;
@@ -26,7 +26,6 @@ public class EnemyBase : MonoBehaviour
     protected float yRotationReturn = 0.2f;
     protected float yRotationPerArmDetection = 0.5f;
     protected float lrArmRange = 1;
-    protected float lrRayAngle = 35;
     protected float sArmRange = 1;
     protected float wanderRotationLimits =0.2f;
     protected float wanderForceLimits =5;
@@ -56,18 +55,25 @@ public class EnemyBase : MonoBehaviour
     protected GameObject player;
     public GameObject meshBody;
     protected Rigidbody rb;
-    float currentDistanceToPlayer;
+    [SerializeField]
+    [Header("Debug")]
+    protected float currentDistanceToPlayer;
     #endregion
 
     void Awake()
     {
+
         if (GenerateRandomValues)
             GetRandomAIValues();
         rb = GetComponent<Rigidbody>();
-        rayPointArmLeft.localEulerAngles = new Vector3(0, -lrRayAngle, 0);
-        rayPointArmRight.localEulerAngles = new Vector3(0, lrRayAngle, 0);
         healthBar = GetComponentInChildren<TMP_Text>();
         player = EnemyManager.instance.player;
+        if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
+        {
+            Die();
+            EnemyManager.instance.SpawnEnemies(1, Random.Range(0, 3));
+            Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
+        }
     }
     private void Update()
     {
@@ -76,29 +82,23 @@ public class EnemyBase : MonoBehaviour
     protected void FixedUpdate()
     {
         DoFlips();
+        DropAndClampTargetYRot();
+
         //healthBar.transform.LookAt(Camera.main.transform);
         if (time > lastDetectionCheckTime + 0.5f)//slow down the amount of times this is called
         {
+            lastDetectionCheckTime = time;
+
             if (transform.position.y < -10)//may as well be in here for less frequent checking
             {
                 Die();
             }
             //this code replaces the trigger colliders for detecting the player
-            lastDetectionCheckTime = time;
             currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
             if (currentDistanceToPlayer <= detectionRadius && !hasFoundPlayer && !hasDetectedPlayer)
             {
-                bool isStalker = this is StalkerController;
-                if (isStalker && !Physics.Linecast(transform.position,player.transform.position))//make sure the flying drone has a clear shot before attacking
-                {
-                    hasDetectedPlayer = true;
-                    firstDetectedTime = time;
-                }
-                else if(!isStalker)
-                {
-                    hasDetectedPlayer = true;
-                    firstDetectedTime = time;
-                }
+                hasDetectedPlayer = true;
+                firstDetectedTime = time;
             }
             else if (currentDistanceToPlayer > detectionRadius)
             {
@@ -114,24 +114,23 @@ public class EnemyBase : MonoBehaviour
     }
     public void SetHealthbar()
     {
-        string s="";
-        Color c;
+        string healthText="";
+        Color healthColor;
         for (int i = 0; i < health; i++)
-            s += "-";
+            healthText += "-";
         if (health >= 3)
-            c = Color.green;
+            healthColor = Color.green;
         else if (health >= 2)
-            c = Color.yellow;
+            healthColor = Color.yellow;
         else
-            c = Color.red;
-        healthBar.color = c;
-        healthBar.text = s;
+            healthColor = Color.red;
+        healthBar.color = healthColor;
+        healthBar.text = healthText;
     }
     public void GetRandomAIValues()
     {
         lrArmRange = Random.Range(0.25f, 3f);
         sArmRange = Random.Range(0.25f, 3f);
-        lrRayAngle = Random.Range(1, 75f);
 
         detectionRadius = Random.Range(10f, 25f);
         wanderRotationLimits = Random.Range(0.01f, 0.01f);
@@ -168,7 +167,6 @@ public class EnemyBase : MonoBehaviour
     {
         t.transform.parent = null;
         Rigidbody tRb = t.gameObject.AddComponent<Rigidbody>();
-        t.gameObject.AddComponent<SphereCollider>().radius = 0.25f;
         tRb.AddTorque(transform.up * Random.Range(-360, 360));
         tRb.AddForce(transform.forward * Random.Range(-25, 250));
         Destroy(t.gameObject, 3);
@@ -209,12 +207,29 @@ public class EnemyBase : MonoBehaviour
 
     protected bool[] DoRays()
     {
-        Ray rr = new Ray(rayPointArmRight.transform.position, rayPointArmRight.transform.forward); // right
-        Ray rl = new Ray(rayPointArmLeft.transform.position, rayPointArmLeft.transform.forward); // left
-        Ray rs = new Ray(rayPointArmStraight.transform.position, rayPointArmStraight.transform.forward); // straight
+        rp = transform.position + transform.forward + transform.right;
+        lp = transform.position + transform.forward - transform.right;
+        sp = transform.position + transform.forward;
+        Ray rr = new Ray(rp, transform.forward+(transform.right*0.5f)); // right
+        Ray rl = new Ray(lp, transform.forward - (transform.right * 0.5f)); // left
+        Ray rs = new Ray(sp, transform.forward); // straight
+        Debug.DrawRay(transform.position + transform.forward + transform.right, transform.forward + (transform.right * 0.5f), Color.red, 0.1f);
+        Debug.DrawRay(transform.position + transform.forward - transform.right, transform.forward - (transform.right * 0.5f), Color.blue, 0.1f);
         bool r = Physics.Raycast(rr, lrArmRange);
         bool l = Physics.Raycast(rl, lrArmRange);
         bool s = Physics.Raycast(rs, sArmRange);
         return new bool[3] { l, s, r };
+    }
+
+    protected void DropAndClampTargetYRot()
+    {
+        if (targetRotationY > 0)
+            targetRotationY -= yRotationReturn;
+        if (targetRotationY < 0)
+            targetRotationY += yRotationReturn;
+        if (targetRotationY >= 360)
+            targetRotationY -= 360;
+        if (targetRotationY <= -360)
+            targetRotationY += 360;
     }
 }

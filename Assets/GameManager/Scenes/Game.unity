@@ -1454,6 +1454,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1436984501}
     - target: {fileID: 223077863361831966, guid: 9397c8b5a5d643b48ab29c9e5dc2b726, type: 3}
+      propertyPath: enemyMultiplier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 223077863361831966, guid: 9397c8b5a5d643b48ab29c9e5dc2b726, type: 3}
       propertyPath: enemyMultiplyer
       value: 1
       objectReference: {fileID: 0}
@@ -2539,6 +2543,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1314451743}
+    - target: {fileID: 4427314265567178900, guid: fe0c6a22714bf254e96fb1912e3f1346, type: 3}
+      propertyPath: multiplierOverride
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4427314265567178901, guid: fe0c6a22714bf254e96fb1912e3f1346, type: 3}
       propertyPath: m_RootOrder
       value: 3

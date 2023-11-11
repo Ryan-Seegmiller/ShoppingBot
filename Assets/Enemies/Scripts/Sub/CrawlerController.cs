@@ -29,47 +29,25 @@ public class CrawlerController : EnemyBase
                 Vector3 loc = transform.localEulerAngles;
                 transform.localEulerAngles = new Vector3(0, loc.y,loc.z);
             }
-
         }
         else
         {
             DoRoamAI();
         }
-        if (hasFoundPlayer)
+        if (hasFoundPlayer && currentDistanceToPlayer<1.3f)
         {
-            Collider[] cols = Physics.OverlapBox(transform.position + transform.up * 0.5f, Vector3.one, Quaternion.identity);
-            if(cols.Length > 0)
-            {
-                for(int i=0; i<cols.Length; i++)
-                {
-                    if (cols[i].gameObject == player.gameObject)
-                    {
-                        Die();
-
-                    }
-                }
-            }
+            Die();
+            player.GetComponent<Rigidbody>().AddForce(transform.forward * 100);
         }
-        DropAndClampTargetYRot();
         transform.Rotate(0, targetRotationY, 0);
     }
-    private void DropAndClampTargetYRot()
-    {
-        if (targetRotationY > 0)
-            targetRotationY -= yRotationReturn;
-        if (targetRotationY < 0)
-            targetRotationY += yRotationReturn;
-        if (targetRotationY >= 360)
-            targetRotationY -= 360;
-        if (targetRotationY <= -360)
-            targetRotationY += 360;
-    }
+
 
     private void DoRoamAI()
     {
         //SENSORS
         //arms/sensor rays
-        bool[] rayBools = DoRays();
+        rayBools = DoRays();
         //rotate if arms have collided
         if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;

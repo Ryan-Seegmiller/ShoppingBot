@@ -20,8 +20,7 @@ public class RoverController : EnemyBase
     float fleeBeginTime = 0;
     public void Start()
     {
-
-        anim = GetComponentInChildren<Animator>();
+        acceleration *= 2;
         roamMode = Random.Range(0, 2);
         health = Random.Range(3, 6);
     }
@@ -57,13 +56,12 @@ public class RoverController : EnemyBase
         if (fleeing)
         {
             transform.Translate(transform.forward * acceleration);
-            if (transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)
+            if ((transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)||time>fleeBeginTime+10)
                 fleeing = false;
         }//main attack at player
         if (hasFoundPlayer && !fleeing)
         {
             //give it time to rotate
-            anim.SetBool("Action", true);
             if (canAttack)
             {
                 dustEffect.Play();
@@ -76,20 +74,9 @@ public class RoverController : EnemyBase
             }
         }      
         DoRoamAI();
-        DropAndClampTargetYRot();
         transform.Rotate(0, targetRotationY, 0);
     }
-    void DropAndClampTargetYRot()
-    {
-        if (targetRotationY > 0)
-            targetRotationY -= yRotationReturn;
-        if (targetRotationY < 0)
-            targetRotationY += yRotationReturn;
-        if (targetRotationY >= 360)
-            targetRotationY -= 360;
-        if (targetRotationY <= -360)
-            targetRotationY += 360;
-    }
+
     void Flee()
     {
         fleeBeginTime = time;
@@ -102,8 +89,9 @@ public class RoverController : EnemyBase
     {
         //SENSORS
         //arms/sensor rays
-        bool[] rayBools = DoRays();
         //rotate if arms have collided
+        rayBools = DoRays();
+
         if (rayBools[2])
             targetRotationY += yRotationPerArmDetection;
         if (rayBools[0])

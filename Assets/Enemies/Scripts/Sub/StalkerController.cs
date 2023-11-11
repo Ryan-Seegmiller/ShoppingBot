@@ -16,16 +16,17 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
-        transform.Translate(0, 2.8f, 0);
+        RaycastHit heightAdjustmentHit;
+        if(Physics.Raycast(transform.position, Vector3.up * 10, out heightAdjustmentHit))
+        {
+            transform.Translate(0, Vector3.Distance(transform.position, heightAdjustmentHit.point)-1, 0);
+        }
     }
     new void FixedUpdate()
     {
         if (!EnemyManager.instance.PauseEnemies)
         {
             base.FixedUpdate();
-
-            DropAndClampTargetYRot();
-
             //if found player, create attack curve
             if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time)
                 BeginAttackCurve();
@@ -44,7 +45,7 @@ public class StalkerController : EnemyBase
                     if (hit.collider.gameObject == player.gameObject)
                     {
                         //take items from player
-                        anim.SetTrigger("Action");
+                        anim.SetTrigger("Stalker has connected with player");
                         if (ItemManager.instance != null)
                             ItemManager.instance.RemoveRandomItem();
                     }
@@ -52,18 +53,7 @@ public class StalkerController : EnemyBase
             }
         }   
     }
-    void DropAndClampTargetYRot()
-    {
-        //clamp values and lerp back to 0
-        if (targetRotationY > 0)
-            targetRotationY -= yRotationReturn;
-        if (targetRotationY < 0)
-            targetRotationY += yRotationReturn;
-        if (targetRotationY >= 360)
-            targetRotationY -= 360;
-        if (targetRotationY <= -360)
-            targetRotationY += 360;
-    }
+
     void DoAerialAI()
     {
         //arms/sensor rays
@@ -97,7 +87,7 @@ public class StalkerController : EnemyBase
         frame = 0;
         currentAttackCurve = CalculateAttackCurve(BaseCurve, transform.position, (transform.position + transform.forward * (2 * Vector3.Distance(transform.position, v))), 30, player.transform.position);
     }
-    void RunAttackCurve()
+    void RunAttackCurveTranslate()
     {
         //call repeatedly until currentAttackCurve clear, which happens at ELSE
         if (frame < currentAttackCurve.Count)
