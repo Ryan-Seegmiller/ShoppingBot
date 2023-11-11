@@ -9,7 +9,6 @@ namespace LevelGen
     {
         private Transform itemParent;
         private Vector3 lightFixturePos = new Vector3(0f, 4.9f, 0f); //The spawn position of the light fixture
-        [SerializeField] protected GameObject itemPrefab;
         [SerializeField] protected ItemCategory spawnCategory;
         [SerializeField] protected bool randomCategory = false;
         [SerializeField, Range(0f, 1f)] protected float spawnLightChance = 0.9f; //The chance of a light fixture spawning
@@ -26,7 +25,7 @@ namespace LevelGen
             if (randomCategory)
             {
                 int num = System.Enum.GetNames(typeof(ItemCategory)).Length;
-                spawnCategory = (ItemCategory)Random.Range(0, 2);
+                spawnCategory = (ItemCategory)Random.Range(0, num);
             }
             itemParent = new GameObject("ItemParent").transform;
             itemParent.SetParent(transform);

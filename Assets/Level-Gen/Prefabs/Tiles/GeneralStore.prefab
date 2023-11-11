@@ -180,9 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61770cf48331e8449008bccccc39657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 1248479039362801851, guid: 5d02935b6e014714687266834b295c73, type: 3}
   spawnCategory: 0
-  randomCategory: 0
+  randomCategory: 1
   spawnLightChance: 0.9
   lightFixturePrefab: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
   spawnerChance: 0.082
