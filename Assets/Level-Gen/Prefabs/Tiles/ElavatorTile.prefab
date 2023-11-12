@@ -494,6 +494,10 @@ PrefabInstance:
       value: WorldTile
       objectReference: {fileID: 0}
     - target: {fileID: 7424783052577547131, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
+      propertyPath: spawnerChance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7424783052577547131, guid: e23d2a7f1294e0b4286d3992b007e898, type: 3}
       propertyPath: spawnLightChance
       value: 0
       objectReference: {fileID: 0}

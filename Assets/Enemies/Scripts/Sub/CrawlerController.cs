@@ -4,7 +4,7 @@ using UnityEngine;
 public class CrawlerController : EnemyBase
 {
     public int roamMode = 0;
-    public float ramForce = 15;
+    float ramForce = 25;
     public ParticleSystem explosion;
     public float explosionRadius = 5f;
     public Vector2 explosionForceRange = new Vector2(25, 100);
@@ -36,8 +36,7 @@ public class CrawlerController : EnemyBase
         }
         if (hasFoundPlayer && currentDistanceToPlayer<1.3f)
         {
-            Die();
-            player.GetComponent<Rigidbody>().AddForce(transform.forward * 100);
+            Die(true);
         }
         transform.Rotate(0, targetRotationY, 0);
     }
