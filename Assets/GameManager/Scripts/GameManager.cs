@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour, UIEvents
         public float wavePeriod; // how often enemies will spawn
         public float gameStartTime;  // time the game started (may change if paused)
         [HideInInspector] public float holdTime; // time saved when we pause
+        public float elevatorLockTime; // how long the elevator stays locked after the game starts
         public float gameTime
         {
             get { return Time.time - gameStartTime; }
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour, UIEvents
             this.wavePeriod = 0;
             this.holdTime = holdTime;
             this.gameStartTime = 0;
+            this.elevatorLockTime = 30f;
         }
     }
     #endregion
@@ -77,24 +79,26 @@ public class GameManager : MonoBehaviour, UIEvents
     // TODO: pause/unpause functionality
     public void PauseGame()
     {
-        Debug.Log("UIEvents :: Pause game", this);
+        Debug.Log("GameManager :: Pause game", this);
         ClockStop();
+        gameActive = false;
         AudioManager.instance.PlaySound2D(0);
         EnemyManager.instance.PauseEnemies = true;
         player.backupCameraCanvas.SetActive(false);
     }
     public void ContinueGame()
     {
-        Debug.Log("UIEvents :: Continue game", this);
+        Debug.Log("GameManager :: Continue game", this);
         ClockContinue();
+        gameActive = true;
         EnemyManager.instance.PauseEnemies = false;
         player.backupCameraCanvas.SetActive(true);
     }
     public void StopGame()
     {
-        Debug.Log("UIEvents :: Stop game", this);
-        Debug.Log("GameManager :: Game is stopping (no points recevied)", this);
+        Debug.Log("GameManager :: Stop game", this);
         ClockStop();
+        gameActive = false;
         player.backupCameraCanvas.SetActive(false);
         ItemManager.instance.DestroyItems();
         EnemyManager.instance.DestroyEnemies();
@@ -102,10 +106,10 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     public void EndGame()
     {
-        Debug.Log("UIEvents :: End game", this);
-        Debug.Log("GameManager :: Game is ending", this);
+        Debug.Log("GameManager :: End Game", this);
         // TODO: save score
         ClockStop();
+        gameActive = false;
         player.backupCameraCanvas.SetActive(false);
         UIChanger.instance.SetSceneScoring();
         ItemManager.instance.DestroyItems();
@@ -197,7 +201,7 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     private void Update()
     {
-        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod))
+        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod) && gameActive)
         {
             EnemyManager.instance.UpdateSpawners();
             // spawn enemies
@@ -205,6 +209,6 @@ public class GameManager : MonoBehaviour, UIEvents
             EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
             Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
         }
-        if (gameRules.gameTime > 10) { UnlockElevator(); }
+        if (gameRules.gameTime > gameRules.elevatorLockTime && gameActive) { UnlockElevator(); }
     }
 }

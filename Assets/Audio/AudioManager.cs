@@ -8,7 +8,8 @@ namespace audio
         public static AudioManager instance;
         public List<AudioClip> masterList = new List<AudioClip>();
         public AudioSource musicAS;
-        AudioSource aS;
+        public AudioSource aS2d;
+        public AudioSource aS3d;
 
         public List<Vector4> clipQueue = new List<Vector4>(); // Position at xyz, and w is audio clip index
 
@@ -17,7 +18,7 @@ namespace audio
             if (clipQueue.Count != 0)
             {
                 transform.position = new Vector3(clipQueue[0].x, clipQueue[0].y, clipQueue[0].z);
-                aS.PlayOneShot(masterList[(int)clipQueue[0].w]);
+                aS3d.PlayOneShot(masterList[(int)clipQueue[0].w]);
                 clipQueue.RemoveAt(0);
             }
         }
@@ -31,12 +32,10 @@ namespace audio
             {
                 Destroy(this);
             }
-            aS = GetComponent<AudioSource>();
-            musicAS = GetComponentInChildren<AudioSource>();
         }
         public void PlaySound2D(int index)
         {
-            aS.PlayOneShot(masterList[index]);
+            aS2d.PlayOneShot(masterList[index]);
         }
         public void PlaySound3D(int index, Vector3 position)//This object will play all the sounds. it can play one sound per frame at any position. The sound index is stored as the w value of a vector4 and the xyz holds the position. All audioclips have an assigned index from a master list.
         {
@@ -56,7 +55,8 @@ namespace audio
         }
         public void AdjustSoundFXVolume(float newVolume)
         {
-            aS.volume = newVolume;
+            aS2d.volume = newVolume;
+            aS3d.volume = newVolume;
         }
     }
 }

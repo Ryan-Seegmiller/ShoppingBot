@@ -154,6 +154,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -130
       objectReference: {fileID: 0}
+    - target: {fileID: 2938125883652913914, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125883652913914, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: far clip plane
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 2938125883652913915, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.4239492
@@ -169,6 +177,14 @@ PrefabInstance:
     - target: {fileID: 2938125883652913915, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.012481368
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125883652913917, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938125883652913918, guid: 803e55632095a6548a288507f4cc1389, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2938125884030017784, guid: 803e55632095a6548a288507f4cc1389, type: 3}
       propertyPath: m_IsKinematic
@@ -791,11 +807,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2000542635773071087, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25.805952
+      value: -15.3
       objectReference: {fileID: 0}
     - target: {fileID: 2000542635773071087, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.967893
+      value: -15.4
       objectReference: {fileID: 0}
     - target: {fileID: 2000542635773071087, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
       propertyPath: m_LocalRotation.w

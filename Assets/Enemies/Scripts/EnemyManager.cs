@@ -34,15 +34,16 @@ namespace enemymanager
             for (int i = 0; i < count; i++)
             {
                 //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
-                Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position + new Vector3(Random.Range(-spawnPositionOffset, spawnPositionOffset), player.transform.position.y* Random.Range(-spawnPositionOffset, spawnPositionOffset), Random.Range(-spawnPositionOffset, spawnPositionOffset));
+                Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
+                spawnPos.y = player.transform.position.y;
                 currentEnemies.Add(Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
             }
         }
         public void DestroyEnemies()
         {
-            for (int i = 0;i< currentEnemies.Count; i++)
+            for (int i = currentEnemies.Count; i > 0; i--)
             {
-                Destroy(currentEnemies[i].gameObject);
+                Destroy(currentEnemies[i - 1].gameObject);
             }
             currentEnemies.Clear();
         }
