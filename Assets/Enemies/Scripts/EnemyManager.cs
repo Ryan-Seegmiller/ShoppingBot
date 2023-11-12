@@ -40,9 +40,9 @@ namespace enemymanager
         }
         public void DestroyEnemies()
         {
-            for (int i = 0;i< currentEnemies.Count; i++)
+            for (int i = currentEnemies.Count; i > 0; i--)
             {
-                Destroy(currentEnemies[i].gameObject);
+                Destroy(currentEnemies[i - 1].gameObject);
             }
             currentEnemies.Clear();
         }
