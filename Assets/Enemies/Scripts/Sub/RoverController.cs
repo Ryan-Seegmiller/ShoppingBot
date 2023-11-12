@@ -12,7 +12,6 @@ public class RoverController : EnemyBase
     public float pounceTorque = 15;
     bool canAttack = true;
     float attackStartTime=0;
-    public Animator anim;
     public ParticleSystem dustEffect;
     public bool fleeing = false;
     Vector3 fleeVector;
@@ -32,20 +31,8 @@ public class RoverController : EnemyBase
             fleeing = false;
         if (time>attackStartTime+3 && !canAttack)
             canAttack = true;
-        if (!hasFoundPlayer && anim.GetBool("Action"))
-            anim.SetBool("Action", false);
         if (fleeing)
             Debug.DrawLine(transform.position, fleeVector);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        //take money from player
-        if (collision.transform.gameObject.tag == "Player")
-        {
-            Flee();
-            if (ItemManager.instance != null)
-                ItemManager.instance.RemoveRandomItem();
-        }
     }
     private new void FixedUpdate()
     {
@@ -59,7 +46,7 @@ public class RoverController : EnemyBase
             if ((transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)||time>fleeBeginTime+10)
                 fleeing = false;
         }//main attack at player
-        if (hasFoundPlayer && !fleeing)
+        else if (hasFoundPlayer)
         {
             //give it time to rotate
             if (canAttack)
@@ -69,12 +56,21 @@ public class RoverController : EnemyBase
                 //pounce player
                 canAttack = false;
                 attackStartTime = time;
-                rb.AddForce(transform.forward * pounceForwardForce * (Mathf.Abs(Vector3.Distance(transform.position, player.transform.position))*8));
-                rb.AddForce(Vector3.up * pounceUpForce);
+                rb.AddForce(transform.forward * pounceForwardForce);
+                rb.AddForce(transform.up * pounceUpForce);
             }
-        }      
-        DoRoamAI();
-        transform.Rotate(0, targetRotationY, 0);
+            if (currentDistanceToPlayer < 1)
+            {
+                Flee();
+                if (ItemManager.instance != null)
+                    ItemManager.instance.RemoveRandomItem();
+            }
+        }
+        else
+        {
+            DoRoamAI();
+            transform.Rotate(0, targetRotationY, 0);
+        }
     }
 
     void Flee()
@@ -113,7 +109,7 @@ public class RoverController : EnemyBase
         else if (roamMode == 1)
         {//random move mode
             if(Random.Range(0,100f)>98f)
-                targetRotationY = Random.Range(-1, 1);
+                targetRotationY = Random.Range(-3, 3);
             if (Random.Range(0, 100f) > 35f)
                 rb.AddForce(transform.forward * acceleration);
         }

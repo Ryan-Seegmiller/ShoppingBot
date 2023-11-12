@@ -8,22 +8,18 @@ public class StalkerController : EnemyBase
     AnimationCurve BaseCurve=new AnimationCurve();
     public List<Vector3> currentAttackCurve=null;
     public int frame = 0;
-    public Animator anim;
     float lastAttackTime = 0;
+    public GameObject propBody; 
     public void Start()
     {
-        anim = GetComponentInChildren<Animator>();
         BaseCurve.AddKey(0, 0);
         BaseCurve.AddKey(1, 0);
         health = 3;
-        RaycastHit heightAdjustmentHit;
-        if(Physics.Raycast(transform.position, Vector3.up * 10, out heightAdjustmentHit))
-        {
-            transform.Translate(0, Vector3.Distance(transform.position, heightAdjustmentHit.point)-1, 0);
-        }
+        rb.AddForce(Vector3.up * 50);
     }
     new void FixedUpdate()
     {
+        propBody.transform.Rotate(0, 0, 15);
         if (!EnemyManager.instance.PauseEnemies)
         {
             base.FixedUpdate();
@@ -37,19 +33,11 @@ public class StalkerController : EnemyBase
             {
                 DoAerialAI();
             }
-            if (hasFoundPlayer)
+            if (hasFoundPlayer && currentDistanceToPlayer <1.5f)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, Vector3.down, out hit, 1))
-                {
-                    if (hit.collider.gameObject == player.gameObject)
-                    {
-                        //take items from player
-                        anim.SetTrigger("Stalker has connected with player");
-                        if (ItemManager.instance != null)
-                            ItemManager.instance.RemoveRandomItem();
-                    }
-                }
+                //take items from player
+                if (ItemManager.instance != null)
+                    ItemManager.instance.RemoveRandomItem();
             }
         }   
     }

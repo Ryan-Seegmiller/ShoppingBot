@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using enemymanager;
 using TMPro;
-using UnityEditor;
 using audio;
 public class EnemyBase : MonoBehaviour
 {
@@ -46,14 +43,13 @@ public class EnemyBase : MonoBehaviour
     protected float _health;
     public float health 
     { get { return _health; }
-        set { _health = value; SetHealthbar(); if (_health <= 0 && time>1) { Die(); } if (startHealth == 0) { startHealth = _health; } }
+        set { _health = value; SetHealthbar(); if (_health <= 0) { Die(true); } if (startHealth == 0) { startHealth = _health; } }
     }
     public float startHealth { get { return _startHealth; } set { _startHealth = value; SetHealthbar(); } }
     float _startHealth = 0;
     #endregion
     #region components
     protected GameObject player;
-    public GameObject meshBody;
     protected Rigidbody rb;
     [SerializeField]
     [Header("Debug")]
@@ -70,7 +66,7 @@ public class EnemyBase : MonoBehaviour
         player = EnemyManager.instance.player;
         if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
         {
-            Die();
+            Die(false);
             EnemyManager.instance.SpawnEnemies(1, Random.Range(0, 3));
             Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
         }
@@ -89,27 +85,9 @@ public class EnemyBase : MonoBehaviour
         {
             lastDetectionCheckTime = time;
 
-            if (transform.position.y < -10)//may as well be in here for less frequent checking
-            {
-                Die();
-            }
             //this code replaces the trigger colliders for detecting the player
             currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-            if (currentDistanceToPlayer <= detectionRadius && !hasFoundPlayer && !hasDetectedPlayer)
-            {
-                hasDetectedPlayer = true;
-                firstDetectedTime = time;
-            }
-            else if (currentDistanceToPlayer > detectionRadius)
-            {
-                firstDetectedTime = 0;
-                hasFoundPlayer = false;
-                hasDetectedPlayer = false;
-            }
-            if (hasDetectedPlayer && !hasFoundPlayer && time > firstDetectedTime + timeDetectionToFind)//if its seen the player for long enough, it has 'found' it
-            {
-                hasFoundPlayer = true;
-            }
+            hasFoundPlayer = currentDistanceToPlayer <= detectionRadius;
         }
     }
     public void SetHealthbar()
@@ -141,19 +119,17 @@ public class EnemyBase : MonoBehaviour
 
         pointAtPlayerChance = Random.Range(1, 90f);
         timeDetectionToFind = Random.Range(0.5f, 2f);
-        acceleration = Random.Range(5f,25f);
+        acceleration = Random.Range(15f,25f);
 
         reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
         stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
     }
-    public void Die()
+    public void Die(bool playAudio)
     {
         Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
-        AudioManager.instance.PlaySound3D(4, transform.position);
-        //iterate through body parts and make parent null and rotate for death effect
-        for(int i = 0; i < meshBody.transform.childCount;i++)
+        if (playAudio)
         {
-            PopBodyPart(meshBody.transform.GetChild(i).transform);
+            AudioManager.instance.PlaySound3D(4, transform.position);
         }
         EnemyManager.instance.currentEnemies.Remove(this);
         if(this is CrawlerController)//this way the crawler will always explode
@@ -163,29 +139,13 @@ public class EnemyBase : MonoBehaviour
         }
         Destroy(this.gameObject); 
     }
-    private void PopBodyPart(Transform t)
-    {
-        t.transform.parent = null;
-        Rigidbody tRb = t.gameObject.AddComponent<Rigidbody>();
-        tRb.AddTorque(transform.up * Random.Range(-360, 360));
-        tRb.AddForce(transform.forward * Random.Range(-25, 250));
-        Destroy(t.gameObject, 3);
-    }
     public void Hit(float mod)
     {
-        if(meshBody.transform.childCount>0)
-            PopBodyPart(meshBody.transform.GetChild(Random.Range(0,meshBody.transform.childCount)).transform);
         health-=3f*mod;//base damage from player is determined here
-        if (health <= 0)
-            Die();
     }
     public void Hit()
     {
-        if (meshBody.transform.childCount > 0)
-            PopBodyPart(meshBody.transform.GetChild(Random.Range(0, meshBody.transform.childCount)).transform);
         health -= 1f;
-        if (health <= 0)
-            Die();
     }
     private void DoFlips()
     {
