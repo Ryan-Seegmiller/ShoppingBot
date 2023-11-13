@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using enemymanager;
 using Items;
 using PlayerContoller;
 using audio;
+using LevelGen;
 
 //bug when adding reference to level gen assembly
 public class GameManager : MonoBehaviour, UIEvents
@@ -62,14 +64,14 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("UIEvents :: Start game", this);
         // init
         Debug.Log("GameManager :: Game is starting", this);
-        LevelGen.LevelManager.instance.InstanceMall(); // level
-        ItemManager.instance.RandomiseList(); // shopping list
-        EnemyManager.instance.PauseEnemies = true;
-        UnlockElevator();
+        try { LevelManager.instance.InstanceMall(); } catch (Exception e) { Debug.LogError(e.Message, this); } // level
+        try { ItemManager.instance.RandomiseList(); } catch (Exception e) { Debug.LogError(e.Message, this); } // shopping list
+        try { EnemyManager.instance.PauseEnemies = true; } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { UnlockElevator(); } catch (Exception e) { Debug.LogError(e.Message, this); }
         // player
-        ResetPlayer();
-        EnemyManager.instance.player = player.gameObject;
-        player.GetComponentInChildren<Rigidbody>().isKinematic = false;
+        try { ResetPlayer(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { EnemyManager.instance.player = player.gameObject; } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { player.GetComponentInChildren<Rigidbody>().isKinematic = false; } catch (Exception e) { Debug.LogError(e.Message, this); }
         // clock
         gameRules = new GameRules(0);
         ClockStart();
@@ -82,16 +84,16 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("GameManager :: Pause game", this);
         ClockStop();
         gameActive = false;
-        AudioManager.instance.PlaySound2D(0);
-        EnemyManager.instance.PauseEnemies = true;
-        player.backupCameraCanvas.SetActive(false);
+        try { AudioManager.instance.PlaySound2D(0); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { EnemyManager.instance.PauseEnemies = true; } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
     }
     public void ContinueGame()
     {
         Debug.Log("GameManager :: Continue game", this);
         ClockContinue();
         gameActive = true;
-        EnemyManager.instance.PauseEnemies = false;
+        try { EnemyManager.instance.PauseEnemies = false; } catch (Exception e) { Debug.LogError(e.Message, this); }
         player.backupCameraCanvas.SetActive(true);
     }
     public void StopGame()
@@ -99,10 +101,10 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("GameManager :: Stop game", this);
         ClockStop();
         gameActive = false;
-        player.backupCameraCanvas.SetActive(false);
-        ItemManager.instance.DestroyItems();
-        EnemyManager.instance.DestroyEnemies();
-        LevelGen.LevelManager.instance.DeleteLevel(false);
+        try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { ItemManager.instance.DestroyItems(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { EnemyManager.instance.DestroyEnemies(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { LevelManager.instance.DeleteLevel(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
     }
     public void EndGame()
     {
@@ -110,11 +112,11 @@ public class GameManager : MonoBehaviour, UIEvents
         // TODO: save score
         ClockStop();
         gameActive = false;
-        player.backupCameraCanvas.SetActive(false);
-        UIChanger.instance.SetSceneScoring();
-        ItemManager.instance.DestroyItems();
-        EnemyManager.instance.DestroyEnemies();
-        LevelGen.LevelManager.instance.DeleteLevel(false);
+        try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { UIChanger.instance.SetSceneScoring(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { ItemManager.instance.DestroyItems(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { EnemyManager.instance.DestroyEnemies(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try { LevelManager.instance.DeleteLevel(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
     }
     public void QuitGame()
     {
@@ -195,7 +197,7 @@ public class GameManager : MonoBehaviour, UIEvents
     private void Start()
     {
         EnemyManager.instance.maxEnemies = 20;
-        LevelGen.LevelManager.instance.InstanceElevatorShaft();
+        LevelManager.instance.InstanceElevatorShaft();
         if (player == null) { player = FindObjectOfType<PlayerMovement>(); }
         player.backupCameraCanvas.SetActive(false);
     }
@@ -203,10 +205,10 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod) && gameActive)
         {
-            EnemyManager.instance.UpdateSpawners();
+            try { EnemyManager.instance.UpdateSpawners(); } catch (Exception e) { Debug.LogError(e.Message, this); }
             // spawn enemies
             gameRules.waveCount++;
-            EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, Random.Range(0, EnemyManager.instance.enemyPrefabs.Count));
+            try { EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }
             Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
         }
         if (gameRules.gameTime > gameRules.elevatorLockTime && gameActive) { UnlockElevator(); }
