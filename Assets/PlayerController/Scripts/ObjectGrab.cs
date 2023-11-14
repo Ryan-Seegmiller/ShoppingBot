@@ -126,7 +126,7 @@ public class ObjectGrab : MonoBehaviour
         target.transform.position = (!snapped)? mainCamera.ScreenToWorldPoint(PlayerMovement.mousePos + pullPosition) + rb.velocity.normalized : target.transform.position;
 
         //Move object towards the object that the camera creates
-        rbItem.velocity = (target.transform.position - currentHeldObject.transform.position) * objectPosition.magnitude;
+        rbItem.velocity = (target.transform.position - currentHeldObject.transform.position) * objectPosition.magnitude * 4;
 
         armPivot.transform.LookAt(currentHeldObject.transform);//Targets the arm onto the object
         
