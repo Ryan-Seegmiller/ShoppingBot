@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     #endregion
 
-    public bool gameActive = false;
     public PlayerMovement player;
     [Range(1, 5)] public int enemyMultiplier = 1;
 
@@ -36,6 +35,7 @@ public class GameManager : MonoBehaviour, UIEvents
     #region GameRules
     public struct GameRules
     {
+        public bool gameActive;
         public int waveCount;
         public float wavePeriod; // how often enemies will spawn
         public float gameStartTime;  // time the game started (may change if paused)
@@ -43,11 +43,11 @@ public class GameManager : MonoBehaviour, UIEvents
         public float elevatorLockTime; // how long the elevator stays locked after the game starts
         public float gameTime
         {
-            get { return Time.time - gameStartTime; }
-            private set { }
+            get { return (gameActive) ? Time.time - gameStartTime : holdTime; }
         }
         public GameRules(float holdTime)
         {
+            this.gameActive = true;
             this.waveCount = 0;
             this.wavePeriod = 0;
             this.holdTime = holdTime;
@@ -65,17 +65,24 @@ public class GameManager : MonoBehaviour, UIEvents
         // init
         Debug.Log("GameManager :: Game is starting", this);
         try { LevelManager.instance.InstanceMall(); } catch (Exception e) { Debug.LogError(e.Message, this); } // level
-        try { ItemManager.instance.RandomiseList(); } catch (Exception e) { Debug.LogError(e.Message, this); } // shopping list
-        try { EnemyManager.instance.PauseEnemies = true; } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try
+        {
+            ItemManager.instance.ClearInventory();
+            ItemManager.instance.RandomiseList();
+        } catch (Exception e) { Debug.LogError(e.Message, this); } // shopping list
         try { UnlockElevator(); } catch (Exception e) { Debug.LogError(e.Message, this); }
         // player
         try { ResetPlayer(); } catch (Exception e) { Debug.LogError(e.Message, this); }
-        try { EnemyManager.instance.player = player.gameObject; } catch (Exception e) { Debug.LogError(e.Message, this); }
+        try 
+        { 
+            EnemyManager.instance.PauseEnemies = false; 
+            EnemyManager.instance.player = player.gameObject; 
+        } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { player.GetComponentInChildren<Rigidbody>().isKinematic = false; } catch (Exception e) { Debug.LogError(e.Message, this); }
         // clock
         gameRules = new GameRules(0);
         ClockStart();
-        gameActive = true;
+        gameRules.gameActive = true;
         gameRules.wavePeriod = 10;
     }
     // TODO: pause/unpause functionality
@@ -83,7 +90,7 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         Debug.Log("GameManager :: Pause game", this);
         ClockStop();
-        gameActive = false;
+        gameRules.gameActive = false;
         try { AudioManager.instance.PlaySound2D(0); } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { EnemyManager.instance.PauseEnemies = true; } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
@@ -92,7 +99,7 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         Debug.Log("GameManager :: Continue game", this);
         ClockContinue();
-        gameActive = true;
+        gameRules.gameActive = true;
         try { EnemyManager.instance.PauseEnemies = false; } catch (Exception e) { Debug.LogError(e.Message, this); }
         player.backupCameraCanvas.SetActive(true);
     }
@@ -100,7 +107,7 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         Debug.Log("GameManager :: Stop game", this);
         ClockStop();
-        gameActive = false;
+        gameRules.gameActive = false;
         try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { ItemManager.instance.DestroyItems(); } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { EnemyManager.instance.DestroyEnemies(); } catch (Exception e) { Debug.LogError(e.Message, this); }
@@ -111,7 +118,7 @@ public class GameManager : MonoBehaviour, UIEvents
         Debug.Log("GameManager :: End Game", this);
         // TODO: save score
         ClockStop();
-        gameActive = false;
+        gameRules.gameActive = false;
         try { player.backupCameraCanvas.SetActive(false); } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { UIChanger.instance.SetSceneScoring(); } catch (Exception e) { Debug.LogError(e.Message, this); }
         try { ItemManager.instance.DestroyItems(); } catch (Exception e) { Debug.LogError(e.Message, this); }
@@ -203,7 +210,7 @@ public class GameManager : MonoBehaviour, UIEvents
     }
     private void Update()
     {
-        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod) && gameActive)
+        if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod) && gameRules.gameActive)
         {
             try { EnemyManager.instance.UpdateSpawners(); } catch (Exception e) { Debug.LogError(e.Message, this); }
             // spawn enemies
@@ -211,6 +218,6 @@ public class GameManager : MonoBehaviour, UIEvents
             try { EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }
             Debug.Log($"GameManager :: {gameRules.waveCount} enemy(s) spawned at {gameRules.gameTime}", this);
         }
-        if (gameRules.gameTime > gameRules.elevatorLockTime && gameActive) { UnlockElevator(); }
+        if (gameRules.gameTime > gameRules.elevatorLockTime && gameRules.gameActive) { UnlockElevator(); }
     }
 }
