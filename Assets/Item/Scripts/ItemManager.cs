@@ -114,9 +114,23 @@ namespace Items
         void Update()
         {
             //DEBUG
+            string newString = "[";
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                newString += inventory[i].ToString() + ", ";
+            }
+            newString += "]";
+            print(newString);
+
             if (Input.GetKeyDown(KeyCode.P))
             {
-                itemFactory.InstanceItem(ItemCategory.clothes, new Vector3(0, 0, 0));
+                int randomItem = Random.Range(0, 5);
+                AddItem(randomItem);
+                print("FUCK");
+            }
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                RemoveRandomItem();
             }
         }
 
@@ -196,9 +210,32 @@ namespace Items
             return false; //No empty space (-1) was found, return false
         }
 
+        //Returns true if inventory is completely empty
+        public bool CheckInventoryEmpty()
+        {
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                if (inventory[i] != -1)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void RemoveRandomItem()
         {
-
+            if (!CheckInventoryEmpty())
+            {
+                int itemChoice = 0;
+                do
+                {
+                    //Get inventory slot to remove from
+                    itemChoice = Random.Range(0, inventory.Length);
+                } while (inventory[itemChoice] == -1);
+                //Remove item
+                inventory[itemChoice] = -1;
+            }
         }
 
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1696413059962857067}
   - component: {fileID: -7477375774316780343}
   - component: {fileID: -961947436841728185}
+  - component: {fileID: 4716412041240426125}
   m_Layer: 11
   m_Name: Glasses
   m_TagString: Untagged
@@ -61,7 +62,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -78,6 +79,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemValue: -1
+--- !u!114 &4716412041240426125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696413059962857077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e748b84bc133a247ac08a8e787a6ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mesh: {fileID: 2574469742986575905}
+  renderDistance: 3
 --- !u!1 &2574469742986575905
 GameObject:
   m_ObjectHideFlags: 0
