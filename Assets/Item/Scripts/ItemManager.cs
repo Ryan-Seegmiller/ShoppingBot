@@ -127,11 +127,11 @@ namespace Items
                 int randomItem = Random.Range(0, 5);
                 AddItem(randomItem);
                 print("FUCK");
-            }*/
+            }
             if (Input.GetKeyDown(KeyCode.O))
             {
                 ClearInventory();
-            }
+            }*/
         }
 
 
