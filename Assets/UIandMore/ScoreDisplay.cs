@@ -59,12 +59,14 @@ public class ScoreDisplay : MonoBehaviour
             if(totScore - disScore < 100)
             {
                 yield return new WaitForSeconds(0.01f);
+                disScore++;
             }
             else
             {
-                yield return new WaitForSeconds(0.002f);
+                yield return new WaitForSeconds(0.0001f);
+                disScore += 5;
             }
-            disScore++;
+            
             scoreText.text = disScore.ToString();
         }
         yield return new WaitForSeconds(0.5f);
