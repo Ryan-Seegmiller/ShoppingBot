@@ -84,7 +84,7 @@ public class Laser : MonoBehaviour
 
         if (objectGrabbed)
         {
-            grab.ResetObjectDrag();
+            grab.ObjectEndGrab();
         }
         if(hit.collider == null) {return; }
         HitDetection(cast, hit);
