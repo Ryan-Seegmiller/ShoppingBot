@@ -16,7 +16,6 @@ namespace enemymanager
 
         public bool PauseEnemies=false;
         public float time = 0;
-        public int multiplierOverride = 1;
         void Awake()
         {
             if (instance == null) { instance = this; } else { Destroy(this); }
@@ -32,7 +31,6 @@ namespace enemymanager
         {
             if (currentEnemies.Count < maxEnemies)
             {
-                count *= multiplierOverride;
                 for (int i = 0; i < count; i++)
                 {
                     //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity

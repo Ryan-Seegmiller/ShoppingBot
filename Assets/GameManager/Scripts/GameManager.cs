@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour, UIEvents
     #endregion
 
     public PlayerMovement player;
-    [Range(1, 5)] public int enemyMultiplier = 1;
+    [Range(1, 5)] int enemyMultiplier = 1;
 
     private GameRules gameRules;
 
@@ -215,8 +215,10 @@ public class GameManager : MonoBehaviour, UIEvents
             try { EnemyManager.instance.UpdateSpawners(); } catch (Exception e) { Debug.LogError(e.Message, this); }
             // spawn enemies
             gameRules.waveCount++;
-            try { EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }
-            Debug.Log($"GameManager :: {gameRules.waveCount} enemy(s) spawned at {gameRules.gameTime}", this);
+            int enemySpawnCount = 1 + (Mathf.CeilToInt(gameRules.waveCount / 3) * enemyMultiplier); // change the 3 to make faster or slower. Add 1 to account for wave count starting at 0
+            try { EnemyManager.instance.SpawnEnemies(enemySpawnCount, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }// note this function gets called slightly after wave count is updated. ie wave 3 is called at 30.012345 seconds
+
+            Debug.Log($"GameManager :: {enemySpawnCount} enemy(s) spawned at {gameRules.gameTime}", this);
         }
         if (gameRules.gameTime > gameRules.elevatorLockTime && gameRules.gameActive) { UnlockElevator(); }
     }
