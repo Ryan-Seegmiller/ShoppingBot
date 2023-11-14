@@ -20,51 +20,21 @@ public class StalkerController : EnemyBase
     new void FixedUpdate()
     {
         propBody.transform.Rotate(0, 0, 15);
-        if (!EnemyManager.instance.PauseEnemies)
-        {
-            base.FixedUpdate();
-            //if found player, create attack curve
-            if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time)
-                BeginAttackCurve();
-            //if there is an attack curve, run it
-            if (currentAttackCurve.Count > 0)
-                RunAttackCurvePhysics();
-            else
-            {
-                DoAerialAI();
-            }
-            if (hasFoundPlayer && currentDistanceToPlayer <2f)
-            {
-                anim.SetTrigger("action");
-                //take items from player
-                if (ItemManager.instance != null)
-                    ItemManager.instance.RemoveRandomItem();
-            }
-        }   
-    }
-
-    void DoAerialAI()
-    {
-        //arms/sensor rays
-        rayBools = DoRays();
-        //WANDER
-        if (lowChanceFlip && !rayBools[1])
-            rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits));
+        base.FixedUpdate();
+        
+        if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time) { BeginAttackCurve(); }     //if found player, create attack curve            
+        if (currentAttackCurve.Count > 0){ RunAttackCurvePhysics(); }  //if there is an attack curve, run it
         else
-            rb.AddForce(transform.right * acceleration * Random.Range(0, wanderForceLimits) * lowChanceFlip2);
-        //rotate if arms have collided
-        if (rayBools[2])
-            targetRotationY += yRotationPerArmDetection;
-        if (rayBools[0])
-            targetRotationY -= yRotationPerArmDetection;
-        if (rayBools[1])
         {
-            //backup if stuck
-            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
-            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
+            Wander();
         }
-        //set final rotation
-        transform.Rotate(0, targetRotationY, 0);
+        if (hasFoundPlayer && currentDistanceToPlayer < 2f)
+        {
+            anim.SetTrigger("action");
+            //take items from player
+            if (ItemManager.instance != null)
+                ItemManager.instance.RemoveRandomItem();
+        }
     }
     void BeginAttackCurve()
     {
@@ -86,7 +56,7 @@ public class StalkerController : EnemyBase
         }
         else
             currentAttackCurve.Clear();
-    }    
+    }    //unused
     void RunAttackCurvePhysics()
     {
         //call repeatedly until currentAttackCurve clear, which happens at ELSE

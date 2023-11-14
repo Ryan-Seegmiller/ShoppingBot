@@ -1,5 +1,5 @@
+using audio;
 using System.Collections;
-using enemymanager;
 using UnityEngine;
 public class CrawlerController : EnemyBase
 {
@@ -9,11 +9,11 @@ public class CrawlerController : EnemyBase
     public float explosionRadius = 5f;
     public Vector2 explosionForceRange = new Vector2(25, 100);
     public float explosionTorqueRange = 25;
+    bool hasExploded = false;
     private void Start()
     {
         health = 2;
     }
-
     private new void FixedUpdate()
     {
         base.FixedUpdate();
@@ -29,59 +29,21 @@ public class CrawlerController : EnemyBase
                 Vector3 loc = transform.localEulerAngles;
                 transform.localEulerAngles = new Vector3(0, loc.y,loc.z);
             }
+            if(currentDistanceToPlayer < 1.3f && !hasExploded)
+            {
+                StartCoroutine(explode());
+            }
         }
         else
         {
-            DoRoamAI();
+            Wander();
         }
-        if (hasFoundPlayer && currentDistanceToPlayer<1.3f)
-        {
-            Die(true);
-        }
-        transform.Rotate(0, targetRotationY, 0);
     }
-
-
-    private void DoRoamAI()
+    public IEnumerator explode()
     {
-        //SENSORS
-        //arms/sensor rays
-        rayBools = DoRays();
-        //rotate if arms have collided
-        if (rayBools[2])
-            targetRotationY += yRotationPerArmDetection;
-        if (rayBools[0])
-            targetRotationY -= yRotationPerArmDetection;
-
-        //move forward / back up and rotate, depending on sensors
-        else if (roamMode==0)
-        {
-            //use sensors in this mode
-            if (!rayBools[1])
-            {
-                rb.AddForce(transform.forward * acceleration);
-            }
-            else
-            {
-                targetRotationY += Random.Range(-wanderRotationLimits, wanderRotationLimits);
-            }
-        }
-        else if (roamMode == 1)
-        {//random rotate mode
-            if(Random.Range(0,100f)>98f)
-                targetRotationY = Random.Range(-3, 3);
-        }
-
-        if (rayBools[1])
-        {
-            //backup if stuck
-            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
-            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
-        }
-
-    }
-    public void explode()
-    {
+        hasExploded = true;
+        AudioManager.instance.PlaySound3D(7, transform.position);
+        yield return new WaitForSeconds(0.7f);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {
@@ -96,6 +58,8 @@ public class CrawlerController : EnemyBase
         }
         explosion.gameObject.transform.parent = null;
         explosion.Play();
+
+        Die(true);
         Destroy(explosion,3);
     }
 }

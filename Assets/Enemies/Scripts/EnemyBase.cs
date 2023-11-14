@@ -57,6 +57,10 @@ public class EnemyBase : MonoBehaviour
     #endregion
     protected Animator anim;
 
+    int wanderFlip1 = 1;
+    int wanderFlip2 = 1;
+    int wanderFlip1Chance = 30;
+
     void Awake()
     {
         if(!(this is CrawlerController))
@@ -92,6 +96,21 @@ public class EnemyBase : MonoBehaviour
             currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
             hasFoundPlayer = currentDistanceToPlayer <= detectionRadius;
         }
+        rayBools = DoRays();
+
+        if (rayBools[2])
+            targetRotationY += yRotationPerArmDetection;
+        if (rayBools[0])
+            targetRotationY -= yRotationPerArmDetection;
+        if (rayBools[1])
+        {
+            //backup if stuck
+            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
+        }
+
+        transform.Rotate(0, targetRotationY, 0);
+
     }
     public void SetHealthbar()
     {
@@ -130,15 +149,11 @@ public class EnemyBase : MonoBehaviour
     public void Die(bool playAudio)
     {
         Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
+
+        EnemyManager.instance.currentEnemies.Remove(this);
         if (playAudio)
         {
             AudioManager.instance.PlaySound3D(4, transform.position);
-        }
-        EnemyManager.instance.currentEnemies.Remove(this);
-        if(this is CrawlerController)//this way the crawler will always explode
-        {
-            CrawlerController c = (CrawlerController)this;//didnt want to work unless cached
-            c.explode();
         }
         Destroy(this.gameObject); 
     }
@@ -154,6 +169,13 @@ public class EnemyBase : MonoBehaviour
     {
         if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
         if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
+        wanderFlip1Chance = 99;//this is so it has a higher chance of flipping if its -1, because it controls forward or backwards on wander
+        if (wanderFlip1 == -1)
+        {
+            wanderFlip1Chance = 30;
+        }
+        if (Random.Range(0f, 100f) > wanderFlip1Chance) { wanderFlip1 *= -1; }
+        if (Random.Range(0f, 100f) > 97f) { wanderFlip2 *= -1; }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -192,5 +214,11 @@ public class EnemyBase : MonoBehaviour
             targetRotationY -= 360;
         if (targetRotationY <= -360)
             targetRotationY += 360;
+    }
+
+    public void Wander()
+    {
+        rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits) * wanderFlip1);
+        targetRotationY += Random.Range(0, wanderRotationLimits) * wanderFlip2;
     }
 }

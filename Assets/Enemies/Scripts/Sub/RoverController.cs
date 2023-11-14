@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using enemymanager;
 using Items;
 
 public class RoverController : EnemyBase
@@ -32,48 +29,7 @@ public class RoverController : EnemyBase
         }
         else
         {
-            DoRoamAI();
-            transform.Rotate(0, targetRotationY, 0);
-        }
-    }
-    void DoRoamAI()
-    {
-        //SENSORS
-        //arms/sensor rays
-        //rotate if arms have collided
-        rayBools = DoRays();
-
-        if (rayBools[2])
-            targetRotationY += yRotationPerArmDetection;
-        if (rayBools[0])
-            targetRotationY -= yRotationPerArmDetection;
-
-        //move forward / back up and rotate, depending on sensors
-        else if (roamMode==0)
-        {
-            //use sensors in this mode mode
-            if (!rayBools[1])
-            {
-                rb.AddForce(transform.forward * acceleration);
-            }
-            else
-            {
-                targetRotationY += Random.Range(-wanderRotationLimits, wanderRotationLimits);
-            }
-        }
-        else if (roamMode == 1)
-        {//random move mode
-            if(Random.Range(0,100f)>98f)
-                targetRotationY += Random.Range(-5f, 5f);
-            if (Random.Range(0, 100f) > 35f)
-                rb.AddForce(transform.forward * acceleration);
-        }
-
-        if (rayBools[1])
-        {
-            //backup if stuck
-            rb.AddForce(-transform.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
-            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
+            Wander();
         }
     }
 }
