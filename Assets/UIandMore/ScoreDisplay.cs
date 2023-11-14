@@ -33,11 +33,14 @@ public class ScoreDisplay : MonoBehaviour
     }
     void StringTime()
     {
+        timeT = "Time Taken\n00:00:00";
         //sets up timer for displaying
         timeT = "Time Taken\n" + TimeCalc.instance.GetTimeString();
     }
     void StringItems()
     {
+
+        itemsT = "Items Correct\n0/0";
         //sets up items for displaying
         int correct = 0;
         for(int i = 0; i < ItemManager.instance.inventorySize; i++)
