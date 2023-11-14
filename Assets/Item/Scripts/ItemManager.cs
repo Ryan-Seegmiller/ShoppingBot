@@ -127,11 +127,11 @@ namespace Items
                 int randomItem = Random.Range(0, 5);
                 AddItem(randomItem);
                 print("FUCK");
-            }
+            }*/
             if (Input.GetKeyDown(KeyCode.O))
             {
-                RemoveRandomItem();
-            }*/
+                ClearInventory();
+            }
         }
 
 
@@ -242,6 +242,17 @@ namespace Items
             }
         }
 
+        public void ClearInventory()
+        {
+            //Clear Inventory
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                inventory[i] = -1;
+                completionList[i] = false;
+            }
+            //Randomise shopping list
+            RandomiseList();
+        }
 
 
         //SHOPPING LIST
