@@ -1,5 +1,40 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &122342635458271072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3541805670309800208}
+  m_Layer: 0
+  m_Name: ram
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3541805670309800208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122342635458271072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1450283244955359107}
+  - {fileID: 7818932350356858217}
+  - {fileID: 6975474800994091034}
+  - {fileID: 5174749853948837540}
+  m_Father: {fileID: 3520024132174497145}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &684435970962472285
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +213,7 @@ GameObject:
   - component: {fileID: 3134754960261580142}
   - component: {fileID: 5823167779845237338}
   m_Layer: 0
-  m_Name: Rover Spikes 4
+  m_Name: wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +232,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 12
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3134754960261580142
 MeshFilter:
@@ -274,13 +309,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3308148185550067060}
-  m_LocalRotation: {x: -0.00000002669254, y: 0.70710665, z: 0.000000026692527, w: 0.70710695}
-  m_LocalPosition: {x: -2.6987412, y: 1.0479214, z: 1.6023577}
-  m_LocalScale: {x: 15.426776, y: 31.567638, z: 31.567638}
+  m_LocalRotation: {x: -0.000000026692542, y: 0.70710665, z: 0.000000026692527, w: 0.707107}
+  m_LocalPosition: {x: -2.6987436, y: 1.0479208, z: 1.6023567}
+  m_LocalScale: {x: 15.426774, y: 31.567636, z: 31.567635}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 11
+  m_Father: {fileID: 3541805670309800208}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4847800587394745777
 MeshFilter:
@@ -509,6 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3520024132174497145}
+  - component: {fileID: 4246270776249303107}
   m_Layer: 0
   m_Name: Hunter_Rover
   m_TagString: Untagged
@@ -525,8 +561,8 @@ Transform:
   m_GameObject: {fileID: 4292620804062977987}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2853479343336831094}
   - {fileID: 2920593689197230995}
@@ -536,15 +572,32 @@ Transform:
   - {fileID: 1257438887279619798}
   - {fileID: 6146042474530116930}
   - {fileID: 6724636911245835412}
-  - {fileID: 1450283244955359107}
-  - {fileID: 7818932350356858217}
-  - {fileID: 6975474800994091034}
-  - {fileID: 5174749853948837540}
   - {fileID: 1675769719731613617}
   - {fileID: 8047448425886805081}
+  - {fileID: 3541805670309800208}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4246270776249303107
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4292620804062977987}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56d6ed512c80027448b9321a550b0e11, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4363671577488268806
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,7 +777,7 @@ GameObject:
   - component: {fileID: 3512219529857067927}
   - component: {fileID: 6398347490793546224}
   m_Layer: 0
-  m_Name: Rover Wheel
+  m_Name: wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -743,7 +796,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3512219529857067927
 MeshFilter:
@@ -903,13 +956,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6008059299315935366}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -2.9360912, y: 1.7951754, z: 0.046956062}
-  m_LocalScale: {x: 126.26356, y: 126.26356, z: 126.26356}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.7071069, y: -0, z: -0, w: 0.70710677}
+  m_LocalPosition: {x: -2.987001, y: 1.795175, z: 0.047003027}
+  m_LocalScale: {x: 126.619995, y: 126.619965, z: 126.619965}
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 8
+  m_Father: {fileID: 3541805670309800208}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2008271021120364749
 MeshFilter:
@@ -986,13 +1039,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6497448960465842177}
-  m_LocalRotation: {x: -0.50000006, y: 0.5, z: -0.4999999, w: 0.5}
-  m_LocalPosition: {x: -2.6987412, y: 3.3160944, z: 0.74391747}
-  m_LocalScale: {x: 15.426776, y: 31.567638, z: 31.567638}
+  m_LocalRotation: {x: -0.50000006, y: 0.5, z: -0.49999994, w: 0.5}
+  m_LocalPosition: {x: -2.6987436, y: 3.316094, z: 0.74391633}
+  m_LocalScale: {x: 15.426776, y: 31.567636, z: 31.56764}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 10
+  m_Father: {fileID: 3541805670309800208}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2673439013833653597
 MeshFilter:
@@ -1069,13 +1122,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6792471465076903260}
-  m_LocalRotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -3.431172, y: 1.0951756, z: 0.74391747}
-  m_LocalScale: {x: 15.426776, y: 31.567638, z: 31.567638}
+  m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -3.4311717, y: 1.0951759, z: 0.74391633}
+  m_LocalScale: {x: 15.426776, y: 31.567636, z: 31.567638}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3520024132174497145}
-  m_RootOrder: 9
+  m_Father: {fileID: 3541805670309800208}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4305536700859281011
 MeshFilter:

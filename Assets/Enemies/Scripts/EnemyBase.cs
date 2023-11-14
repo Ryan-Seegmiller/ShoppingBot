@@ -55,9 +55,12 @@ public class EnemyBase : MonoBehaviour
     [Header("Debug")]
     protected float currentDistanceToPlayer;
     #endregion
+    protected Animator anim;
 
     void Awake()
     {
+        if(!(this is CrawlerController))
+            anim = GetComponentInChildren<Animator>();
 
         if (GenerateRandomValues)
             GetRandomAIValues();
@@ -173,8 +176,6 @@ public class EnemyBase : MonoBehaviour
         Ray rr = new Ray(rp, transform.forward+(transform.right*0.5f)); // right
         Ray rl = new Ray(lp, transform.forward - (transform.right * 0.5f)); // left
         Ray rs = new Ray(sp, transform.forward); // straight
-        Debug.DrawRay(transform.position + transform.forward + transform.right, transform.forward + (transform.right * 0.5f), Color.red, 0.1f);
-        Debug.DrawRay(transform.position + transform.forward - transform.right, transform.forward - (transform.right * 0.5f), Color.blue, 0.1f);
         bool r = Physics.Raycast(rr, lrArmRange);
         bool l = Physics.Raycast(rl, lrArmRange);
         bool s = Physics.Raycast(rs, sArmRange);

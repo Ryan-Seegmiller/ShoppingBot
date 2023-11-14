@@ -47,8 +47,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.43, y: 0.42357254, z: 0.48}
-  m_Center: {x: 0, y: 0.052262306, z: 0}
+  m_Size: {x: 0.43, y: 0.7298794, z: 0.48}
+  m_Center: {x: 0, y: 0.20541573, z: 0}
 --- !u!114 &4034201655623822611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +62,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenerateRandomValues: 1
-  meshBody: {fileID: 3163837308532186926}
   currentDistanceToPlayer: 0
   currentAttackCurve: []
   frame: 0
@@ -100,7 +99,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5404410282375117221, guid: bbb51ba718baa854baed1becd333c57d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.87
+      value: -1.62
       objectReference: {fileID: 0}
     - target: {fileID: 5404410282375117221, guid: bbb51ba718baa854baed1becd333c57d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -165,18 +164,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -216,10 +203,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
 --- !u!1 &146029976545357641 stripped
@@ -230,10 +213,5 @@ GameObject:
 --- !u!4 &2351976216833033620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
-  m_PrefabInstance: {fileID: 7577156463580039861}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3163837308532186926 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4814140110428575131, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
   m_PrefabInstance: {fileID: 7577156463580039861}
   m_PrefabAsset: {fileID: 0}

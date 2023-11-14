@@ -35,6 +35,7 @@ public class StalkerController : EnemyBase
             }
             if (hasFoundPlayer && currentDistanceToPlayer <1.5f)
             {
+                anim.SetTrigger("action");
                 //take items from player
                 if (ItemManager.instance != null)
                     ItemManager.instance.RemoveRandomItem();

@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5181,10 +5181,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenerateRandomValues: 1
-  meshBody: {fileID: 6331667456567958184}
   currentDistanceToPlayer: 0
   roamMode: 0
-  ramForce: 15
   explosion: {fileID: 3378779837713424044}
   explosionRadius: 15
   explosionForceRange: {x: 50, y: 500}
@@ -5312,11 +5310,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06fdfb41a034d484795f0b62352fb0d5, type: 3}
---- !u!1 &6331667456567958184 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2099976985599685910, guid: 06fdfb41a034d484795f0b62352fb0d5, type: 3}
-  m_PrefabInstance: {fileID: 5402639432094871486}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6671320533299232786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1616595855989174188, guid: 06fdfb41a034d484795f0b62352fb0d5, type: 3}

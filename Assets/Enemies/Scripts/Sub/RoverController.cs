@@ -7,63 +7,27 @@ using Items;
 public class RoverController : EnemyBase
 {
     public int roamMode = 0;
-    public float pounceForwardForce = 15;
-    public float pounceUpForce = 15;
-    public float pounceTorque = 15;
-    bool canAttack = true;
-    float attackStartTime=0;
-    public ParticleSystem dustEffect;
-    public bool fleeing = false;
-    Vector3 fleeVector;
-    float fleeBounds = 5;
-    float fleeBeginTime = 0;
+    float lastAttackTime = 0;
     public void Start()
     {
-        acceleration *= 2;
         roamMode = Random.Range(0, 2);
         health = Random.Range(3, 6);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (time > fleeBeginTime + 5)
-            fleeing = false;
-        if (time>attackStartTime+3 && !canAttack)
-            canAttack = true;
-        if (fleeing)
-            Debug.DrawLine(transform.position, fleeVector);
     }
     private new void FixedUpdate()
     {
         base.FixedUpdate();
-        if (Random.Range(0, 100f) > 99.9f && !fleeing){ roamMode = Random.Range(0, 2); }
-
-        //run away to random spot until close enough
-        if (fleeing)
+        if (hasFoundPlayer && time > lastAttackTime + 2)
         {
-            transform.Translate(transform.forward * acceleration);
-            if ((transform.position.x < fleeVector.x + 3 && transform.position.x > fleeVector.x - 3 && transform.position.y < fleeVector.y + 3 && transform.position.y > fleeVector.y - 3)||time>fleeBeginTime+10)
-                fleeing = false;
-        }//main attack at player
-        else if (hasFoundPlayer)
-        {
-            //give it time to rotate
-            if (canAttack)
+            if(Random.Range(0,100)>80)
+                transform.LookAt(new Vector3(player.transform.position.x + Random.Range(-1f,1f), transform.position.y, player.transform.position.z + Random.Range(-1f, 1f)));
+            rb.AddForce(transform.forward * acceleration*1.5f);
+            if (currentDistanceToPlayer < 2)//attack functions
             {
-                dustEffect.Play();
-                transform.LookAt(new Vector3(player.transform.position.x,transform.position.y,player.transform.position.z));
-                //pounce player
-                canAttack = false;
-                attackStartTime = time;
-                rb.AddForce(transform.forward * pounceForwardForce);
-                rb.AddForce(transform.up * pounceUpForce);
-            }
-            if (currentDistanceToPlayer < 1)
-            {
-                Flee();
+                anim.SetTrigger("action");
+                lastAttackTime = time;
                 if (ItemManager.instance != null)
                     ItemManager.instance.RemoveRandomItem();
+                rb.AddForce(-transform.forward * acceleration * Random.Range(2f, 5f));
             }
         }
         else
@@ -71,15 +35,6 @@ public class RoverController : EnemyBase
             DoRoamAI();
             transform.Rotate(0, targetRotationY, 0);
         }
-    }
-
-    void Flee()
-    {
-        fleeBeginTime = time;
-        fleeing = true;
-        roamMode = 0;
-        fleeVector = transform.position+new Vector3(Random.Range(-fleeBounds, fleeBounds), transform.position.y, Random.Range(-fleeBounds, fleeBounds));
-        transform.LookAt(fleeVector);
     }
     void DoRoamAI()
     {
@@ -109,7 +64,7 @@ public class RoverController : EnemyBase
         else if (roamMode == 1)
         {//random move mode
             if(Random.Range(0,100f)>98f)
-                targetRotationY = Random.Range(-3, 3);
+                targetRotationY += Random.Range(-5f, 5f);
             if (Random.Range(0, 100f) > 35f)
                 rb.AddForce(transform.forward * acceleration);
         }
