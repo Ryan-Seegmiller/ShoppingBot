@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour, UIEvents
             // spawn enemies
             gameRules.waveCount++;
             try { EnemyManager.instance.SpawnEnemies(gameRules.waveCount * enemyMultiplier, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }
-            Debug.Log($"GameManager :: {gameRules.waveCount} enemy spawned at {gameRules.gameTime}", this);
+            Debug.Log($"GameManager :: {gameRules.waveCount} enemy(s) spawned at {gameRules.gameTime}", this);
         }
         if (gameRules.gameTime > gameRules.elevatorLockTime && gameActive) { UnlockElevator(); }
     }

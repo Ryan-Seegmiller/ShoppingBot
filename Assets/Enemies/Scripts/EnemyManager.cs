@@ -30,13 +30,16 @@ namespace enemymanager
         }
         public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
         {
-            count *= multiplierOverride;
-            for (int i = 0; i < count; i++)
+            if (currentEnemies.Count < maxEnemies)
             {
-                //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
-                Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
-                spawnPos.y = player.transform.position.y;
-                currentEnemies.Add(Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
+                count *= multiplierOverride;
+                for (int i = 0; i < count; i++)
+                {
+                    //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
+                    Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
+                    spawnPos.y = player.transform.position.y;
+                    currentEnemies.Add(Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
+                }
             }
         }
         public void DestroyEnemies()
