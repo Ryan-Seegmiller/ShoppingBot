@@ -40,13 +40,11 @@ public class EnemyBase : MonoBehaviour
     #endregion
     #region health
     TMP_Text healthBar;
-    protected float _health;
+    protected float _health=0;
     public float health 
     { get { return _health; }
-        set { _health = value; SetHealthbar(); if (_health <= 0) { Die(true); } if (startHealth == 0) { startHealth = _health; } }
+        set { if (_health != 0) { SetHealthbar(true);/*sets health bar when set health, but no audio first time*/ } _health = value; if (_health <= 0) { Die(true); } }
     }
-    public float startHealth { get { return _startHealth; } set { _startHealth = value; SetHealthbar(); } }
-    float _startHealth = 0;
     #endregion
     #region components
     protected GameObject player;
@@ -110,20 +108,24 @@ public class EnemyBase : MonoBehaviour
         }
 
         transform.Rotate(0, targetRotationY, 0);
-
     }
-    public void SetHealthbar()
+    public void SetHealthbar(bool playAudio)
     {
         string healthText="";
         Color healthColor;
         for (int i = 0; i < health; i++)
             healthText += "-";
+
         if (health >= 3)
             healthColor = Color.green;
         else if (health >= 2)
             healthColor = Color.yellow;
         else
             healthColor = Color.red;
+        if (healthBar.text != healthText && playAudio)//use this to play sound only when its taken 1 full damage
+        {
+            AudioManager.instance.PlaySound3D(8, transform.position);
+        }
         healthBar.color = healthColor;
         healthBar.text = healthText;
     }
@@ -157,7 +159,7 @@ public class EnemyBase : MonoBehaviour
         }
         Destroy(this.gameObject); 
     }
-    public void Hit(float mod)
+    public void Hit(float mod)//used for hit by player
     {
         health-=3f*mod;//base damage from player is determined here
     }

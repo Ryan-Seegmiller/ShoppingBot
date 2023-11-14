@@ -51,7 +51,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 1.74
   MinDistance: 1
   MaxDistance: 100
   Pan2D: 0
@@ -103,7 +103,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.27222222
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -118,7 +118,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1.022
+      value: 0.83
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -434,12 +434,13 @@ MonoBehaviour:
   masterList:
   - {fileID: 8300000, guid: 0a9ef3a5a8cc8504fbe1b78f976f8330, type: 3}
   - {fileID: 8300000, guid: d18a785476f8928439cb974a8e1f601c, type: 3}
-  - {fileID: 8300000, guid: 3d38dcce1a66c55439a8f13df9009089, type: 3}
+  - {fileID: 8300000, guid: 0e53a31f090a1684dab249b5079d91d5, type: 3}
   - {fileID: 8300000, guid: 3138bc04383e61e4c948b27cfa62edee, type: 3}
   - {fileID: 8300000, guid: 8e8481d7ebf87c64c80fa4d7814ef8e6, type: 3}
   - {fileID: 8300000, guid: 873597a5697cd224bbcc847f5c2c403b, type: 3}
   - {fileID: 8300000, guid: 4df88d619b9f6354d9b257f90bdb87d7, type: 3}
   - {fileID: 8300000, guid: 7ed211f86a296284bafcbc1b6f87cc32, type: 3}
+  - {fileID: 8300000, guid: 299376fe10b69ab4d94d1521417f7adf, type: 3}
   musicAS: {fileID: 807978630}
   aS2d: {fileID: 2059725302}
   aS3d: {fileID: 32651199}
