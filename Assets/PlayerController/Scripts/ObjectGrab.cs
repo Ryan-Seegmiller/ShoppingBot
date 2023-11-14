@@ -87,15 +87,19 @@ public class ObjectGrab : MonoBehaviour
             ItemDisableCollison();
         }
         if(Input.GetMouseButtonUp(1) && ObjectDragActive)
-        { 
-            StartCoroutine(ItemEnableCollison());
-            ResetObjectDrag();
-            currentHeldObject = emptyRaycastHit;
+        {
+            ObjectEndGrab();
         }
         if (Input.mouseScrollDelta != new Vector2(0,0))
         {
             ObjectPull();
         }
+    }
+    public void ObjectEndGrab()
+    {
+        StartCoroutine(ItemEnableCollison());
+        ResetObjectDrag();
+        currentHeldObject = emptyRaycastHit;
     }
     public void ResetObjectDrag()
     {

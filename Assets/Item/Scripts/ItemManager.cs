@@ -20,18 +20,18 @@ namespace Items
     public enum ItemID
     {
         //Food
-        apple,
-        banana,
-        strawberry,
-        pineapple,
+        apple, //0
+        banana, //1
+        strawberry, //2
+        pineapple, //3
         //Clothes
-        shoe,
-        hat,
-        glasses,
+        shoe, //4
+        hat, //5
+        glasses, //6
         //Tools
-        screwdriver,
-        hammer,
-        wrench
+        screwdriver, //7
+        hammer, //8
+        wrench //9
     };
 
     //Item category enum
@@ -114,7 +114,7 @@ namespace Items
         void Update()
         {
             //DEBUG
-            string newString = "[";
+            /*string newString = "[";
             for (int i = 0; i < inventory.Length; i++)
             {
                 newString += inventory[i].ToString() + ", ";
@@ -130,8 +130,8 @@ namespace Items
             }
             if (Input.GetKeyDown(KeyCode.O))
             {
-                RemoveRandomItem();
-            }
+                ClearInventory();
+            }*/
         }
 
 
@@ -175,13 +175,16 @@ namespace Items
         //Adds an item to the first empty item slot (-1) in the inventory array
         public void AddItem(int itemID)
         {
-            //Add item to inventory
-            for (int i = 0; i < inventory.Length; i++)
+            if (ListNeedsItem(itemID))
             {
-                if (inventory[i] == -1) //Check if index is available
+                //Add item to inventory
+                for (int i = 0; i < inventory.Length; i++)
                 {
-                    inventory[i] = itemID; //Add item to the available index
-                    break;
+                    if (inventory[i] == -1) //Check if index is available
+                    {
+                        inventory[i] = itemID; //Add item to the available index
+                        break;
+                    }
                 }
             }
 
@@ -239,6 +242,17 @@ namespace Items
             }
         }
 
+        public void ClearInventory()
+        {
+            //Clear Inventory
+            for (int i = 0; i < inventory.Length; i++)
+            {
+                inventory[i] = -1;
+                completionList[i] = false;
+            }
+            //Randomise shopping list
+            RandomiseList();
+        }
 
 
         //SHOPPING LIST
