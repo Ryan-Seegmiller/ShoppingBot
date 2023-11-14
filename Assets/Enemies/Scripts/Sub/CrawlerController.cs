@@ -43,7 +43,7 @@ public class CrawlerController : EnemyBase
     {
         hasExploded = true;
         AudioManager.instance.PlaySound3D(7, transform.position);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.55f);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hitCollider in hitColliders)
         {

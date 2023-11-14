@@ -791,6 +791,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 32651199, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
+      propertyPath: DopplerLevel
+      value: 1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 32651199, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
+      propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
+      value: 0.27222222
+      objectReference: {fileID: 0}
+    - target: {fileID: 32651199, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
+      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
+      value: 0.83
+      objectReference: {fileID: 0}
     - target: {fileID: 2000542635773071085, guid: ed6f2fecb13f829479a7e501d4f5b154, type: 3}
       propertyPath: m_Name
       value: AudioManager
