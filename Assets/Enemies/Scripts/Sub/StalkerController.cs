@@ -33,7 +33,7 @@ public class StalkerController : EnemyBase
             {
                 DoAerialAI();
             }
-            if (hasFoundPlayer && currentDistanceToPlayer <1.5f)
+            if (hasFoundPlayer && currentDistanceToPlayer <2f)
             {
                 anim.SetTrigger("action");
                 //take items from player

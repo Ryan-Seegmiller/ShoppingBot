@@ -27,7 +27,7 @@ public class RoverController : EnemyBase
                 lastAttackTime = time;
                 if (ItemManager.instance != null)
                     ItemManager.instance.RemoveRandomItem();
-                rb.AddForce(-transform.forward * acceleration * Random.Range(2f, 5f));
+                rb.AddForce(-transform.forward * acceleration * Random.Range(2f, 15f));
             }
         }
         else

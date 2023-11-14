@@ -235,6 +235,7 @@ namespace Items
                 } while (inventory[itemChoice] == -1);
                 //Remove item
                 inventory[itemChoice] = -1;
+                Debug.Log($"{itemChoice} removed randomly");
             }
         }
 
