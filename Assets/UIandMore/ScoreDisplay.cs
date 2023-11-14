@@ -7,7 +7,7 @@ using UnityEngine;
 public class ScoreDisplay : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
-    int totScore = 360;
+    int totScore = 0;
     int disScore;
 
     [SerializeField] TextMeshProUGUI timeD;
@@ -24,6 +24,7 @@ public class ScoreDisplay : MonoBehaviour
     private void OnEnable()
     {
         DisplayText();
+        print("enabled score");
     }
 
     public void DisplayText()
@@ -33,14 +34,14 @@ public class ScoreDisplay : MonoBehaviour
     }
     void StringTime()
     {
-        timeT = "Time Taken\n00:00:00";
+        timeD.text = "Time Taken\n00:00:00";
         //sets up timer for displaying
         timeT = "Time Taken\n" + TimeCalc.instance.GetTimeString();
     }
     void StringItems()
     {
 
-        itemsT = "Items Correct\n0/0";
+        itemsD.text = "Items Correct\n0/0";
         //sets up items for displaying
         int correct = 0;
         for(int i = 0; i < ItemManager.instance.inventorySize; i++)
