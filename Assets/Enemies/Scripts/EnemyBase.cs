@@ -6,19 +6,17 @@ public class EnemyBase : MonoBehaviour
 {
     #region rays
     protected bool[] rayBools;
-    Vector3 rp;
-    Vector3 lp;
-    Vector3 sp;
+    protected Vector3 rp;
+    protected Vector3 lp;
+    protected Vector3 sp;
     #endregion
     #region AI base controls
     public bool GenerateRandomValues = true;
     protected bool hasFoundPlayer = false;//after multiple seconds of detection
-    protected bool hasDetectedPlayer = false;//player is close enough
     #endregion
     #region AI modifiable stats
+    //This is where you can make the AI stronger or weaker
     protected float detectionRadius = 15;
-    protected float timeDetectionToFind = 2;
-    protected float pointAtPlayerChance =30;
     protected float targetRotationY = 0;
     protected float yRotationReturn = 0.2f;
     protected float yRotationPerArmDetection = 0.5f;
@@ -33,13 +31,13 @@ public class EnemyBase : MonoBehaviour
     #region timers, flips
     protected float time = 0;
     protected float firstDetectedTime = 0;
-    protected bool lowChanceFlip = false;
-    protected int lowChanceFlip2 = 1;
-    float lastDamagingBumpTime = 0;
     float lastDetectionCheckTime = 0;
+    protected int wanderFlip1 = 1;
+    protected int wanderFlip2 = 1;
+    protected int wanderFlip1Chance = 30;
     #endregion
     #region health
-    TMP_Text healthBar;
+    protected TMP_Text healthBar;
     protected float _health=-1;
     public float health 
     { get { return _health; }
@@ -49,15 +47,14 @@ public class EnemyBase : MonoBehaviour
     #region components
     protected GameObject player;
     protected Rigidbody rb;
+    protected Animator anim;
+    #endregion
+
     [SerializeField]
     [Header("Debug")]
     protected float currentDistanceToPlayer;
-    #endregion
-    protected Animator anim;
 
-    int wanderFlip1 = 1;
-    int wanderFlip2 = 1;
-    int wanderFlip1Chance = 30;
+
 
     void Awake()
     {
@@ -141,9 +138,7 @@ public class EnemyBase : MonoBehaviour
         yRotationPerArmDetection = Random.Range(0.001f, 0.1f);
         yRotationReturn = yRotationPerArmDetection+Random.Range(0.001f, 0.01f);
 
-        pointAtPlayerChance = Random.Range(1, 90f);
-        timeDetectionToFind = Random.Range(0.5f, 2f);
-        acceleration = Random.Range(15f,25f);
+        acceleration = Random.Range(5f,15f);
 
         reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
         stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
@@ -169,8 +164,6 @@ public class EnemyBase : MonoBehaviour
     }
     private void DoFlips()
     {
-        if (Random.Range(0, 100f) > 99.9f) { lowChanceFlip = !lowChanceFlip;}
-        if (Random.Range(0, 100f) > 90f) { lowChanceFlip2 *= -1; }
         wanderFlip1Chance = 99;//this is so it has a higher chance of flipping if its -1, because it controls forward or backwards on wander
         if (wanderFlip1 == -1)
         {
@@ -178,14 +171,6 @@ public class EnemyBase : MonoBehaviour
         }
         if (Random.Range(0f, 100f) > wanderFlip1Chance) { wanderFlip1 *= -1; }
         if (Random.Range(0f, 100f) > 97f) { wanderFlip2 *= -1; }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (rb.velocity.magnitude > 8 && time > lastDamagingBumpTime + 2f)
-        {
-            health-= rb.velocity.magnitude/10;
-            lastDamagingBumpTime = time;
-        }
     }
     public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
     {
