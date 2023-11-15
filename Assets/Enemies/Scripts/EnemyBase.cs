@@ -111,7 +111,7 @@ public class EnemyBase : MonoBehaviour
         if (Random.Range(0f, 100f) > wanderFlip1Chance) { wanderFlip1 *= -1; }
         if (Random.Range(0f, 100f) > 97f) { wanderFlip2 *= -1; }
     }//Random int flips
-    private void DoRays()//Arm behaviour, returned in a bool array
+    private void DoRays()//Arm behaviour
     {
         rp = transform.position + transform.forward + transform.right;
         lp = transform.position + transform.forward - transform.right;

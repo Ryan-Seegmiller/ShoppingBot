@@ -1776,7 +1776,7 @@ ParticleSystem:
     flipU: 0
     flipV: 0
   VelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -2360,7 +2360,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
   InheritVelocityModule:
     enabled: 0
     m_Mode: 0
@@ -5051,7 +5051,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8965ad6b2411d434b83c88f0bb66d77d, type: 2}
+  - {fileID: 2100000, guid: 37d12500fd21185429eb0e7dc93ff546, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5181,8 +5181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenerateRandomValues: 1
-  currentDistanceToPlayer: 0
-  roamMode: 0
   explosion: {fileID: 3378779837713424044}
   explosionRadius: 15
   explosionForceRange: {x: 50, y: 500}
