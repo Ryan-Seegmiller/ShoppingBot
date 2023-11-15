@@ -158,11 +158,11 @@ PrefabInstance:
     - target: {fileID: 2228324280710128017, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 13bc9d50430622b48ba094fca5fcffba, type: 2}
+      objectReference: {fileID: 2100000, guid: d40983e9996a9094d9e07b63d117c2f0, type: 2}
     - target: {fileID: 4046793243439663409, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 13bc9d50430622b48ba094fca5fcffba, type: 2}
+      objectReference: {fileID: 2100000, guid: d40983e9996a9094d9e07b63d117c2f0, type: 2}
     - target: {fileID: 4814140110428575131, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
       propertyPath: m_Name
       value: Flying_Drone
