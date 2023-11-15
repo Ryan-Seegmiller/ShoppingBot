@@ -10,8 +10,8 @@ public class ScoreCalc : MonoBehaviour
     public int scoreVal;
 
     //Time intervals
-    int[] testValues1 = new int[] {30000, 60000, 90000, 120000, 180000};
-    //currently 5, 10, 15, 20, 30 minutes
+    int[] testValues1 = new int[] {6000, 9000, 12000, 18000, 30000};
+    //currently 1, 1.5, 2, 3, 5 minutes
 
     void Start()
     {
@@ -44,7 +44,7 @@ public class ScoreCalc : MonoBehaviour
             if(t < testValues1[i])
             {
                 //less time spent = more score per threshold
-                scoreVal += 100 * j / 2;
+                scoreVal += 125 * j / 2;
             }
             j--;
         }
