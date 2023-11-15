@@ -6,7 +6,7 @@ using UnityEngine;
 public class StalkerController : EnemyBase
 {
     private AnimationCurve BaseCurve =new AnimationCurve();
-    private List<Vector3> currentAttackCurve=null;
+    private List<Vector3> currentAttackCurve=new List<Vector3>();
     private int frame = 0;
     private float lastAttackTime = 0;
     public GameObject propBody; 
@@ -16,6 +16,7 @@ public class StalkerController : EnemyBase
         BaseCurve.AddKey(1, 0);//attack curve init
         health = 3;
         rb.AddForce(Vector3.up * 50);//push to roof
+        currentAttackCurve.Clear();
     }
     new void FixedUpdate()
     {
