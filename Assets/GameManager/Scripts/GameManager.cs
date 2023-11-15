@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour, UIEvents
     // TODO: pause/unpause functionality
     public void PauseGame()
     {
-        Debug.Log("GameManager :: Pause game", this);
+        Debug.Log("GameManager :: PausePhysics game", this);
         ClockStop();
         gameRules.gameActive = false;
         try { AudioManager.instance.PlaySound2D(0); } catch (Exception e) { Debug.LogError(e.Message, this); }

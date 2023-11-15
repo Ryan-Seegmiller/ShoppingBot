@@ -1,10 +1,10 @@
 using audio;
+using enemymanager;
 using System.Collections;
 using UnityEngine;
 public class CrawlerController : EnemyBase
 {
-    public int roamMode = 0;
-    float ramForce = 25;
+    float ramForce = 20;
     public ParticleSystem explosion;
     public float explosionRadius = 5f;
     public Vector2 explosionForceRange = new Vector2(25, 100);
@@ -16,28 +16,39 @@ public class CrawlerController : EnemyBase
     }
     private new void FixedUpdate()
     {
-        base.FixedUpdate();
-
-        if (Random.Range(0, 100f) > 99.9f) {roamMode = Random.Range(0, 2); }
-
-        if (hasFoundPlayer)
+        bool paused = EnemyManager.instance.PauseEnemies;
+        if (!paused)
         {
-            rb.AddForce(transform.forward * ramForce);
-            if (Random.Range(0, 100f) > 90f)
+            if (paused != wasPausedLastFrame)//if the player just unpaused, reset vel to cached value
             {
-                transform.LookAt(player.transform.position);
-                Vector3 loc = transform.localEulerAngles;
-                transform.localEulerAngles = new Vector3(0, loc.y,loc.z);
+                UnPausePhysics();
             }
-            if(currentDistanceToPlayer < 1.3f && !hasExploded)
+            base.FixedUpdate();
+
+            if (hasFoundPlayer)
             {
-                StartCoroutine(explode());
+                rb.AddForce(transform.forward * ramForce);
+                if (Random.Range(0, 100f) > 95f)
+                {
+                    transform.LookAt(player.transform.position);
+                    Vector3 loc = transform.localEulerAngles;
+                    transform.localEulerAngles = new Vector3(0, loc.y, loc.z);
+                }
+                if (currentDistanceToPlayer < 1.3f && !hasExploded)
+                {
+                    StartCoroutine(explode());
+                }
+            }
+            else
+            {
+                DoWander();
             }
         }
-        else
+        else if (paused != wasPausedLastFrame)//if the player just paused for the first time, store its velocity, and set to 0
         {
-            Wander();
+            UnPausePhysics();
         }
+        wasPausedLastFrame = paused;
     }
     public IEnumerator explode()
     {

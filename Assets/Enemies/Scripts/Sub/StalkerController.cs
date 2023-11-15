@@ -5,36 +5,49 @@ using UnityEngine;
 
 public class StalkerController : EnemyBase
 {
-    AnimationCurve BaseCurve=new AnimationCurve();
-    public List<Vector3> currentAttackCurve=null;
-    public int frame = 0;
-    float lastAttackTime = 0;
+    private AnimationCurve BaseCurve =new AnimationCurve();
+    private List<Vector3> currentAttackCurve=null;
+    private int frame = 0;
+    private float lastAttackTime = 0;
     public GameObject propBody; 
     public void Start()
     {
         BaseCurve.AddKey(0, 0);
-        BaseCurve.AddKey(1, 0);
+        BaseCurve.AddKey(1, 0);//attack curve init
         health = 3;
-        rb.AddForce(Vector3.up * 50);
+        rb.AddForce(Vector3.up * 50);//push to roof
     }
     new void FixedUpdate()
     {
-        propBody.transform.Rotate(0, 0, 15);
-        base.FixedUpdate();
-        
-        if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time) { BeginAttackCurve(); }     //if found player, create attack curve            
-        if (currentAttackCurve.Count > 0){ RunAttackCurvePhysics(); }  //if there is an attack curve, run it
-        else
+        bool paused = EnemyManager.instance.PauseEnemies;
+        if (!paused)
         {
-            Wander();
+            if (paused != wasPausedLastFrame)//if the player just unpaused, reset vel to cached value
+            {
+                UnPausePhysics();
+            }
+            propBody.transform.Rotate(0, 0, 15);
+            base.FixedUpdate();
+
+            if (hasFoundPlayer && currentAttackCurve.Count < 1 && lastAttackTime + 3 < time) { BeginAttackCurve(); }     //if found player, create attack curve            
+            if (currentAttackCurve.Count > 0) { RunAttackCurvePhysics(); }  //if there is an attack curve, run it
+            else
+            {
+                DoWander();
+            }
+            if (hasFoundPlayer && currentDistanceToPlayer < 2f)
+            {
+                anim.SetTrigger("action");
+                //take items from player
+                if (ItemManager.instance != null)
+                    ItemManager.instance.RemoveRandomItem();
+            }
         }
-        if (hasFoundPlayer && currentDistanceToPlayer < 2f)
+        else if (paused != wasPausedLastFrame)//if the player just paused for the first time, store its velocity, and set to 0
         {
-            anim.SetTrigger("action");
-            //take items from player
-            if (ItemManager.instance != null)
-                ItemManager.instance.RemoveRandomItem();
+            PausePhysics();
         }
+        wasPausedLastFrame = paused;
     }
     void BeginAttackCurve()
     {

@@ -13,7 +13,6 @@ namespace enemymanager
         protected int enemiesSpawnQueue = 0;
         public int maxEnemies = 15;
         public float spawnPositionOffset = 1;
-
         public bool PauseEnemies=false;
         public float time = 0;
         void Awake()

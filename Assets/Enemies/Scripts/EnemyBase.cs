@@ -4,8 +4,7 @@ using TMPro;
 using audio;
 public class EnemyBase : MonoBehaviour
 {
-    #region rays
-    protected bool[] rayBools;
+    #region rays origins
     protected Vector3 rp;
     protected Vector3 lp;
     protected Vector3 sp;
@@ -13,6 +12,7 @@ public class EnemyBase : MonoBehaviour
     #region AI base controls
     public bool GenerateRandomValues = true;
     protected bool hasFoundPlayer = false;//after multiple seconds of detection
+    protected float currentDistanceToPlayer;
     #endregion
     #region AI modifiable stats
     //This is where you can make the AI stronger or weaker
@@ -41,7 +41,7 @@ public class EnemyBase : MonoBehaviour
     protected float _health=-1;
     public float health 
     { get { return _health; }
-        set { if (_health != -1) { SetHealthbar(true, value);/*dont update health bar on first go, so sound doesnt play on initial health set*/ } _health = value; if (_health <= 0) { Die(true); } }
+        set { if (_health != -1) { UpdateHealthBar(true, value);/*dont update health bar on first go, so sound doesnt play on initial health set*/ } _health = value; if (_health <= 0) { Die(true); } }
     }
     #endregion
     #region components
@@ -49,64 +49,39 @@ public class EnemyBase : MonoBehaviour
     protected Rigidbody rb;
     protected Animator anim;
     #endregion
-
-    [SerializeField]
-    [Header("Debug")]
-    protected float currentDistanceToPlayer;
-
-
-
+    #region pause
+    protected bool wasPausedLastFrame = false;
+    protected Vector3 pauseVelocity;
+    protected Vector3 pauseAngularVelocity;
+    #endregion
     void Awake()
     {
-        if(!(this is CrawlerController))
-            anim = GetComponentInChildren<Animator>();
-
-        if (GenerateRandomValues)
-            GetRandomAIValues();
-        rb = GetComponent<Rigidbody>();
-        healthBar = GetComponentInChildren<TMP_Text>();
-        player = EnemyManager.instance.player;
         if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
         {
             Die(false);
             EnemyManager.instance.SpawnEnemies(1, Random.Range(0, 3));
-            Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
+            //Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
         }
-    }
-    private void Update()
-    {
-        time += Time.deltaTime;
+        if (!(this is CrawlerController))
+            anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();
+        healthBar = GetComponentInChildren<TMP_Text>();
+        player = EnemyManager.instance.player;
+        if (GenerateRandomValues)
+            GetRandomAIValues();
     }
     protected void FixedUpdate()
     {
+        time += Time.deltaTime;
+
         DoFlips();
-        DropAndClampTargetYRot();
+        DoRotationY();
+        DoRays();
+        CheckPlayerDistance();
+        healthBar.transform.LookAt(Camera.main.transform);
 
-        //healthBar.transform.LookAt(Camera.main.transform);
-        if (time > lastDetectionCheckTime + 0.5f)//slow down the amount of times this is called
-        {
-            lastDetectionCheckTime = time;
-
-            //this code replaces the trigger colliders for detecting the player
-            currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-            hasFoundPlayer = currentDistanceToPlayer <= detectionRadius;
-        }
-        rayBools = DoRays();
-
-        if (rayBools[2])
-            targetRotationY += yRotationPerArmDetection;
-        if (rayBools[0])
-            targetRotationY -= yRotationPerArmDetection;
-        if (rayBools[1])
-        {
-            //backup if stuck
-            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
-            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
-        }
-
-        transform.Rotate(0, targetRotationY, 0);
     }
-    public void SetHealthbar(bool playAudio, float healthValue)
+    private void UpdateHealthBar(bool playAudio, float healthValue)
     {
         string healthText="";
         Color healthColor;
@@ -126,42 +101,6 @@ public class EnemyBase : MonoBehaviour
         healthBar.color = healthColor;
         healthBar.text = healthText;
     }
-    public void GetRandomAIValues()
-    {
-        lrArmRange = Random.Range(0.25f, 3f);
-        sArmRange = Random.Range(0.25f, 3f);
-
-        detectionRadius = Random.Range(10f, 25f);
-        wanderRotationLimits = Random.Range(0.01f, 0.01f);
-        wanderForceLimits = Random.Range(0.01f, 2f);
-
-        yRotationPerArmDetection = Random.Range(0.001f, 0.1f);
-        yRotationReturn = yRotationPerArmDetection+Random.Range(0.001f, 0.01f);
-
-        acceleration = Random.Range(5f,15f);
-
-        reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
-        stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
-    }
-    public void Die(bool playAudio)
-    {
-        Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
-
-        EnemyManager.instance.currentEnemies.Remove(this);
-        if (playAudio)
-        {
-            AudioManager.instance.PlaySound3D(4, transform.position);
-        }
-        Destroy(this.gameObject); 
-    }
-    public void Hit(float mod)//used for hit by player
-    {
-        health-=3f*mod;//base damage from player is determined here
-    }
-    public void Hit()
-    {
-        health -= 1f;
-    }
     private void DoFlips()
     {
         wanderFlip1Chance = 99;//this is so it has a higher chance of flipping if its -1, because it controls forward or backwards on wander
@@ -171,13 +110,8 @@ public class EnemyBase : MonoBehaviour
         }
         if (Random.Range(0f, 100f) > wanderFlip1Chance) { wanderFlip1 *= -1; }
         if (Random.Range(0f, 100f) > 97f) { wanderFlip2 *= -1; }
-    }
-    public static float Map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
-    {
-        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
-    }
-
-    protected bool[] DoRays()
+    }//Random int flips
+    private void DoRays()//Arm behaviour, returned in a bool array
     {
         rp = transform.position + transform.forward + transform.right;
         lp = transform.position + transform.forward - transform.right;
@@ -188,10 +122,19 @@ public class EnemyBase : MonoBehaviour
         bool r = Physics.Raycast(rr, lrArmRange);
         bool l = Physics.Raycast(rl, lrArmRange);
         bool s = Physics.Raycast(rs, sArmRange);
-        return new bool[3] { l, s, r };
-    }
 
-    protected void DropAndClampTargetYRot()
+        if (r)
+            targetRotationY += yRotationPerArmDetection;
+        if (l)
+            targetRotationY -= yRotationPerArmDetection;
+        if (s)
+        {
+            //backup if stuck
+            rb.AddForce(-Vector3.forward * acceleration * Random.Range(reverseModifierMinMax.x, reverseModifierMinMax.y));
+            targetRotationY += Random.Range(stuckRotationMinMax.x, stuckRotationMinMax.y) * Random.Range(-1, 2);
+        }
+    }
+    private void DoRotationY()//Smooth y rotation for roaming
     {
         if (targetRotationY > 0)
             targetRotationY -= yRotationReturn;
@@ -201,11 +144,69 @@ public class EnemyBase : MonoBehaviour
             targetRotationY -= 360;
         if (targetRotationY <= -360)
             targetRotationY += 360;
-    }
 
-    public void Wander()
+        transform.Rotate(0, targetRotationY, 0);
+    }
+    private void CheckPlayerDistance()
+    {
+        if (time > lastDetectionCheckTime + 0.5f)//slow down the amount of times this is called
+        {
+            lastDetectionCheckTime = time;
+
+            //this code replaces the trigger colliders for detecting the player
+            currentDistanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            hasFoundPlayer = currentDistanceToPlayer <= detectionRadius;
+        }
+    }
+    private void GetRandomAIValues()
+    {
+        lrArmRange = Random.Range(0.25f, 3f);
+        sArmRange = Random.Range(0.25f, 3f);
+
+        detectionRadius = Random.Range(10f, 25f);
+        wanderRotationLimits = Random.Range(0.01f, 0.01f);
+        wanderForceLimits = Random.Range(0.01f, 2f);
+
+        yRotationPerArmDetection = Random.Range(0.001f, 0.1f);
+        yRotationReturn = yRotationPerArmDetection + Random.Range(0.001f, 0.01f);
+
+        acceleration = Random.Range(5f, 15f);
+
+        reverseModifierMinMax = new Vector2(Random.Range(0.3f, 0.5f), Random.Range(0.5f, 0.9f));
+        stuckRotationMinMax = new Vector2(Random.Range(0.1f, 0.5f), Random.Range(0.5f, 1f));
+    }
+    protected void DoWander()//Random movement
     {
         rb.AddForce(transform.forward * acceleration * Random.Range(0, wanderForceLimits) * wanderFlip1);
         targetRotationY += Random.Range(0, wanderRotationLimits) * wanderFlip2;
+    }
+    protected void Die(bool playAudio)
+    {
+        //Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
+
+        EnemyManager.instance.currentEnemies.Remove(this);
+        if (playAudio)
+        {
+            AudioManager.instance.PlaySound3D(4, transform.position);
+        }
+        Destroy(this.gameObject);
+    }
+    protected void PausePhysics()//Cache physics when game is paused
+    {
+        pauseVelocity = rb.velocity;
+        pauseAngularVelocity = rb.angularVelocity;
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+    }
+    protected void UnPausePhysics()//Apply cached paused velocity
+    {
+        rb.velocity = pauseVelocity;
+        rb.angularVelocity = pauseAngularVelocity;
+        pauseVelocity = Vector3.zero;
+        pauseAngularVelocity = Vector3.zero;
+    }
+    public void Hit(float mod)//used for hit by player
+    {
+        health -= 3f * mod;//base damage from player is determined here
     }
 }
