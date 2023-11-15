@@ -40,10 +40,10 @@ public class EnemyBase : MonoBehaviour
     #endregion
     #region health
     TMP_Text healthBar;
-    protected float _health=0;
+    protected float _health=-1;
     public float health 
     { get { return _health; }
-        set { if (_health != 0) { SetHealthbar(true);/*sets health bar when set health, but no audio first time*/ } _health = value; if (_health <= 0) { Die(true); } }
+        set { if (_health != -1) { SetHealthbar(true, value);/*dont update health bar on first go, so sound doesnt play on initial health set*/ } _health = value; if (_health <= 0) { Die(true); } }
     }
     #endregion
     #region components
@@ -109,16 +109,16 @@ public class EnemyBase : MonoBehaviour
 
         transform.Rotate(0, targetRotationY, 0);
     }
-    public void SetHealthbar(bool playAudio)
+    public void SetHealthbar(bool playAudio, float healthValue)
     {
         string healthText="";
         Color healthColor;
-        for (int i = 0; i < health; i++)
+        for (int i = 0; i < healthValue; i++)
             healthText += "-";
 
-        if (health >= 3)
+        if (healthValue >= 3)
             healthColor = Color.green;
-        else if (health >= 2)
+        else if (healthValue >= 2)
             healthColor = Color.yellow;
         else
             healthColor = Color.red;
