@@ -15,15 +15,6 @@ namespace Items
             rb = GetComponent<Rigidbody>();
         }
 
-        void Update()
-        {
-            //Destroy item if itemValue is -1
-            if (itemValue == -1)
-            {
-                Destroy(gameObject);
-            }
-        }
-
         //Collect this item
         public void ItemCollect()
         {

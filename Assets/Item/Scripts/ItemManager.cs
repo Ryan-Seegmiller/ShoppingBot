@@ -111,28 +111,6 @@ namespace Items
             }
         }
 
-        void Update()
-        {
-            //DEBUG
-            /*string newString = "[";
-            for (int i = 0; i < inventory.Length; i++)
-            {
-                newString += inventory[i].ToString() + ", ";
-            }
-            newString += "]";
-            print(newString);
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                int randomItem = Random.Range(0, 5);
-                AddItem(randomItem);
-                print("FUCK");
-            }
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                ClearInventory();
-            }*/
-        }
 
 
         //Returns the string name of an item from given ID
