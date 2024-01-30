@@ -243,25 +243,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9208566225419152404}
     m_Modifications:
-    - target: {fileID: 885338157554780615, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1230505925047576114, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 3459804611444667756, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
       propertyPath: m_Name
       value: LightFixture
-      objectReference: {fileID: 0}
-    - target: {fileID: 5129823098565575706, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
-      propertyPath: m_Layer
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 9087591015950383983, guid: 53efe8290ebf2a04eb9ea24710270105, type: 3}
       propertyPath: m_RootOrder

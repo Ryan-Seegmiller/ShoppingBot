@@ -7,9 +7,9 @@ namespace enemymanager
     {
         public static EnemyManager instance;
         public GameObject player;
-        protected List<Transform> enemySpawns = new List<Transform>();
+        public List<Transform> enemySpawns = new List<Transform>();
         public List<GameObject> enemyPrefabs = new List<GameObject>();
-        public List<EnemyBase> currentEnemies = new List<EnemyBase>();
+        public List<EnemyBase> allEnemies = new List<EnemyBase>();
         protected int enemiesSpawnQueue = 0;
         public int maxEnemies = 15;
         public float spawnPositionOffset = 1;
@@ -20,32 +20,52 @@ namespace enemymanager
             if (instance == null) { instance = this; } else { Destroy(this); }
             UpdateSpawners();
         }
+        private void Start()
+        {
+            CreateAllEnemies(15);
+        }
         public void UpdateSpawners()
         {
             enemySpawns.Clear();
             GameObject[] spawners = GameObject.FindGameObjectsWithTag("Respawn");
             for (int i = 0; i < spawners.Length; i++) { enemySpawns.Add(spawners[i].transform); }
         }
-        public void SpawnEnemies(int count, int index)//number of enemies to spawn, then index 0-2 for which type of enemy
+        public void DeployDeadEnemy(int count)//number of enemies redeploy
         {
-            if (currentEnemies.Count < maxEnemies)
+            for (int j = 0; j < count; j++)
             {
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < allEnemies.Count; i++)
                 {
-                    //spawns the enemy at the position of the spawn transform +- the position offset, at quaternion.identity
-                    Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
-                    spawnPos.y = player.transform.position.y;
-                    currentEnemies.Add(Instantiate(enemyPrefabs[index], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
+                    if (allEnemies[i].deathTime == 0f) { continue; }//skip if not dead
+                    else
+                    {
+                        Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
+                        spawnPos.y = player.transform.position.y;
+                        allEnemies[i].targetRespawnPosition = spawnPos;
+                        allEnemies[i].Respawn();
+                        break;
+                    }
+
                 }
+            }
+        }
+        public void CreateAllEnemies(int count)
+        {
+            DestroyEnemies();
+            for (int j = 0; j < count; j++)
+            {
+                Vector3 spawnPos = enemySpawns[Random.Range(0, enemySpawns.Count)].transform.position;
+                spawnPos.y = player.transform.position.y;
+                allEnemies.Add(Instantiate(enemyPrefabs[Random.Range(0, 3)], spawnPos, Quaternion.identity).GetComponent<EnemyBase>());
             }
         }
         public void DestroyEnemies()
         {
-            for (int i = currentEnemies.Count; i > 0; i--)
+            for (int i = allEnemies.Count; i > 0; i--)
             {
-                Destroy(currentEnemies[i - 1].gameObject);
+                Destroy(allEnemies[i - 1].gameObject);
             }
-            currentEnemies.Clear();
+            allEnemies.Clear();
         }
     }
 }

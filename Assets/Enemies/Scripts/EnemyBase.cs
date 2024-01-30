@@ -2,6 +2,8 @@ using UnityEngine;
 using enemymanager;
 using TMPro;
 using audio;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+
 public class EnemyBase : MonoBehaviour
 {
     #region rays origins
@@ -48,6 +50,9 @@ public class EnemyBase : MonoBehaviour
     protected GameObject player;
     protected Rigidbody rb;
     protected Animator anim;
+    public GameObject meshBody;
+    public float deathTime = 0f; // if not 0f, dead
+    public Vector3 targetRespawnPosition;
     #endregion
     #region pause
     protected bool wasPausedLastFrame = false;
@@ -56,12 +61,6 @@ public class EnemyBase : MonoBehaviour
     #endregion
     void Awake()
     {
-        if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
-        {
-            Die(false);
-            EnemyManager.instance.SpawnEnemies(1, Random.Range(0, 3));
-            //Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
-        }
         if (!(this is CrawlerController))
             anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -70,16 +69,24 @@ public class EnemyBase : MonoBehaviour
         if (GenerateRandomValues)
             GetRandomAIValues();
     }
+    private void Start()
+    {
+        UpdateHealthBar(false, health);
+    }
     protected void FixedUpdate()
     {
-        time += Time.deltaTime;
-
-        DoFlips();
-        DoRotationY();
-        DoRays();
-        CheckPlayerDistance();
+        if (Random.Range(0,10)>8)
+        {
+            DoFlips();
+            DoRotationY();
+            DoRays();
+            CheckPlayerDistance();
+        }
         healthBar.transform.LookAt(Camera.main.transform);
-
+    }
+    private void Update()
+    {
+        time += Time.deltaTime;
     }
     private void UpdateHealthBar(bool playAudio, float healthValue)
     {
@@ -183,13 +190,14 @@ public class EnemyBase : MonoBehaviour
     protected void Die(bool playAudio)
     {
         //Debug.Log($"{this.GetType()} :: Enemy has died at {transform.position}", this);
-
-        EnemyManager.instance.currentEnemies.Remove(this);
+        meshBody.SetActive(false);
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
         if (playAudio)
         {
             AudioManager.instance.PlaySound3D(4, transform.position);
         }
-        Destroy(this.gameObject);
+        deathTime = time;
     }
     protected void PausePhysics()//Cache physics when game is paused
     {
@@ -207,6 +215,22 @@ public class EnemyBase : MonoBehaviour
     }
     public void Hit(float mod)//used for hit by player
     {
+        if (deathTime != 0f) { return; }
         health -= 3f * mod;//base damage from player is determined here
+    }
+
+    public void Respawn()
+    {
+        deathTime = 0f;
+        meshBody.SetActive(true);
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        transform.position= targetRespawnPosition;
+        health = Random.Range(2, 4);
+        if (!Physics.Raycast(transform.position + transform.up * 1, Vector3.up * 50))//quick fix for enemies spawning on roof;
+        {
+            Die(false);
+            //Debug.Log($"{this.GetType()} :: Enemy killed by system - failed roof check. Enemy has been replaced.");
+        }
     }
 }

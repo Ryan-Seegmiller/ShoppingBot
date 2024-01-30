@@ -78,8 +78,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenerateRandomValues: 1
-  currentDistanceToPlayer: 0
-  roamMode: 0
+  meshBody: {fileID: 1541016977350780109}
+  deathTime: 0
+  targetRespawnPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &185361440588532578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,6 +212,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 21fa0bb25932b15458692680fde04dc2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a9d17c09885072479ca9274e27172bb, type: 3}
+--- !u!1 &1541016977350780109 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4292620804062977987, guid: 5a9d17c09885072479ca9274e27172bb, type: 3}
+  m_PrefabInstance: {fileID: 3382406894935538446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2173297338513538679 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3520024132174497145, guid: 5a9d17c09885072479ca9274e27172bb, type: 3}

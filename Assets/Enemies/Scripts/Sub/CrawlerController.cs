@@ -34,7 +34,7 @@ public class CrawlerController : EnemyBase
                     Vector3 loc = transform.localEulerAngles;
                     transform.localEulerAngles = new Vector3(0, loc.y, loc.z);
                 }
-                if (currentDistanceToPlayer < 1.3f && !hasExploded)
+                if (currentDistanceToPlayer < 2f && !hasExploded)
                 {
                     StartCoroutine(explode());
                 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 852575591492042267}
   m_Layer: 0
   m_Name: s
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4427314265209296731}
   m_Layer: 0
   m_Name: s
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,16 +108,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  enemySpawns: []
   enemyPrefabs:
   - {fileID: 4871543811631930487, guid: 3fdc79b11a0aa8a49a4194c463883a89, type: 3}
   - {fileID: 4871543811631930487, guid: d68e9a9a5522b7f43932a2ef91c8cc07, type: 3}
   - {fileID: 3006431226239869898, guid: e87ea362e8ccd694ebd575b9e9f275ef, type: 3}
-  currentEnemies: []
+  allEnemies: []
   maxEnemies: 15
   spawnPositionOffset: 1
   PauseEnemies: 0
   time: 0
-  multiplierOverride: 1
 --- !u!1 &4427314266067846628
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 4427314266067846631}
   m_Layer: 0
   m_Name: s
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 4427314266822088298}
   m_Layer: 0
   m_Name: s
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

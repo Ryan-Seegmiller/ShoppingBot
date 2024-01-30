@@ -42,7 +42,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -58,7 +58,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RightTread
-  m_Speed: 300
+  m_Speed: 25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3291477368309899610}
@@ -72,7 +72,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: df63507ddc9aae84bbec9cdce815f9c8, type: 2}
+  m_Motion: {fileID: 7400000, guid: d6023ff3bfe613b49856ed4ebdcb3eca, type: 2}
   m_Tag: 
   m_SpeedParameter: RightTreadBoost
   m_MirrorParameter: 
@@ -182,7 +182,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LeftTread
-  m_Speed: 300
+  m_Speed: 25
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -7982525117421674789}
@@ -196,7 +196,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d6023ff3bfe613b49856ed4ebdcb3eca, type: 2}
+  m_Motion: {fileID: 7400000, guid: df63507ddc9aae84bbec9cdce815f9c8, type: 2}
   m_Tag: 
   m_SpeedParameter: LeftTreadBoost
   m_MirrorParameter: 
@@ -294,7 +294,7 @@ AnimatorStateMachine:
     m_Position: {x: 430, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 400378334896660409}
-    m_Position: {x: 540, y: 170, z: 0}
+    m_Position: {x: 540, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4248937979096152774}
     m_Position: {x: 270, y: 180, z: 0}

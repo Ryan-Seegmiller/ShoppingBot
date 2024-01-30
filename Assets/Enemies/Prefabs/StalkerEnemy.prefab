@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GenerateRandomValues: 1
-  currentDistanceToPlayer: 0
-  currentAttackCurve: []
-  frame: 0
+  meshBody: {fileID: 3163837308532186926}
+  deathTime: 0
+  targetRespawnPosition: {x: 0, y: 0, z: 0}
   propBody: {fileID: 146029976545357641}
 --- !u!54 &1174144852210130471
 Rigidbody:
@@ -221,5 +221,10 @@ GameObject:
 --- !u!4 &2351976216833033620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5297519865668456225, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
+  m_PrefabInstance: {fileID: 7577156463580039861}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3163837308532186926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4814140110428575131, guid: 26be7b85d4a54464dbebe8919e34937a, type: 3}
   m_PrefabInstance: {fileID: 7577156463580039861}
   m_PrefabAsset: {fileID: 0}

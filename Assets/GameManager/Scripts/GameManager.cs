@@ -212,11 +212,11 @@ public class GameManager : MonoBehaviour, UIEvents
     {
         if (gameRules.waveCount < (int)(gameRules.gameTime / gameRules.wavePeriod) && gameRules.gameActive)
         {
-            try { EnemyManager.instance.UpdateSpawners(); } catch (Exception e) { Debug.LogError(e.Message, this); }
+            //try { EnemyManager.instance.UpdateSpawners(); } catch (Exception e) { Debug.LogError(e.Message, this); }
             // spawn enemies
             gameRules.waveCount++;
             int enemySpawnCount = 1 + (Mathf.CeilToInt(gameRules.waveCount / 3) * enemyMultiplier); // change the 3 to make faster or slower. Add 1 to account for wave count starting at 0
-            try { EnemyManager.instance.SpawnEnemies(enemySpawnCount, UnityEngine.Random.Range(0, EnemyManager.instance.enemyPrefabs.Count)); } catch (Exception e) { Debug.LogError(e.Message, this); }// note this function gets called slightly after wave count is updated. ie wave 3 is called at 30.012345 seconds
+            try { EnemyManager.instance.DeployDeadEnemy(enemySpawnCount); } catch (Exception e) { Debug.LogError(e.Message, this); }// note this function gets called slightly after wave count is updated. ie wave 3 is called at 30.012345 seconds
 
             Debug.Log($"GameManager :: {enemySpawnCount} enemy(s) spawned at {gameRules.gameTime}", this);
         }
