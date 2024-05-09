@@ -50,6 +50,7 @@ namespace PlayerContoller
         public static bool isPaused;
         public Transform playerTransform => transform;
 
+
         #region IsSprintingBool
         private bool IsSprinting;
         private bool isSprinting
@@ -167,9 +168,9 @@ namespace PlayerContoller
         }
         private void StuckCheck()
         {
-            if((!grounded || !onSlope) && rb.velocity.magnitude == 0)
+            if((!grounded && !onSlope) && rb.velocity.magnitude == 0)
             {
-                StartCoroutine(UnStuckPlayer());
+                rb.AddForce(orientation.forward * 10f, ForceMode.Impulse);
             }
         }
         public bool OnSlopeCheck(out RaycastHit slopeHit)
@@ -212,14 +213,7 @@ namespace PlayerContoller
             }
         }
         #endregion
-        IEnumerator UnStuckPlayer()
-        {
-            yield return new WaitForFixedUpdate();
-            if (!grounded && rb.velocity.magnitude == 0)
-            {
-                rb.AddForce(orientation.forward * 10f, ForceMode.Impulse);
-            }
-        }
+    
 
        
     }

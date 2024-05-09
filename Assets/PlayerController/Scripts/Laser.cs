@@ -43,14 +43,18 @@ public class Laser : MonoBehaviour
         ArmLook();
         if (!beam.enabled) return;
         objectGrabbed = grab.ObjectDragActive;
-        ShootLaser();
+        
     }
     private void InputCheck()
     {   //Gets if the player is holing down the mouse 0 button
-        Action Shoot = (Input.GetMouseButton(0)) ? 
-            () => { Activate(); } :
-            () => { Deactivate(); SetLaserPosition(muzzelPoint.position);};
-        Shoot();
+        if (Input.GetMouseButton(0))
+        {
+            ShootLaser();
+            Activate();
+            return;
+        }
+        Deactivate(); 
+        SetLaserPosition(muzzelPoint.position);
     }
     private void Activate()
     {

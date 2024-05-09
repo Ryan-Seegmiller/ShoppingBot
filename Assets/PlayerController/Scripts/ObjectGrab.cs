@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class ObjectGrab : MonoBehaviour
 {
     [Header("Object References")]
-    [SerializeField] private Camera mainCamera;//main camera
+    private Camera mainCamera;//main camera
     public GameObject target;//Object in place for the item to move to
     public GameObject armPivot;
     public Transform cartColliderTR;
@@ -52,6 +52,7 @@ public class ObjectGrab : MonoBehaviour
     void Start()
     {
         rb = transform.GetComponent<Rigidbody>();
+        mainCamera = Camera.main;
     }
 
     void Update()
