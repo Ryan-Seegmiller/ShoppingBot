@@ -14,7 +14,7 @@ Shoot your enemies
 
 GET OUT!
 
-[Play the game](https://github.com/Ryan-Seegmiller/SnakeEscape/archive/refs/heads/main.zip)
+[Play the game](https://github.com/Ryan-Seegmiller/ShoppingBot/archive/refs/heads/main.zip)
 
 
 
